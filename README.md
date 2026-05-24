@@ -24,8 +24,8 @@ numbers.
 ## Install
 
 ```bash
-# 1. Clone (use --recurse-submodules if you add any in the future)
-git clone <your-remote-url> Detecture
+# 1. Clone
+git clone https://github.com/aviadcohz/Detecture.git
 cd Detecture
 
 # 2. Python env
