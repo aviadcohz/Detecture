@@ -1,0 +1,75 @@
+seed: 42
+
+model:
+  qwen_model: "Qwen/Qwen3-VL-8B-Instruct"
+  qwen_dtype: "bfloat16"
+  gradient_checkpointing: true
+
+  # Qwen LoRA — ultra-conservative
+  lora_r: 8
+  lora_alpha: 16
+  lora_dropout: 0.0
+  lora_target_modules: ["q_proj", "v_proj"]
+
+  # Bridge: 4096 -> SAM3 native text-encoder width (1024) -> frozen resizer -> 256
+  projector_hidden_dim: 1024   # SAM3 VETextEncoder.width
+  projector_dropout: 0.4       # heavy dropout to prevent Directional Drift
+
+  # Qwen LoRA LR = base * 0.01 = 1e-6
+  qwen_lr_scale: 0.01
+
+  # SAM3 — 100% frozen permanently (no LoRA)
+  sam3_checkpoint: null
+  image_size: 1008
+
+data:
+  train_metadata: "~/datasets/ADE20K_textured_images/train_metadata.json"
+  val_metadata: "~/datasets/ADE20K_textured_images/val_metadata.json"
+  image_size: 1008
+  augment: true
+  num_workers: 0
+
+training:
+  batch_size: 2
+  gradient_accumulation_steps: 4
+  # 20-epoch Stage-1+Stage-2 run finished; 10 extra epochs added for the
+  # Micro-Warmup Restart extension (resume from epoch_20.pt with
+  # --resume-lr-scale 0.15 --resume-warmup-epochs 2).
+  num_epochs: 30
+  learning_rate: 1.0e-4
+  weight_decay: 0.01
+  warmup_epochs: 5
+  min_lr: 1.0e-6
+  max_grad_norm: 1.0
+
+  checkpoint_dir: "checkpoints"
+  save_every: 4
+
+# Two-Stage Curriculum:
+#   Stage 1 (epochs 1-8):  Bridge + mask head + dustbin trainable; Qwen LoRA,
+#                          masked-row SEG rows, and SAM all frozen.
+#   Stage 2 (epochs 9-30): Qwen LoRA and masked-row SEG rows unfreeze; Bridge
+#                          LR decays 10x (1e-4 -> 1e-5). SAM stays frozen.
+curriculum:
+  projector_warmup_epochs: 8
+  projector_lr_decay_at_stage2: 0.1
+
+# Losses: Shifted-Zero LM cliff (alpha=2.0 hardcoded in dataset.create_labels).
+# Weight(SEG) = 1.0 (force emission); Weight(SEG+1) = 0.0 (geometric freedom);
+# Weight(d) = 1 - exp(-2d) elsewhere.
+loss:
+  mask_weight: 1.0
+  ce_weight: 1.0
+  dice_weight: 3.0
+  lm_weight: 0.1
+  orthogonal_weight: 0.0       # SAM LoRA retired; kept for interface compat
+
+# Monitoring
+monitor:
+  skip_sanity_check: true
+  log_dir: "checkpoints/logs"
+  plot_dir: "checkpoints/plots"
+  test_metadata: "~/datasets/RWTD/metadata.json"
+  test_eval_every: 4
+  test_output_dir: "checkpoints/test_results"
+  baseline_results: "~/sam3_detecture_comparison/eval_results_rwtd/results.json"

@@ -1,0 +1,179 @@
+{
+  "version": "v4",
+  "date": "2026-04-12",
+  "status": "completed — V4-Slim bridge experiment in progress, V5 staged for deployment",
+
+  "motivation": "V3 proved Batch Multiplexing works in Phase 1 (ep5 = 0.7028) but Phase 2 LLM co-training destroyed everything (ep15 = 0.5883). V4 abandons LLM co-training: Qwen is a permanently frozen Oracle, training only the Projector + SAM LoRA. The Architectural Plug (transplanted SAM ln_final + resizer) anchors the projector in SAM's native pre-projection space.",
+
+  "architecture": {
+    "qwen": "Frozen Oracle (no LoRA). Used only for pre-computed GT embeddings and test-time inference.",
+    "projector": "4096 → 2048 → 1024 → GELU → frozen LN(1024) → frozen Linear(1024→256). 10.5M trainable trunk + 264K frozen plug.",
+    "sam3": "Batch Multiplexed (each query in own slot-1 position). Orthogonal LoRA r=32 on q,k,v,out_proj. Frozen in Stage 1, unfrozen in Stage 2 (epoch 16+).",
+    "losses": "Mask (CE + heavy Dice) + Cosine Distillation (vs SAM text encoder targets) + Orthogonal Reg. No LM loss, no text contrastive.",
+    "training_data": "Pre-computed qwen_gt_embeds fed via override_tex_embeds. No live Qwen forward during training.",
+    "architectural_plug": "SAM3's backbone.language_backbone.encoder.ln_final + backbone.language_backbone.resizer surgically transplanted into projector and frozen. Forces projector output into SAM's exact pre-projection latent space."
+  },
+
+  "config": {
+    "batch_size": 2,
+    "gradient_accumulation_steps": 4,
+    "effective_batch": 8,
+    "learning_rate": 1e-4,
+    "warmup_epochs": 5,
+    "num_epochs": 60,
+    "alignment_epochs": 15,
+    "distillation_weight": 1.0,
+    "mask_weight": 1.0,
+    "ce_weight": 1.0,
+    "dice_weight": 3.0,
+    "orthogonal_weight": 0.01,
+    "sam3_lr_scale": 0.1,
+    "crop_augmentation": true,
+    "crop_probability": 0.35
+  },
+
+  "run_history": {
+    "run_1_old_embeds": {
+      "description": "First V4 run with <TEX_i>-position GT embeddings (train/test extraction mismatch).",
+      "epochs_trained": 31,
+      "embedding_file": "qwen_gt_embeds.pt (extracted at <TEX_i> token positions)",
+      "best_test_rwtd": 0.6861,
+      "best_test_epoch": 5,
+      "test_at_ep10": 0.6451,
+      "test_at_ep15": 0.5430,
+      "test_at_ep30": 0.5978,
+      "val_at_ep31": 0.6752,
+      "outcome": "Test mIoU peaked at ep5 then DRIFTED. Val kept climbing (teacher-forced) while test collapsed — train/test distribution mismatch."
+    },
+    "run_2_fixed_embeds": {
+      "description": "V4 with regenerated GT embeddings (extracted via regex fallback, matching inference path).",
+      "epochs_trained": 13,
+      "embedding_file": "qwen_gt_embeds_v4.pt (extracted at TEXTURE_N: line-end positions)",
+      "best_test_rwtd": 0.6921,
+      "best_test_epoch": 5,
+      "test_at_ep10": 0.6177,
+      "val_at_ep13": 0.6356,
+      "outcome": "ep5 improved slightly (+0.006 vs run 1). ep10 STILL DRIFTED. Embedding fix was necessary but not sufficient — the remaining drift is Directional Drift in the projector."
+    }
+  },
+
+  "diagnostic_experiments": {
+    "1_truncation_bug_discovery": {
+      "description": "max_new_tokens=150 in inference_forward caused Qwen to truncate descriptions mid-word on ADE20K_Detecture (4+ textures). Regex fallback extracted corrupted hidden states from truncated lines.",
+      "fix": "Increased max_new_tokens to 300, added truncation guard (skip last line if no <|im_end|>), fixed text_up_to to use line_idx instead of tex_count.",
+      "impact_on_rwtd": "Negligible — RWTD descriptions fit in 150 tokens. k_pred distribution unchanged: {1:1, 2:46, 3:10, 4:1, 6:195}.",
+      "impact_on_ade20k": "Negligible — Hungarian matching already rescued valid channels."
+    },
+    "2_control_group_ade20k_live": {
+      "description": "Ran inference_forward (live Qwen + regex extraction) on IN-DOMAIN ADE20K_Detecture dataset to isolate domain gap vs engineering bug.",
+      "results": {
+        "ep5": {"miou": 0.7005, "k_pred": {"6": 212}},
+        "ep10": {"miou": 0.7013, "k_pred": {"6": 212}},
+        "ep13_best": {"miou": 0.7069, "k_pred": {"6": 212}}
+      },
+      "verdict": "In-domain mIoU is STABLE and CLIMBING (0.700 → 0.707). No drift. Inference code is CORRECT. The RWTD drop is purely a cross-domain generalization issue.",
+      "file": "ablation/live_ade20k_control.json"
+    },
+    "3_over_segmentation_ablation": {
+      "description": "Tested 'exactly 2' prompt vs '1 to 6' on RWTD to determine if over-segmentation (k_pred=6 when k_gt=2) causes the mIoU drop.",
+      "results": {
+        "ep5_1to6": 0.6939,
+        "ep5_exactly2": 0.6611,
+        "ep10_1to6": 0.6181,
+        "ep10_exactly2": 0.5631
+      },
+      "verdict": "DISPROVED. 'exactly 2' is WORSE (-0.033 at ep5, -0.055 at ep10). More descriptions with Hungarian matching provides a selection buffer. Over-segmentation is NOT the bottleneck.",
+      "matches_v2_finding": "V2 prompt ablation also found '1 to 6' > 'exactly 2'."
+    },
+    "4_vector_collapse_analysis": {
+      "description": "Measured cosine similarity between TEXTURE_1 and TEXTURE_2 embeddings pre-projector (4096-D) and post-projector (256-D) to prove/disprove Representation Collapse.",
+      "results": {
+        "RWTD_ep5": {"pre_cos_mean": 0.7357, "post_cos_mean": 0.9190, "delta": 0.183, "above_0.95_pct": 26.2},
+        "RWTD_ep10": {"pre_cos_mean": 0.7357, "post_cos_mean": 0.8948, "delta": 0.159, "above_0.95_pct": 11.9},
+        "ADE20K_ep10": {"pre_cos_mean": 0.8313, "post_cos_mean": 0.8789, "delta": 0.048, "above_0.95_pct": 7.1}
+      },
+      "verdict": "REPRESENTATION COLLAPSE DISPROVED. Post-projector similarity at ep10 (0.895) is LOWER than ep5 (0.919) — projector gets BETTER at separating. Yet mIoU drops. The vectors are separated but in the WRONG DIRECTIONS relative to SAM's expectations for RWTD inputs. This is Directional Drift, not collapse.",
+      "key_insight": "The projector compresses RWTD embeddings 4x more than ADE20K (Δ=0.18 vs 0.05). In-domain vectors get gentle treatment because distillation pins them. Cross-domain vectors drift freely because there's no distillation signal for RWTD.",
+      "file": "ablation/vector_collapse_analysis.json"
+    }
+  },
+
+  "key_findings": [
+    {
+      "finding": "Embedding extraction position matters",
+      "evidence": "Run 1 (<TEX_i> positions) vs Run 2 (regex line-end positions): ep5 improved 0.6861→0.6921. Confirmed by V4 GT embeds having only 0.33 cosine similarity to old embeds (materially different distributions).",
+      "impact": "Necessary fix but only improved ep5 by +0.006. Drift persisted."
+    },
+    {
+      "finding": "In-domain performance is stable and excellent",
+      "evidence": "ADE20K_Detecture live inference: 0.700→0.701→0.707 across epochs. No drift at all.",
+      "impact": "Proves the architecture works. The issue is purely cross-domain."
+    },
+    {
+      "finding": "The projector SEPARATES embeddings more over training (not less)",
+      "evidence": "Post-projector cosine for RWTD: ep5=0.919 → ep10=0.895 (lower = more separated). Samples above 0.95 halved from 26.2% to 11.9%.",
+      "impact": "Disproves Representation Collapse as the failure mode."
+    },
+    {
+      "finding": "DIRECTIONAL DRIFT is the true pathology",
+      "evidence": "Projector compresses RWTD vectors 4x more than ADE20K (Δ=0.18 vs 0.05). ADE20K stays pinned by distillation loss; RWTD has no distillation signal and drifts to wrong directions in SAM space. More separation ≠ better mIoU when directions are wrong.",
+      "impact": "The 10.5M-param projector has enough capacity to memorize ADE20K-specific manifold directions that don't generalize."
+    },
+    {
+      "finding": "Over-segmentation does NOT cause the RWTD drop",
+      "evidence": "'exactly 2' prompt makes mIoU WORSE (-0.033 at ep5, -0.055 at ep10). More channels + Hungarian matching is strictly better.",
+      "impact": "Rules out prompt engineering as a fix."
+    },
+    {
+      "finding": "Truncation bug only affects ADE20K (multi-texture), not RWTD",
+      "evidence": "RWTD descriptions fit in 150 tokens even with k=6. k_pred distribution is bit-identical with 150 vs 300 tokens. ADE20K had truncation but Hungarian matching rescued it.",
+      "impact": "Fixed for correctness but did not change RWTD mIoU."
+    }
+  ],
+
+  "comparison_to_v3": {
+    "architecture": "V4 retains V3's Batch Multiplexing. Adds frozen Qwen, Architectural Plug, Cosine Distillation. Removes LM co-training, text contrastive, InverseProjector.",
+    "best_test_rwtd": {"v3_phase1_ep5": 0.7028, "v4_run2_ep5": 0.6921},
+    "drift_pattern": {"v3": "Phase 2 LLM co-training destroyed (0.703→0.588)", "v4": "Projector Directional Drift (0.692→0.618). Different mechanism, similar magnitude."},
+    "root_cause": {"v3": "Qwen LoRA count collapse + projector drift off teacher manifold", "v4": "10.5M-param projector memorises ADE20K-specific directions in SAM space"}
+  },
+
+  "next_steps": {
+    "v4_slim_bridge": {
+      "status": "RUNNING — ep7/10 complete. ep5 RWTD test = 0.7316 (BEAT ZS BASELINE)",
+      "hypothesis": "Reducing projector from 10.5M to 2.6M params (4096→512→1024→plug) prevents domain-specific overfitting by forcing generalization through an information bottleneck.",
+      "architecture": "Same as V4 but with slim projector. Frozen Qwen, SAM plug retained, distillation active.",
+      "results_so_far": {
+        "ep5_test_rwtd": 0.7316,
+        "ep5_val": 0.6210,
+        "ep7_val": 0.6473,
+        "val_trend": "monotonically increasing every epoch (0.569 → 0.647)",
+        "distillation_trend": "converged 0.260 → 0.148",
+        "k_pred_distribution": {"1": 1, "2": 46, "3": 10, "4": 1, "6": 195},
+        "comparison_vs_v4": "+0.040 mIoU over V4 (10.5M) at ep5",
+        "comparison_vs_zs": "+0.025 over ZS baseline (0.7063) — FIRST TIME BEATEN"
+      },
+      "success_criterion": "If RWTD ep10 > 0.73 (no drift), the bottleneck is proven as the generalization fix.",
+      "files": ["models/qwen2sam_v4_slim.py", "configs/detecture_v4_slim.yaml", "training/train_v4_slim.py"]
+    },
+    "v5_full": {
+      "status": "ARCHITECTURE VALIDATED — Oracle mIoU=0.8098 on RWTD (epoch 7)",
+      "architecture": "[SEG] Token + Bottleneck Projector (4096→512→256, 2.1M) + Qwen LoRA (r=8) + Loss Masking (-100 on text, CE only on [SEG]) + 3-Stage Curriculum (projector warmup → Qwen LoRA co-adaptation → E2E).",
+      "key_innovations": [
+        "[SEG] token decouples visual grounding from language context",
+        "Loss masking prevents Count Collapse (V3 failure mode)",
+        "Bottleneck projector prevents Directional Drift (V4 failure mode)",
+        "3-stage curriculum protects Qwen from Cold Start garbage gradients",
+        "No distillation loss — mask loss is the sole signal (pixels teach the [SEG] token)",
+        "Identical extraction at train and test time (clean token lookup, no regex)"
+      ],
+      "files": ["models/projector.py (V5)", "models/qwen2sam_detecture.py (V5)", "data/dataset.py (V5)", "models/losses.py (V5)", "training/train.py (V5)", "configs/detecture.yaml (V5)"]
+    }
+  },
+
+  "baselines": {
+    "generic_zero_shot": {"rwtd_miou": 0.7063, "rwtd_mari": 0.6879},
+    "qwen_semseg_parsed": {"rwtd_miou": 0.9109, "rwtd_mari": 0.8492},
+    "qwen_proposal_parsed": {"rwtd_miou": 0.8191, "rwtd_mari": 0.7785}
+  }
+}

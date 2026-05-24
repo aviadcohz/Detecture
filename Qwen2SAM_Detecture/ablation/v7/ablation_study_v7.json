@@ -1,0 +1,114 @@
+{
+  "version": "v7",
+  "codename": "Bridge to SAM — Semantic-Preserving Projector",
+  "date": "2026-04-18",
+  "status": "Finalised — training about to start from scratch.",
+
+  "motivation": "V6-Extended delivered stable language (no collapse) and monotonic val mIoU through Stage 1, but RWTD dropped 4.6 mIoU when Stage 3 unfroze SAM LoRA, and the best V6 live-inference honest number (exactly-2) plateaued at 0.69. A parallel Zero-Shot SAM 3 experiment using a highly descriptive, object-aware prompt (no VLM, no projector, raw SAM text path) achieved 0.928 mIoU on RWTD. This proves the geometry-blocker was not SAM and not language drift — it was the V6 Bottleneck Projector (4096 -> 512 -> 256) aggressively compressing Qwen's semantic richness before it reached SAM. V7 discards the bottleneck, widens the projection into SAM's native text-encoder space (1024-d), reuses SAM's own pretrained 1024 -> 256 resizer (frozen) for the final step, switches the LM-loss schedule from cosine to a sharp exponential cliff, and freezes SAM permanently.",
+
+  "architecture": {
+    "qwen": "Qwen3-VL-8B + LoRA (r=8, q_proj + v_proj). qwen_lr_scale=0.01 (effective 1e-6).",
+    "seg_token": "<|seg|> appended after each TEXTURE line (inherited from V5).",
+    "block_diagonal_mask": "Decouples per-texture [SEG] representations (inherited from V5). V7 extends the filter to also skip any <|seg|> tokens rendered as literal text inside the user prompt template.",
+    "v7_new_1_bridge_projector": "Replaces V6 bottleneck. Linear(4096, 1024) + LayerNorm(1024) + GELU + Dropout(0.4). Outputs into SAM3's native text-encoder width. Dropout(0.4) is load-bearing: the wider projection has 4.20M params (vs V6 bottleneck's 2.23M), so without heavy dropout the Directional Drift regression from V4 would reappear.",
+    "v7_new_2_frozen_resizer": "SAM3's own backbone.language_backbone.resizer (Linear 1024 -> 256). Reused as-is, never trained. Carries SAM3's pretrained 1024->256 semantic mapping, effectively borrowing its vocabulary knowledge for free.",
+    "v7_new_3_exponential_lm_weight": "Weight(d) = 1 - exp(-alpha * d), alpha=2.0, where d = token distance to nearest assistant-region <|seg|>. Weight at d=0 (the [SEG] token itself) is forced to 0.0 -- Qwen has total freedom to warp it for geometry. Weight at d=1 -> 0.865; d=2 -> 0.982; d>=3 -> near 1.0 (full LM supervision). Replaces V6's gentle cosine decay (lambda_min=0.05 -> lambda_max=1.0 over the whole block) with a sharp cliff that isolates the [SEG] geometrically but applies full LM pressure everywhere else.",
+    "v7_new_4_sam3_permanently_frozen": "SAM3 never unfreezes. No LoRA on SAM. Justified by the ZS SAM 3 breakthrough (0.928 RWTD): SAM natively understands object-aware descriptions; fine-tuning it only destroys this OOD generalisation (confirmed in V6 ep10 -> ep15 RWTD regression).",
+    "v7_new_5_universal_prompt": "Training and inference both use a single object-aware prompt. 'prominent foreground object and its background, or contrasting materials' replaces V6's texture-only 'contrasting materials, surfaces, or textures'. The format template also shows '<|seg|>' per TEXTURE line, giving Qwen explicit instruction/output alignment. Prompt-template <|seg|> tokens are filtered out of all downstream seg-position lookups (training labels, block-diagonal mask, hidden-state extraction, regex fallback).",
+    "v7_new_6_two_stage_curriculum": "Stage 1 (epochs 1-12): Bridge + mask head + dustbin train at base LR 1e-4; Qwen LoRA frozen; SAM frozen. Stage 2 (epochs 13-20): Qwen LoRA unfrozen at 1e-6; Bridge base LR decays 10x (1e-4 -> 1e-5). No Stage 3."
+  },
+
+  "config": {
+    "lora_r": 8,
+    "lora_alpha": 16,
+    "qwen_lr_scale": 0.01,
+    "projector_hidden_dim": 1024,
+    "projector_dropout": 0.4,
+    "batch_size": 2,
+    "gradient_accumulation_steps": 4,
+    "effective_batch": 8,
+    "learning_rate": 1e-4,
+    "warmup_epochs": 5,
+    "num_epochs": 20,
+    "projector_warmup_epochs": 12,
+    "projector_lr_decay_at_stage2": 0.1,
+    "lm_weight": 0.1,
+    "lm_alpha": 2.0,
+    "mask_weight": 1.0,
+    "ce_weight": 1.0,
+    "dice_weight": 3.0,
+    "orthogonal_weight": 0.0
+  },
+
+  "trainable_parameters": {
+    "qwen_lora": 3833856,
+    "bridge": 4197376,
+    "mask_head": 197376,
+    "dustbin": 4096,
+    "total": 8232704,
+    "total_human": "8.23M",
+    "comparison_v6_total": 6261376,
+    "delta_vs_v6": "+1,971,328 params (+31.5%). All delta is in Bridge (wider output into SAM text space). SAM3 LoRA removed entirely."
+  },
+
+  "v7_vs_v6_diff_matrix": {
+    "projector": "V6: Linear(4096,512) + LN + GELU + Dropout(0.15) + Linear(512,256), 2.23M params. V7: Linear(4096,1024) + LN + GELU + Dropout(0.4), 4.20M params + frozen Linear(1024,256) reused from SAM.",
+    "lm_loss": "V6: cosine lambda_min=0.05 to lambda_max=1.0 per texture block. V7: exponential 1-exp(-2*d), SEG itself at 0.0.",
+    "curriculum": "V6: 3 stages with SAM LoRA unfreezing at Stage 3. V7: 2 stages; SAM frozen forever.",
+    "prompt": "V6: texture-only, 'material or surface'. V7: object-aware, 'material or object', example allows 'prominent foreground object and its background'.",
+    "format_template": "V6: 'TEXTURE_N: Texture of <description>'. V7: 'TEXTURE_N: Texture of <description> <|seg|>'. V7 requires prompt-side <|seg|> filtering in 4 extraction sites.",
+    "sam_lora": "V6: rank 32 orthogonal LoRA active at Stage 3. V7: removed."
+  },
+
+  "motivating_evidence_from_v6_runs": {
+    "v6_live_rwtd_honest_best": {"checkpoint": "ep7 training-prompt exactly_2", "miou": 0.6943},
+    "v6_stage3_regression": {"ep10_to_ep15": "-0.046 mIoU (live 1-to-6)"},
+    "zs_sam3_breakthrough": {"prompt": "highly descriptive object-aware ZS", "rwtd_miou": 0.928},
+    "interpretation": "ZS SAM's 0.928 sets the true ceiling of the geometric engine. V6's best honest live mIoU at 0.69 is 0.24 below this ceiling. The gap is almost entirely the projector's semantic squash."
+  },
+
+  "implementation_proofs": {
+    "v7_bridge_forward_shape": {"input": "(B, 7, 4096)", "after_bridge": "(B, 7, 1024)", "after_resizer": "(B, 7, 256)", "status": "VERIFIED on GPU"},
+    "v7_resizer_frozen": {"requires_grad_any": false, "source": "sam3.backbone.language_backbone.resizer (Linear(1024, 256))"},
+    "v7_exponential_weights_measured": {"d_0": 0.0, "d_1": 0.8647, "d_2": 0.9817, "d_3": 0.9975, "d_4_plus": "near 1.0"},
+    "prompt_seg_filter_working": {"prompt_seg_positions": [214, 227], "asst_start": 235, "filtered_to_assistant_only": [243, 253], "status": "VERIFIED on sample chat"}
+  },
+
+  "next_experiments": {
+    "current_status": "Training launches from scratch. All V6 checkpoints moved to checkpoints/archive_v6/.",
+    "expected_trajectory": "Stage 1 (12 epochs) purely Bridge warmup with Qwen frozen, expected to push val mIoU past 0.70. Stage 2 (8 epochs) unfreezes Qwen LoRA at 1e-6 with Bridge decayed to 1e-5.",
+    "hypotheses_to_validate": [
+      {
+        "h1": "V7 Bridge + frozen resizer closes most of the V6-to-ZS gap on RWTD",
+        "success_criterion": "RWTD live exactly-2 mIoU >= 0.80 at end of training"
+      },
+      {
+        "h2": "Exponential LM cliff eliminates the 'tug-of-war' between DICE and LM",
+        "success_criterion": "train_mask_dice drops below 0.30 by end of Stage 2 (V6 plateaued at ~0.43)"
+      },
+      {
+        "h3": "Permanent SAM freeze eliminates the Stage 3 OOD regression",
+        "success_criterion": "RWTD live mIoU is monotonic or plateaus; no regression after epoch 15"
+      },
+      {
+        "h4": "4x projection (4096->1024) + 0.4 dropout preserves OOD generalisation despite 2x parameter count",
+        "success_criterion": "RWTD-to-ADE20K_val mIoU ratio > 0.85 (V4's 10.5M projector hit 0.81; V6 bottleneck hit 0.88)"
+      }
+    ]
+  },
+
+  "baselines_on_rwtd": {
+    "generic_zero_shot_sam3": {"miou": 0.7063, "mari": 0.6879},
+    "qwen_semseg_parsed": {"miou": 0.9109, "mari": 0.8492, "note": "Non-trained ceiling"},
+    "qwen_proposal_parsed": {"miou": 0.8191, "mari": 0.7785},
+    "zs_sam3_object_aware_prompt": {"miou": 0.928, "mari": null, "note": "Breakthrough result motivating V7"},
+    "v4_slim_live": {"miou": 0.7316, "mari": 0.5727},
+    "v5_oracle_ep7": {"miou": 0.8098, "mari": 0.7400, "note": "Teacher-forced, language collapsed"},
+    "v5_live_ep7": {"miou": 0.1364, "note": "LoRA collapse"},
+    "v6_live_ep7_standard_1_to_6": {"miou": 0.7394, "mari": 0.5764, "note": "Hungarian-inflated (k=6)"},
+    "v6_live_ep7_exactly_2": {"miou": 0.6943, "mari": 0.5212, "note": "V6 honest best"},
+    "v6_live_ep10_standard_1_to_6": {"miou": 0.7380, "mari": 0.5866, "note": "Hungarian-inflated"},
+    "v6_live_ep15_standard_1_to_6": {"miou": 0.6917, "mari": 0.5177, "note": "Stage 3 regression signature"},
+    "v7_target": {"miou": ">= 0.80", "mari": ">= 0.65", "note": "Honest (exactly-2) target for V7"}
+  }
+}

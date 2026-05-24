@@ -1,0 +1,104 @@
+{
+  "title": "V3 Analysis: Batch Multiplexing & The Death of LLM Co-training",
+  "date": "2026-04-10",
+
+  "what_we_tried": {
+    "primary": "Batch Multiplexing in run_sam3_semantic — flatten (B, 7, 256) queries into (B*7, 1, 256) so each query is processed in its own 'slot 1' position. Image features expanded via image_ids indexing.",
+    "nan_fix": "Removed prompt_key_padding_mask (Softmax([-inf]) trap with seq_len=1). PAD slots run unmasked.",
+    "retained_v2_3front": "Crop augmentation (35%, 300-600px), Cycle consistency, Constrained Qwen LoRA r=4."
+  },
+
+  "what_worked": {
+    "phase1_breakthrough": "Phase 1 ep5 RWTD test mIoU = 0.7028 — beats V2 ep5 (0.6275) by +0.075 and matches the ZS baseline (0.7063). FIRST trained model to match ZS performance.",
+    "batch_multiplexing": "Architectural fix is correct. With multi-channel queries forced into independent SAM passes, the model genuinely uses multiple textures during Phase 1.",
+    "cycle_loss_in_p2": "Cycle loss continues to converge — InverseProjector still learns to invert the projection. Not the failure point."
+  },
+
+  "what_failed_catastrophically": {
+    "failure_1_qwen_count_collapse": {
+      "title": "Qwen LoRA collapsed to k_pred=1 on 85% of RWTD",
+      "detail": "Phase 2 LM loss optimization found a shortcut: terminate after TEXTURE_1 with <|im_end|>. Sample descriptions remain semantically perfect (sand, fabric, rock, quilt) but only ONE description per image. Without Hungarian matching to rescue over-generation, under-generation has no rescue.",
+      "diagnostic": "experiment_2 in v3_diagnosis.json"
+    },
+    "failure_2_projector_drift": {
+      "title": "Projector irreversibly bound to trained-Qwen distribution",
+      "detail": "GT bypass test (replace live Qwen with frozen teacher embeddings): mIoU = 0.000, 100% dustbin. The projector trained in Phase 2 only accepts the trained-Qwen output manifold. Teacher embeddings are now treated as out-of-distribution garbage.",
+      "diagnostic": "experiment_1 in v3_diagnosis.json",
+      "implication": "Phase 2 cannot be 'undone' — it's a one-way drift. Future runs must restart from Phase 1 checkpoints."
+    },
+    "failure_3_sam_slot_regression": {
+      "title": "SAM LoRA reverted to slot-1 dominance under hostile co-training",
+      "detail": "Forced k=2 test (force Qwen to generate 2 textures) on ep15: Slot 1 = 95.2%, Slot 2 = 2.9%. The Batch Multiplexing architecture is unbiased, but Phase 2 trained the SAM LoRA weights to ignore everything except slot 1 because the dominant gradient signal in Phase 2 came from k=1 collapsed Qwen outputs.",
+      "diagnostic": "scripts/forced_k2_test.py result"
+    },
+    "failure_4_val_test_blindness": {
+      "title": "Val mIoU stayed flat while live test mIoU collapsed",
+      "detail": "Val ep15 = 0.7002 (teacher-forced), test ep15 = 0.5883 (live Qwen). Gap = 0.1119. The val metric used override_tex_embeds, hiding the live-inference collapse during training. The training loop had no early-warning system."
+    }
+  },
+
+  "the_layered_diagnosis": {
+    "isolation_strategy": "We ran 3 surgical experiments + 1 forced-prompt test to isolate which component broke",
+    "exp_1_gt_bypass": "Vision path with frozen Qwen teacher \u2192 0.000 \u2192 PROJECTOR DRIFTED",
+    "exp_2_live_qwen": "Full pipeline live \u2192 0.5883 + 85% k=1 \u2192 QWEN COUNT COLLAPSED",
+    "exp_3_positional_bias": "GT embeddings + arch test \u2192 still 0.000 (because projector is broken)",
+    "exp_4_forced_k2": "Force Qwen k=2 \u2192 0.317 + 95% slot1 \u2192 SAM REGRESSED",
+    "verdict": "Three independent failure modes converged. Each is a different optimization pathology, but ALL stem from co-training Qwen with the segmentation losses in Phase 2."
+  },
+
+  "progression_across_versions": {
+    "v1_run4": {
+      "approach": "Direct 1-to-1, Qwen bypass P1, SAM r=32",
+      "best_val": 0.813,
+      "best_test_rwtd": 0.678,
+      "weakness": "Qwen LoRA overfitting, test collapsed to 0.544 by ep35"
+    },
+    "v2_run5": {
+      "approach": "V1 + crop aug + cycle loss + LoRA r=4",
+      "best_val": 0.704,
+      "best_test_rwtd": 0.695,
+      "weakness": "SAM positional bias \u2014 only slot 1 active, multi-texture impossible"
+    },
+    "v3_run6": {
+      "approach": "V2 + Batch Multiplexing (each query in own slot 1)",
+      "best_val": 0.7002,
+      "best_test_rwtd_phase1": 0.7028,
+      "best_test_rwtd_phase2": 0.5883,
+      "breakthrough": "Phase 1 matched ZS baseline (0.7028 vs 0.7063) for the first time",
+      "weakness": "Phase 2 catastrophically destroyed the run via 3 simultaneous failure modes (Qwen k-collapse, projector drift, SAM regression)"
+    },
+    "v4_planned": {
+      "approach": "Pure Vision Projector Alignment + Architectural Plug + Cosine Distillation. Qwen PERMANENTLY frozen Oracle. The projector's final two layers are surgically transplanted from SAM3's own text encoder (ln_final + resizer) and permanently frozen. The trainable trunk (4096 -> 1024) is supervised by a cosine distillation loss against the SAM text encoder's own embedding of the GT description.",
+      "stage_1": "epochs 0-14: train projector trunk + mask head + dustbin. SAM LoRA frozen. Cosine distillation active from ep 0.",
+      "stage_2": "epochs 15+: unfreeze SAM LoRA. Transplant + Qwen stay frozen.",
+      "expected": "Stage 1 matches or exceeds V3 ep5 (0.7028 RWTD) faster because the projector output is pre-calibrated to SAM's native prompt distribution. Stage 2 pushes beyond the 0.7063 ZS baseline."
+    }
+  },
+
+  "critical_insight": "V3 was a SCIENTIFIC SUCCESS DESPITE TRAINING FAILURE. Phase 1 ep5 achieving 0.7028 PROVED that Batch Multiplexing solves the positional bias bottleneck identified in V2. The Phase 2 collapse then proved a SECOND, deeper bottleneck: the LLM co-training loop is fundamentally incompatible with this task. Qwen's LM loss provides a counter-productive gradient signal that drags the entire system into k=1 collapse. The fix is not to tune the curriculum or the LoRA rank — it is to abandon LLM co-training entirely. V4 makes Qwen a permanent frozen Oracle.",
+
+  "lessons_learned": [
+    "Architectural fixes must be tested in BOTH Phase 1 (clean) AND Phase 2 (hostile gradient) conditions",
+    "Always track LIVE-inference metrics during training, not just teacher-forced val \u2014 they can diverge by 0.10+",
+    "LM loss in co-training is dangerous: the optimizer finds shortcuts (early termination) that destroy the downstream task",
+    "Direct 1-to-1 alignment removes the safety net of Hungarian matching \u2014 Qwen MUST generate the right count, or there's no rescue",
+    "When multiple failure modes appear simultaneously, run isolation experiments to attribute each one independently",
+    "The 'val mIoU is flat' is not 'training is fine' \u2014 it can mean 'training metric is blind to the failure'",
+    "Phase 2 weight drift is irreversible \u2014 keep the best Phase 1 checkpoint as a safety anchor",
+    "When 3 different components break in 3 different ways simultaneously, the common cause is the COUPLING between them, not any individual component"
+  ],
+
+  "v4_design_rationale": {
+    "abandon_lm_loss": "Removes the gradient signal that causes Qwen k-collapse",
+    "abandon_text_contrastive": "Was already redundant once Qwen is frozen",
+    "freeze_qwen_permanently": "Removes projector drift (no moving target to chase)",
+    "use_qwen_gt_embeds_always": "The teacher manifold is the only reliable embedding distribution",
+    "architectural_plug": "Transplant SAM3's own ln_final + resizer into the projector and freeze them. The trainable trunk has no choice but to land in SAM's exact pre-projection latent space. Replaces the soft Cycle Consistency signal with a HARD structural constraint.",
+    "cosine_distillation_loss": "Inside the fixed SAM prompt space, align the projector output's DIRECTION to SAM's own text encoder embedding of the GT description. Cosine (not MSE) because the frozen resizer pins the scale; MSE would fight the plug.",
+    "drop_inverse_projector": "The bulky InverseProjector was an indirect way to preserve semantics. With the Architectural Plug, structure is enforced; with Cosine Distillation, semantics are enforced directly in SAM's space. Both are tighter than V3's cycle loss.",
+    "stage_1_only_trunk": "Pure alignment: learn the Qwen -> SAM trunk in isolation, with structure locked by the plug and direction locked by distillation",
+    "stage_2_unfreeze_sam_lora": "Once the projector is calibrated, let SAM LoRA adapt to the texture domain",
+    "retain_batch_multiplexing": "V3 PROVED this works in Phase 1 conditions — keep it as the architectural foundation",
+    "retain_crop_augmentation": "V2 PROVED this prevents val/test divergence — keep it"
+  }
+}

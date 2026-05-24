@@ -1,0 +1,2279 @@
+[
+  {
+    "crop_name": "1",
+    "raw_output": "TEXTURE_A: Texture of a conical shell with intricate brown and white mosaic patterns, resting in the foreground.\nTEXTURE_B: Texture of a sandy seabed with muted beige tones and scattered small particles, forming the background.",
+    "parsed": {
+      "desc_a": "Texture of a conical shell with intricate brown and white mosaic patterns, resting in the foreground.",
+      "desc_b": "Texture of a sandy seabed with muted beige tones and scattered small particles, forming the background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "101",
+    "raw_output": "TEXTURE_A: Texture of intricately patterned wooden beads in warm browns and tans, foreground\nTEXTURE_B: Texture of smooth, muted green fabric with subtle woven lines, background",
+    "parsed": {
+      "desc_a": "Texture of intricately patterned wooden beads in warm browns and tans, foreground",
+      "desc_b": "Texture of smooth, muted green fabric with subtle woven lines, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "102",
+    "raw_output": "TEXTURE_A: Texture of a rustic grapevine wreath with interwoven brown twigs and a single leaf.\nTEXTURE_B: Texture of weathered green wooden planks with grain and knots visible.",
+    "parsed": {
+      "desc_a": "Texture of a rustic grapevine wreath with interwoven brown twigs and a single leaf.",
+      "desc_b": "Texture of weathered green wooden planks with grain and knots visible."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "103",
+    "raw_output": "TEXTURE_A: Texture of weathered gray wood with deep vertical cracks and rough grain, occupying the left and bottom areas.\nTEXTURE_B: Texture of dark, rusted metal with orange-brown corrosion and circular pitting, centered in the upper right.",
+    "parsed": {
+      "desc_a": "Texture of weathered gray wood with deep vertical cracks and rough grain, occupying the left and bottom areas.",
+      "desc_b": "Texture of dark, rusted metal with orange-brown corrosion and circular pitting, centered in the upper right."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "104",
+    "raw_output": "TEXTURE_A: Texture of a patterned snake with black and white scales slithering across sand\nTEXTURE_B: Texture of fine, undulating reddish-brown sand forming a rippled surface",
+    "parsed": {
+      "desc_a": "Texture of a patterned snake with black and white scales slithering across sand",
+      "desc_b": "Texture of fine, undulating reddish-brown sand forming a rippled surface"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "106",
+    "raw_output": "TEXTURE_A: Texture of intricately carved wooden surface with swirling floral patterns and warm brown tones.\nTEXTURE_B: Texture of central circular Arabic calligraphy panel with raised script on smooth wood.",
+    "parsed": {
+      "desc_a": "Texture of intricately carved wooden surface with swirling floral patterns and warm brown tones.",
+      "desc_b": "Texture of central circular Arabic calligraphy panel with raised script on smooth wood."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "107",
+    "raw_output": "TEXTURE_A: Texture of four patterned cloth pads with red, black, and gray floral designs arranged in a row.\nTEXTURE_B: Texture of smooth light brown wooden floor surface beneath the pads.",
+    "parsed": {
+      "desc_a": "Texture of four patterned cloth pads with red, black, and gray floral designs arranged in a row.",
+      "desc_b": "Texture of smooth light brown wooden floor surface beneath the pads."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "109",
+    "raw_output": "TEXTURE_A: Texture of a lizard with mottled green-brown scales, detailed in foreground.\nTEXTURE_B: Texture of rough gray rock with subtle grain, forming the background.",
+    "parsed": {
+      "desc_a": "Texture of a lizard with mottled green-brown scales, detailed in foreground.",
+      "desc_b": "Texture of rough gray rock with subtle grain, forming the background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "118",
+    "raw_output": "TEXTURE_A: Texture of leopard fur with spotted pattern, golden-brown and black, in mid-ground\nTEXTURE_B: Texture of dry grass with uniform yellow-brown color and fine strands, in background",
+    "parsed": {
+      "desc_a": "Texture of leopard fur with spotted pattern, golden-brown and black, in mid-ground",
+      "desc_b": "Texture of dry grass with uniform yellow-brown color and fine strands, in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "12",
+    "raw_output": "TEXTURE_A: Texture of dense green ferns with feathery fronds in the foreground\nTEXTURE_B: Texture of tall, slender tree trunks with vertical bark patterns in the background",
+    "parsed": {
+      "desc_a": "Texture of dense green ferns with feathery fronds in the foreground",
+      "desc_b": "Texture of tall, slender tree trunks with vertical bark patterns in the background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "121",
+    "raw_output": "TEXTURE_A: Texture of leopard gecko skin with spotted yellow and dark brown scales in foreground\nTEXTURE_B: Texture of soft white fabric with smooth, uniform surface in background",
+    "parsed": {
+      "desc_a": "Texture of leopard gecko skin with spotted yellow and dark brown scales in foreground",
+      "desc_b": "Texture of soft white fabric with smooth, uniform surface in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "122",
+    "raw_output": "TEXTURE_A: Texture of knitted fabric with beige and gray speckled pattern, foreground square.\nTEXTURE_B: Texture of smooth light brown wooden surface, background flat plane.",
+    "parsed": {
+      "desc_a": "Texture of knitted fabric with beige and gray speckled pattern, foreground square.",
+      "desc_b": "Texture of smooth light brown wooden surface, background flat plane."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "125",
+    "raw_output": "TEXTURE_A: Texture of mosaic tile surface with beige and gold geometric pattern in foreground\nTEXTURE_B: Texture of smooth solid blue background surface behind the mosaic tile",
+    "parsed": {
+      "desc_a": "Texture of mosaic tile surface with beige and gold geometric pattern in foreground",
+      "desc_b": "Texture of smooth solid blue background surface behind the mosaic tile"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "128",
+    "raw_output": "TEXTURE_A: Texture of ornate metal manhole cover with intricate geometric patterns and radial symmetry.\nTEXTURE_B: Texture of rough concrete pavement with visible seams and weathered surface.",
+    "parsed": {
+      "desc_a": "Texture of ornate metal manhole cover with intricate geometric patterns and radial symmetry.",
+      "desc_b": "Texture of rough concrete pavement with visible seams and weathered surface."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "129",
+    "raw_output": "TEXTURE_A: Texture of rough, bumpy toad skin with dark mottled patterns in foreground\nTEXTURE_B: Texture of smooth, gray concrete surface with subtle grain in background",
+    "parsed": {
+      "desc_a": "Texture of rough, bumpy toad skin with dark mottled patterns in foreground",
+      "desc_b": "Texture of smooth, gray concrete surface with subtle grain in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "13",
+    "raw_output": "TEXTURE_A: Texture of vibrant red-capped mushroom with white stem, foreground focal point\nTEXTURE_B: Texture of golden-brown fallen leaves carpeting forest floor, background expanse",
+    "parsed": {
+      "desc_a": "Texture of vibrant red-capped mushroom with white stem, foreground focal point",
+      "desc_b": "Texture of golden-brown fallen leaves carpeting forest floor, background expanse"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "134",
+    "raw_output": "TEXTURE_A: Texture of vibrant patchwork quilt with multicolored geometric patterns laid diagonally across foreground.\nTEXTURE_B: Texture of smooth gray concrete pavement with subtle grain and faint cracks forming background surface.",
+    "parsed": {
+      "desc_a": "Texture of vibrant patchwork quilt with multicolored geometric patterns laid diagonally across foreground.",
+      "desc_b": "Texture of smooth gray concrete pavement with subtle grain and faint cracks forming background surface."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "139",
+    "raw_output": "TEXTURE_A: Texture of leopard fur with golden-yellow base, black rosettes, and intense gaze in foreground.\nTEXTURE_B: Texture of vibrant green grass with varied blade lengths and scattered white flowers in background.",
+    "parsed": {
+      "desc_a": "Texture of leopard fur with golden-yellow base, black rosettes, and intense gaze in foreground.",
+      "desc_b": "Texture of vibrant green grass with varied blade lengths and scattered white flowers in background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "14",
+    "raw_output": "TEXTURE_A: Texture of tree bark with mottled white and dark brown diamond-like patches in foreground\nTEXTURE_B: Texture of dappled green foliage with soft blur and bright highlights in background",
+    "parsed": {
+      "desc_a": "Texture of tree bark with mottled white and dark brown diamond-like patches in foreground",
+      "desc_b": "Texture of dappled green foliage with soft blur and bright highlights in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "142",
+    "raw_output": "TEXTURE_A: Texture of leopard fur with spotted pattern, golden-brown, mid-ground\nTEXTURE_B: Texture of dry grass with yellow-brown color, tall and wispy, background",
+    "parsed": {
+      "desc_a": "Texture of leopard fur with spotted pattern, golden-brown, mid-ground",
+      "desc_b": "Texture of dry grass with yellow-brown color, tall and wispy, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "149",
+    "raw_output": "TEXTURE_A: Texture of leopard fur with golden-yellow base, black rosettes, and soft, dense coat in foreground.\nTEXTURE_B: Texture of vibrant green grass blades, slender and slightly blurred, forming the background.",
+    "parsed": {
+      "desc_a": "Texture of leopard fur with golden-yellow base, black rosettes, and soft, dense coat in foreground.",
+      "desc_b": "Texture of vibrant green grass blades, slender and slightly blurred, forming the background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "15",
+    "raw_output": "TEXTURE_A: Texture of gnarled tree bark with swirling gray-brown patterns in foreground\nTEXTURE_B: Texture of soft green foliage with blurred leaves in background",
+    "parsed": {
+      "desc_a": "Texture of gnarled tree bark with swirling gray-brown patterns in foreground",
+      "desc_b": "Texture of soft green foliage with blurred leaves in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "16",
+    "raw_output": "TEXTURE_A: Texture of dense purple flower clusters with fuzzy pink bracts in foreground\nTEXTURE_B: Texture of soft green foliage with subtle veining in background",
+    "parsed": {
+      "desc_a": "Texture of dense purple flower clusters with fuzzy pink bracts in foreground",
+      "desc_b": "Texture of soft green foliage with subtle veining in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "17",
+    "raw_output": "TEXTURE_A: Texture of vibrant pitcher plant with red-yellow veined, waxy leaf surface in foreground\nTEXTURE_B: Texture of dark, granular soil with scattered organic debris in background",
+    "parsed": {
+      "desc_a": "Texture of vibrant pitcher plant with red-yellow veined, waxy leaf surface in foreground",
+      "desc_b": "Texture of dark, granular soil with scattered organic debris in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "175",
+    "raw_output": "TEXTURE_A: Texture of zebra's striped coat with bold black-and-white patterns in foreground\nTEXTURE_B: Texture of dry grassy savanna with muted brown tones in background",
+    "parsed": {
+      "desc_a": "Texture of zebra's striped coat with bold black-and-white patterns in foreground",
+      "desc_b": "Texture of dry grassy savanna with muted brown tones in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "176",
+    "raw_output": "TEXTURE_A: Texture of illuminated tower with glowing vertical lattice pattern, standing tall against twilight sky.\nTEXTURE_B: Texture of smooth dark water surface reflecting city lights and tower glow, calm and mirror-like.",
+    "parsed": {
+      "desc_a": "Texture of illuminated tower with glowing vertical lattice pattern, standing tall against twilight sky.",
+      "desc_b": "Texture of smooth dark water surface reflecting city lights and tower glow, calm and mirror-like."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "178",
+    "raw_output": "TEXTURE_A: Texture of geometric-patterned fabric pillow with bold black-and-white squares in foreground\nTEXTURE_B: Texture of plain beige upholstered couch surface with subtle woven grain in background",
+    "parsed": {
+      "desc_a": "Texture of geometric-patterned fabric pillow with bold black-and-white squares in foreground",
+      "desc_b": "Texture of plain beige upholstered couch surface with subtle woven grain in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "18",
+    "raw_output": "TEXTURE_A: Texture of split seed pod revealing black-speckled white interior in foreground\nTEXTURE_B: Texture of lush green leafy background with varied vein patterns",
+    "parsed": {
+      "desc_a": "Texture of split seed pod revealing black-speckled white interior in foreground",
+      "desc_b": "Texture of lush green leafy background with varied vein patterns"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "180",
+    "raw_output": "TEXTURE_A: Texture of weathered metal manhole cover with grid pattern and engraved text\nTEXTURE_B: Texture of rough gray stone pavement with irregular surface and varied tones",
+    "parsed": {
+      "desc_a": "Texture of weathered metal manhole cover with grid pattern and engraved text",
+      "desc_b": "Texture of rough gray stone pavement with irregular surface and varied tones"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "181",
+    "raw_output": "TEXTURE_A: Texture of rough, speckled concrete with gray and white flecks, occupying the left side.\nTEXTURE_B: Texture of dark, cracked stone with rough, uneven surface, occupying the right side.",
+    "parsed": {
+      "desc_a": "Texture of rough, speckled concrete with gray and white flecks, occupying the left side.",
+      "desc_b": "Texture of dark, cracked stone with rough, uneven surface, occupying the right side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "182",
+    "raw_output": "TEXTURE_A: Texture of smooth gray concrete pavement with faint yellow lines, occupying the foreground.\nTEXTURE_B: Texture of rough, mixed gray and brown gravel with scattered dry leaves, occupying the background.",
+    "parsed": {
+      "desc_a": "Texture of smooth gray concrete pavement with faint yellow lines, occupying the foreground.",
+      "desc_b": "Texture of rough, mixed gray and brown gravel with scattered dry leaves, occupying the background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "183",
+    "raw_output": "TEXTURE_A: Texture of smooth, light gray concrete with subtle stains, occupying the left side.\nTEXTURE_B: Texture of rough, multicolored gravel with varied stone shapes, occupying the right side.",
+    "parsed": {
+      "desc_a": "Texture of smooth, light gray concrete with subtle stains, occupying the left side.",
+      "desc_b": "Texture of rough, multicolored gravel with varied stone shapes, occupying the right side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "184",
+    "raw_output": "TEXTURE_A: Texture of weathered stone tiles in muted earth tones, arranged in a grid pattern on the left side.\nTEXTURE_B: Texture of rough, unadorned concrete surface with subtle grain, occupying the right side.",
+    "parsed": {
+      "desc_a": "Texture of weathered stone tiles in muted earth tones, arranged in a grid pattern on the left side.",
+      "desc_b": "Texture of rough, unadorned concrete surface with subtle grain, occupying the right side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "185",
+    "raw_output": "TEXTURE_A: Texture of rough, cracked, earthy brown soil occupying the left side.\nTEXTURE_B: Texture of smooth, light beige stone tiles arranged in a grid on the right.",
+    "parsed": {
+      "desc_a": "Texture of rough, cracked, earthy brown soil occupying the left side.",
+      "desc_b": "Texture of smooth, light beige stone tiles arranged in a grid on the right."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "186",
+    "raw_output": "TEXTURE_A: Texture of rough, irregularly shaped stone blocks in earthy tones, occupying the left side.\nTEXTURE_B: Texture of smooth, uniformly tiled surface with faded engraved characters, positioned on the right.",
+    "parsed": {
+      "desc_a": "Texture of rough, irregularly shaped stone blocks in earthy tones, occupying the left side.",
+      "desc_b": "Texture of smooth, uniformly tiled surface with faded engraved characters, positioned on the right."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "188",
+    "raw_output": "TEXTURE_A: Texture of weathered cobblestone pavement with irregular gray stones and rough mortar joints in the left half.\nTEXTURE_B: Texture of smooth, uniform gray concrete surface with subtle grain and faint stains in the right half.",
+    "parsed": {
+      "desc_a": "Texture of weathered cobblestone pavement with irregular gray stones and rough mortar joints in the left half.",
+      "desc_b": "Texture of smooth, uniform gray concrete surface with subtle grain and faint stains in the right half."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "189",
+    "raw_output": "TEXTURE_A: Texture of weathered concrete surface with gray speckled grain and rough unevenness\nTEXTURE_B: Texture of metal grate with vertical slats, darkened and rusted, embedded in concrete",
+    "parsed": {
+      "desc_a": "Texture of weathered concrete surface with gray speckled grain and rough unevenness",
+      "desc_b": "Texture of metal grate with vertical slats, darkened and rusted, embedded in concrete"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "194",
+    "raw_output": "TEXTURE_A: Texture of speckled beige granite with fine grain, occupying the left side.\nTEXTURE_B: Texture of dark gray stone pavers with rough, uneven edges, arranged in the right side.",
+    "parsed": {
+      "desc_a": "Texture of speckled beige granite with fine grain, occupying the left side.",
+      "desc_b": "Texture of dark gray stone pavers with rough, uneven edges, arranged in the right side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "197",
+    "raw_output": "TEXTURE_A: Texture of rough stacked stone wall with varied brown tones and irregular edges, occupying the upper portion.\nTEXTURE_B: Texture of weathered cobblestone pavement with diamond pattern and muted earthy colors, covering the lower area.",
+    "parsed": {
+      "desc_a": "Texture of rough stacked stone wall with varied brown tones and irregular edges, occupying the upper portion.",
+      "desc_b": "Texture of weathered cobblestone pavement with diamond pattern and muted earthy colors, covering the lower area."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "2",
+    "raw_output": "TEXTURE_A: Texture of geometrically patterned fabric with repeating diamond motifs in earthy tones, occupying the left side.\nTEXTURE_B: Texture of abstract maze-like carved wood with flowing lines and deep grooves, occupying the right side.",
+    "parsed": {
+      "desc_a": "Texture of geometrically patterned fabric with repeating diamond motifs in earthy tones, occupying the left side.",
+      "desc_b": "Texture of abstract maze-like carved wood with flowing lines and deep grooves, occupying the right side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "200",
+    "raw_output": "TEXTURE_A: Texture of a patterned rug with irregular brown and beige shapes on a black border, centered in the foreground.\nTEXTURE_B: Texture of a tiled floor with uniform beige tiles arranged in a grid, forming the background.",
+    "parsed": {
+      "desc_a": "Texture of a patterned rug with irregular brown and beige shapes on a black border, centered in the foreground.",
+      "desc_b": "Texture of a tiled floor with uniform beige tiles arranged in a grid, forming the background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "201",
+    "raw_output": "TEXTURE_A: Texture of weathered gray concrete with rough, mottled surface in top half\nTEXTURE_B: Texture of worn reddish-brown brick pavers with faded, uniform grid in bottom half",
+    "parsed": {
+      "desc_a": "Texture of weathered gray concrete with rough, mottled surface in top half",
+      "desc_b": "Texture of worn reddish-brown brick pavers with faded, uniform grid in bottom half"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "202",
+    "raw_output": "TEXTURE_A: Texture of woven gray synthetic wicker chair back in foreground\nTEXTURE_B: Texture of smooth light gray horizontal slatted blinds in background",
+    "parsed": {
+      "desc_a": "Texture of woven gray synthetic wicker chair back in foreground",
+      "desc_b": "Texture of smooth light gray horizontal slatted blinds in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "205",
+    "raw_output": "TEXTURE_A: Texture of dense green foliage with small yellow flowers in the bottom-left\nTEXTURE_B: Texture of dry, cracked earth with scattered pebbles along the right side",
+    "parsed": {
+      "desc_a": "Texture of dense green foliage with small yellow flowers in the bottom-left",
+      "desc_b": "Texture of dry, cracked earth with scattered pebbles along the right side"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "207",
+    "raw_output": "TEXTURE_A: Texture of green grass with scattered brown leaves, occupying the left side.\nTEXTURE_B: Texture of gray concrete pavement with fine grain, occupying the right side.",
+    "parsed": {
+      "desc_a": "Texture of green grass with scattered brown leaves, occupying the left side.",
+      "desc_b": "Texture of gray concrete pavement with fine grain, occupying the right side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "210",
+    "raw_output": "TEXTURE_A: Texture of dense green shrubbery with varied leaf shapes and muted yellow highlights, occupying the upper portion.\nTEXTURE_B: Texture of vibrant purple foliage with broad, glossy leaves forming a low-lying ground cover in the foreground.",
+    "parsed": {
+      "desc_a": "Texture of dense green shrubbery with varied leaf shapes and muted yellow highlights, occupying the upper portion.",
+      "desc_b": "Texture of vibrant purple foliage with broad, glossy leaves forming a low-lying ground cover in the foreground."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "213",
+    "raw_output": "TEXTURE_A: Texture of dark gray suede-like fabric in background, soft and mottled, occupying upper portion.\nTEXTURE_B: Texture of light gray woven fabric with fine grid pattern, textured and structured, in foreground.",
+    "parsed": {
+      "desc_a": "Texture of dark gray suede-like fabric in background, soft and mottled, occupying upper portion.",
+      "desc_b": "Texture of light gray woven fabric with fine grid pattern, textured and structured, in foreground."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "214",
+    "raw_output": "TEXTURE_A: Texture of fine gray woven fabric with subtle grid pattern, occupying left side.\nTEXTURE_B: Texture of bold black-and-white geometric print fabric, occupying right side.",
+    "parsed": {
+      "desc_a": "Texture of fine gray woven fabric with subtle grid pattern, occupying left side.",
+      "desc_b": "Texture of bold black-and-white geometric print fabric, occupying right side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "215",
+    "raw_output": "TEXTURE_A: Texture of gray knit fabric with fine mesh pattern, occupying left side.\nTEXTURE_B: Texture of black and white geometric patterned fabric, occupying right side.",
+    "parsed": {
+      "desc_a": "Texture of gray knit fabric with fine mesh pattern, occupying left side.",
+      "desc_b": "Texture of black and white geometric patterned fabric, occupying right side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "216",
+    "raw_output": "TEXTURE_A: Texture of soft, beige, diagonally striped fabric with fringed edge in foreground\nTEXTURE_B: Texture of patterned rug with green, brown, and cream geometric design in background",
+    "parsed": {
+      "desc_a": "Texture of soft, beige, diagonally striped fabric with fringed edge in foreground",
+      "desc_b": "Texture of patterned rug with green, brown, and cream geometric design in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "219",
+    "raw_output": "TEXTURE_A: Texture of dark gray checkered fabric with fine grid pattern, occupying left side.\nTEXTURE_B: Texture of weathered brown wood grain with streaky patterns, occupying right side.",
+    "parsed": {
+      "desc_a": "Texture of dark gray checkered fabric with fine grid pattern, occupying left side.",
+      "desc_b": "Texture of weathered brown wood grain with streaky patterns, occupying right side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "22",
+    "raw_output": "TEXTURE_A: Texture of dense, golden-brown coral reef with spiky, textured surface in foreground\nTEXTURE_B: Texture of shimmering, turquoise water with scattered fish in background",
+    "parsed": {
+      "desc_a": "Texture of dense, golden-brown coral reef with spiky, textured surface in foreground",
+      "desc_b": "Texture of shimmering, turquoise water with scattered fish in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "221",
+    "raw_output": "TEXTURE_A: Texture of striped fabric with fine gray and white lines, occupying the top-left.\nTEXTURE_B: Texture of smooth wooden surface with warm brown tones and visible grain, occupying the bottom-right.",
+    "parsed": {
+      "desc_a": "Texture of striped fabric with fine gray and white lines, occupying the top-left.",
+      "desc_b": "Texture of smooth wooden surface with warm brown tones and visible grain, occupying the bottom-right."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "222",
+    "raw_output": "TEXTURE_A: Texture of a folded plaid cloth with yellow-orange grid lines on beige, positioned centrally.\nTEXTURE_B: Texture of a striped fabric background with alternating dark and light gray lines, forming a uniform pattern.",
+    "parsed": {
+      "desc_a": "Texture of a folded plaid cloth with yellow-orange grid lines on beige, positioned centrally.",
+      "desc_b": "Texture of a striped fabric background with alternating dark and light gray lines, forming a uniform pattern."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "224",
+    "raw_output": "TEXTURE_A: Texture of light gray fabric with fine horizontal stripes, occupying the left side.\nTEXTURE_B: Texture of brown geometric patterned fabric with raised square motifs, occupying the right side.",
+    "parsed": {
+      "desc_a": "Texture of light gray fabric with fine horizontal stripes, occupying the left side.",
+      "desc_b": "Texture of brown geometric patterned fabric with raised square motifs, occupying the right side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "228",
+    "raw_output": "TEXTURE_A: Texture of beige woven fabric with tight grid pattern, occupying left side\nTEXTURE_B: Texture of black and white striped fabric with vertical lines, occupying right side",
+    "parsed": {
+      "desc_a": "Texture of beige woven fabric with tight grid pattern, occupying left side",
+      "desc_b": "Texture of black and white striped fabric with vertical lines, occupying right side"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "229",
+    "raw_output": "TEXTURE_A: Texture of beige woven fabric with tight grid pattern, occupying left foreground.\nTEXTURE_B: Texture of black fabric with vertical white stripes, occupying right background.",
+    "parsed": {
+      "desc_a": "Texture of beige woven fabric with tight grid pattern, occupying left foreground.",
+      "desc_b": "Texture of black fabric with vertical white stripes, occupying right background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "236",
+    "raw_output": "TEXTURE_A: Texture of coarse golden gravel with rounded pebbles, occupying the left side.\nTEXTURE_B: Texture of rough gray concrete with embedded aggregate, occupying the right side.",
+    "parsed": {
+      "desc_a": "Texture of coarse golden gravel with rounded pebbles, occupying the left side.",
+      "desc_b": "Texture of rough gray concrete with embedded aggregate, occupying the right side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "237",
+    "raw_output": "TEXTURE_A: Texture of golden-yellow quinoa grains forming a dense, granular foreground cluster.\nTEXTURE_B: Texture of coarse, grayish-white salt crystals creating a rough, crystalline surface.",
+    "parsed": {
+      "desc_a": "Texture of golden-yellow quinoa grains forming a dense, granular foreground cluster.",
+      "desc_b": "Texture of coarse, grayish-white salt crystals creating a rough, crystalline surface."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "238",
+    "raw_output": "TEXTURE_A: Texture of yellow millet grains forming a dense, granular, earthy surface in the left half.\nTEXTURE_B: Texture of white salt crystals creating a coarse, crystalline, bright surface in the right half.",
+    "parsed": {
+      "desc_a": "Texture of yellow millet grains forming a dense, granular, earthy surface in the left half.",
+      "desc_b": "Texture of white salt crystals creating a coarse, crystalline, bright surface in the right half."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "24",
+    "raw_output": "TEXTURE_A: Texture of owl's feathered body with mottled brown and white patterns in foreground\nTEXTURE_B: Texture of blurred green grassy field with soft golden hues in background",
+    "parsed": {
+      "desc_a": "Texture of owl's feathered body with mottled brown and white patterns in foreground",
+      "desc_b": "Texture of blurred green grassy field with soft golden hues in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "240",
+    "raw_output": "TEXTURE_A: Texture of smooth beige tiles with faint grout lines, forming the upper wall surface.\nTEXTURE_B: Texture of rough brown concrete floor with visible grain, occupying the lower foreground.",
+    "parsed": {
+      "desc_a": "Texture of smooth beige tiles with faint grout lines, forming the upper wall surface.",
+      "desc_b": "Texture of rough brown concrete floor with visible grain, occupying the lower foreground."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "243",
+    "raw_output": "TEXTURE_A: Texture of white vent grille with vertical slats, centered on wall surface.\nTEXTURE_B: Texture of smooth off-white wall with subtle shadows, surrounding the vent.",
+    "parsed": {
+      "desc_a": "Texture of white vent grille with vertical slats, centered on wall surface.",
+      "desc_b": "Texture of smooth off-white wall with subtle shadows, surrounding the vent."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "244",
+    "raw_output": "TEXTURE_A: Texture of layered white concentric square panels forming a recessed ceiling vent.\nTEXTURE_B: Texture of smooth, warm-toned wall surface surrounding the vent structure.",
+    "parsed": {
+      "desc_a": "Texture of layered white concentric square panels forming a recessed ceiling vent.",
+      "desc_b": "Texture of smooth, warm-toned wall surface surrounding the vent structure."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "245",
+    "raw_output": "TEXTURE_A: Texture of beige tiled wall with grid pattern, top section\nTEXTURE_B: Texture of dark speckled granite countertop, bottom section",
+    "parsed": {
+      "desc_a": "Texture of beige tiled wall with grid pattern, top section",
+      "desc_b": "Texture of dark speckled granite countertop, bottom section"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "246",
+    "raw_output": "TEXTURE_A: Texture of rough, gray concrete with swirling patterns and visible seams, occupying the left foreground.\nTEXTURE_B: Texture of smooth, light gray wall surface, appearing uniform and matte in the right background.",
+    "parsed": {
+      "desc_a": "Texture of rough, gray concrete with swirling patterns and visible seams, occupying the left foreground.",
+      "desc_b": "Texture of smooth, light gray wall surface, appearing uniform and matte in the right background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "247",
+    "raw_output": "TEXTURE_A: Texture of smooth matte gray wall surface, left side, plain and uniform\nTEXTURE_B: Texture of frosted glass with embossed geometric pattern, right side, translucent and detailed",
+    "parsed": {
+      "desc_a": "Texture of smooth matte gray wall surface, left side, plain and uniform",
+      "desc_b": "Texture of frosted glass with embossed geometric pattern, right side, translucent and detailed"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "25",
+    "raw_output": "TEXTURE_A: Texture of brain coral with intricate green and red ridges in foreground\nTEXTURE_B: Texture of vibrant purple rocky substrate surrounding coral in background",
+    "parsed": {
+      "desc_a": "Texture of brain coral with intricate green and red ridges in foreground",
+      "desc_b": "Texture of vibrant purple rocky substrate surrounding coral in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "250",
+    "raw_output": "TEXTURE_A: Texture of weathered palm trunk with rough, cracked, layered bark in foreground\nTEXTURE_B: Texture of dry, loose, granular soil with muted brown tones in background",
+    "parsed": {
+      "desc_a": "Texture of weathered palm trunk with rough, cracked, layered bark in foreground",
+      "desc_b": "Texture of dry, loose, granular soil with muted brown tones in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "251",
+    "raw_output": "TEXTURE_A: Texture of rough, reddish-brown gravel pebbles densely packed in the left foreground.\nTEXTURE_B: Texture of weathered, gray stone blocks with visible mortar joints in the right background.",
+    "parsed": {
+      "desc_a": "Texture of rough, reddish-brown gravel pebbles densely packed in the left foreground.",
+      "desc_b": "Texture of weathered, gray stone blocks with visible mortar joints in the right background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "252",
+    "raw_output": "TEXTURE_A: Texture of dark, rough, angular stone with jagged edges, centered in foreground.\nTEXTURE_B: Texture of light brown, granular gravel with uniform small pebbles, surrounding the stone.",
+    "parsed": {
+      "desc_a": "Texture of dark, rough, angular stone with jagged edges, centered in foreground.",
+      "desc_b": "Texture of light brown, granular gravel with uniform small pebbles, surrounding the stone."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "253",
+    "raw_output": "TEXTURE_A: Texture of small, light-colored pebbles forming a gravelly surface in the foreground\nTEXTURE_B: Texture of green grass blades interspersed with soil in the background",
+    "parsed": {
+      "desc_a": "Texture of small, light-colored pebbles forming a gravelly surface in the foreground",
+      "desc_b": "Texture of green grass blades interspersed with soil in the background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "254",
+    "raw_output": "TEXTURE_A: Texture of purple mosaic tile surface with small square pattern and white grout lines.\nTEXTURE_B: Texture of weathered rusted metal surface with peeling paint and rough corrosion.",
+    "parsed": {
+      "desc_a": "Texture of purple mosaic tile surface with small square pattern and white grout lines.",
+      "desc_b": "Texture of weathered rusted metal surface with peeling paint and rough corrosion."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "256",
+    "raw_output": "TEXTURE_A: Texture of weathered concrete with rough, pitted surface in top-left\nTEXTURE_B: Texture of dark metal grating with parallel grooves in bottom-right",
+    "parsed": {
+      "desc_a": "Texture of weathered concrete with rough, pitted surface in top-left",
+      "desc_b": "Texture of dark metal grating with parallel grooves in bottom-right"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "257",
+    "raw_output": "TEXTURE_A: Texture of rough, deeply furrowed palm trunk bark in foreground\nTEXTURE_B: Texture of scattered, light gray gravel stones in background",
+    "parsed": {
+      "desc_a": "Texture of rough, deeply furrowed palm trunk bark in foreground",
+      "desc_b": "Texture of scattered, light gray gravel stones in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "258",
+    "raw_output": "TEXTURE_A: Texture of weathered wooden surface with diagonal black and white stripes in top-left\nTEXTURE_B: Texture of rough, stained concrete surface with dark streaks in bottom-right",
+    "parsed": {
+      "desc_a": "Texture of weathered wooden surface with diagonal black and white stripes in top-left",
+      "desc_b": "Texture of rough, stained concrete surface with dark streaks in bottom-right"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "259",
+    "raw_output": "TEXTURE_A: Texture of dark metal grate with diagonal slats, centered in foreground\nTEXTURE_B: Texture of light beige stone tiles with smooth surface, surrounding the grate",
+    "parsed": {
+      "desc_a": "Texture of dark metal grate with diagonal slats, centered in foreground",
+      "desc_b": "Texture of light beige stone tiles with smooth surface, surrounding the grate"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "260",
+    "raw_output": "TEXTURE_A: Texture of rough, granular gravel with varied brown tones, occupying the upper portion.\nTEXTURE_B: Texture of smooth, uniform concrete slabs with subtle gray streaks, forming the lower section.",
+    "parsed": {
+      "desc_a": "Texture of rough, granular gravel with varied brown tones, occupying the upper portion.",
+      "desc_b": "Texture of smooth, uniform concrete slabs with subtle gray streaks, forming the lower section."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "261",
+    "raw_output": "TEXTURE_A: Texture of smooth gray concrete with faint horizontal seams, occupying the left side.\nTEXTURE_B: Texture of coarse golden gravel with varied pebbles, occupying the right side.",
+    "parsed": {
+      "desc_a": "Texture of smooth gray concrete with faint horizontal seams, occupying the left side.",
+      "desc_b": "Texture of coarse golden gravel with varied pebbles, occupying the right side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "262",
+    "raw_output": "TEXTURE_A: Texture of smooth river rocks in varied earthy tones, clustered left side\nTEXTURE_B: Texture of uniform speckled concrete surface, plain right side",
+    "parsed": {
+      "desc_a": "Texture of smooth river rocks in varied earthy tones, clustered left side",
+      "desc_b": "Texture of uniform speckled concrete surface, plain right side"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "263",
+    "raw_output": "TEXTURE_A: Texture of rough, varied pebbles in earthy tones, clustered left side\nTEXTURE_B: Texture of smooth, uniform beige tiles, arranged right side",
+    "parsed": {
+      "desc_a": "Texture of rough, varied pebbles in earthy tones, clustered left side",
+      "desc_b": "Texture of smooth, uniform beige tiles, arranged right side"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "265",
+    "raw_output": "TEXTURE_A: Texture of beige carpet with soft fibers and subtle weave pattern, covering the floor surface.\nTEXTURE_B: Texture of gray plastic casing with perforated vent grid, positioned atop the carpet.",
+    "parsed": {
+      "desc_a": "Texture of beige carpet with soft fibers and subtle weave pattern, covering the floor surface.",
+      "desc_b": "Texture of gray plastic casing with perforated vent grid, positioned atop the carpet."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "268",
+    "raw_output": "TEXTURE_A: Texture of black-and-white woven rug with diagonal stripes, occupying the left side.\nTEXTURE_B: Texture of smooth gray fabric surface, occupying the right side.",
+    "parsed": {
+      "desc_a": "Texture of black-and-white woven rug with diagonal stripes, occupying the left side.",
+      "desc_b": "Texture of smooth gray fabric surface, occupying the right side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "269",
+    "raw_output": "TEXTURE_A: Texture of irregularly shaped, light gray river rocks piled in a rough, uneven heap at the top.\nTEXTURE_B: Texture of smooth, uniform beige paving stones laid in straight, orderly rows at the bottom.",
+    "parsed": {
+      "desc_a": "Texture of irregularly shaped, light gray river rocks piled in a rough, uneven heap at the top.",
+      "desc_b": "Texture of smooth, uniform beige paving stones laid in straight, orderly rows at the bottom."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "27",
+    "raw_output": "TEXTURE_A: Texture of layered brown mushroom caps with concentric ridges, foreground\nTEXTURE_B: Texture of mossy green ground covered in scattered brown leaves, background",
+    "parsed": {
+      "desc_a": "Texture of layered brown mushroom caps with concentric ridges, foreground",
+      "desc_b": "Texture of mossy green ground covered in scattered brown leaves, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "270",
+    "raw_output": "TEXTURE_A: Texture of rough, beige stone tiles arranged in a grid pattern, occupying the background.\nTEXTURE_B: Texture of smooth, dark gray metal strip running vertically, positioned centrally.",
+    "parsed": {
+      "desc_a": "Texture of rough, beige stone tiles arranged in a grid pattern, occupying the background.",
+      "desc_b": "Texture of smooth, dark gray metal strip running vertically, positioned centrally."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "274",
+    "raw_output": "TEXTURE_A: Texture of sparse green grass with thin blades and uneven growth in the left area\nTEXTURE_B: Texture of dense dark green leafy shrubbery with glossy leaves in the right area",
+    "parsed": {
+      "desc_a": "Texture of sparse green grass with thin blades and uneven growth in the left area",
+      "desc_b": "Texture of dense dark green leafy shrubbery with glossy leaves in the right area"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "276",
+    "raw_output": "TEXTURE_A: Texture of weathered concrete pavement with gray tone and subtle grain, occupying background\nTEXTURE_B: Texture of metal drain grate with parallel grooves and darkened surface, positioned centrally",
+    "parsed": {
+      "desc_a": "Texture of weathered concrete pavement with gray tone and subtle grain, occupying background",
+      "desc_b": "Texture of metal drain grate with parallel grooves and darkened surface, positioned centrally"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "28",
+    "raw_output": "TEXTURE_A: Texture of woven paper strips with green base and pink polka dots in foreground\nTEXTURE_B: Texture of flat paper surface with green base and pink polka dots in background",
+    "parsed": {
+      "desc_a": "Texture of woven paper strips with green base and pink polka dots in foreground",
+      "desc_b": "Texture of flat paper surface with green base and pink polka dots in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "280",
+    "raw_output": "TEXTURE_A: Texture of dense green moss with fine, velvety, carpet-like surface covering the left side.\nTEXTURE_B: Texture of vibrant purple leafy ground cover with glossy, clustered foliage dominating the right side.",
+    "parsed": {
+      "desc_a": "Texture of dense green moss with fine, velvety, carpet-like surface covering the left side.",
+      "desc_b": "Texture of vibrant purple leafy ground cover with glossy, clustered foliage dominating the right side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "281",
+    "raw_output": "TEXTURE_A: Texture of dense green foliage with scattered red berries, occupying the top half.\nTEXTURE_B: Texture of low-lying green ground cover on weathered stone, covering the bottom half.",
+    "parsed": {
+      "desc_a": "Texture of dense green foliage with scattered red berries, occupying the top half.",
+      "desc_b": "Texture of low-lying green ground cover on weathered stone, covering the bottom half."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "282",
+    "raw_output": "TEXTURE_A: Texture of metal vent with horizontal slats, silver-gray, foreground\nTEXTURE_B: Texture of beige tiled wall, rough, mottled, background",
+    "parsed": {
+      "desc_a": "Texture of metal vent with horizontal slats, silver-gray, foreground",
+      "desc_b": "Texture of beige tiled wall, rough, mottled, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "288",
+    "raw_output": "TEXTURE_A: Texture of smooth, pale gray tree bark with vertical fissures, foreground central\nTEXTURE_B: Texture of feathery, purple-tinged grass blades, background surrounding",
+    "parsed": {
+      "desc_a": "Texture of smooth, pale gray tree bark with vertical fissures, foreground central",
+      "desc_b": "Texture of feathery, purple-tinged grass blades, background surrounding"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "293",
+    "raw_output": "TEXTURE_A: Texture of smooth, rounded river stones in earthy browns and grays, scattered across the ground.\nTEXTURE_B: Texture of a circular, metallic fixture with a glass lens, embedded in the stones.",
+    "parsed": {
+      "desc_a": "Texture of smooth, rounded river stones in earthy browns and grays, scattered across the ground.",
+      "desc_b": "Texture of a circular, metallic fixture with a glass lens, embedded in the stones."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "294",
+    "raw_output": "TEXTURE_A: Texture of smooth, rounded river stones in earthy browns and grays, densely packed along the right side.\nTEXTURE_B: Texture of coarse, light beige concrete pavement with subtle grain, occupying the left side.",
+    "parsed": {
+      "desc_a": "Texture of smooth, rounded river stones in earthy browns and grays, densely packed along the right side.",
+      "desc_b": "Texture of coarse, light beige concrete pavement with subtle grain, occupying the left side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "299",
+    "raw_output": "TEXTURE_A: Texture of small, light-colored pebbles forming a coarse, granular surface in the foreground.\nTEXTURE_B: Texture of dark, varied pebbles creating a rough, mottled surface in the background.",
+    "parsed": {
+      "desc_a": "Texture of small, light-colored pebbles forming a coarse, granular surface in the foreground.",
+      "desc_b": "Texture of dark, varied pebbles creating a rough, mottled surface in the background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "3",
+    "raw_output": "TEXTURE_A: Texture of densely packed, ridged, beige seashells in sharp focus foreground\nTEXTURE_B: Texture of softly blurred, varied-toned shells fading into indistinct background",
+    "parsed": {
+      "desc_a": "Texture of densely packed, ridged, beige seashells in sharp focus foreground",
+      "desc_b": "Texture of softly blurred, varied-toned shells fading into indistinct background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "30",
+    "raw_output": "TEXTURE_A: Texture of a moth's wings with mottled gray and white scales, resting in the foreground.\nTEXTURE_B: Texture of weathered wooden planks with rough grain and faded brown tones, forming the background.",
+    "parsed": {
+      "desc_a": "Texture of a moth's wings with mottled gray and white scales, resting in the foreground.",
+      "desc_b": "Texture of weathered wooden planks with rough grain and faded brown tones, forming the background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "300",
+    "raw_output": "TEXTURE_A: Texture of gravel bed with varied gray stones, rough and uneven, occupying left side.\nTEXTURE_B: Texture of brick pavement with reddish-brown patterned tiles, smooth and orderly, occupying right side.",
+    "parsed": {
+      "desc_a": "Texture of gravel bed with varied gray stones, rough and uneven, occupying left side.",
+      "desc_b": "Texture of brick pavement with reddish-brown patterned tiles, smooth and orderly, occupying right side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "302",
+    "raw_output": "TEXTURE_A: Texture of rough, weathered rock with reddish-brown hues, occupying the top-left foreground.\nTEXTURE_B: Texture of dense, green grass with fine blades, covering the background.",
+    "parsed": {
+      "desc_a": "Texture of rough, weathered rock with reddish-brown hues, occupying the top-left foreground.",
+      "desc_b": "Texture of dense, green grass with fine blades, covering the background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "303",
+    "raw_output": "TEXTURE_A: Texture of rough, weathered reddish-brown rock with jagged edges in top-left\nTEXTURE_B: Texture of dense, short green grass with uniform blades covering the rest",
+    "parsed": {
+      "desc_a": "Texture of rough, weathered reddish-brown rock with jagged edges in top-left",
+      "desc_b": "Texture of dense, short green grass with uniform blades covering the rest"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "304",
+    "raw_output": "TEXTURE_A: Texture of rough, grayish-brown rock fragments clustered in a central pile.\nTEXTURE_B: Texture of weathered, vertically striated stone surface surrounding the pile.",
+    "parsed": {
+      "desc_a": "Texture of rough, grayish-brown rock fragments clustered in a central pile.",
+      "desc_b": "Texture of weathered, vertically striated stone surface surrounding the pile."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "308",
+    "raw_output": "TEXTURE_A: Texture of a cheetah's spotted coat with golden-yellow fur and black rosettes in the foreground\nTEXTURE_B: Texture of greenish-brown grass with scattered blades and soft, uneven surface in the background",
+    "parsed": {
+      "desc_a": "Texture of a cheetah's spotted coat with golden-yellow fur and black rosettes in the foreground",
+      "desc_b": "Texture of greenish-brown grass with scattered blades and soft, uneven surface in the background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "310",
+    "raw_output": "TEXTURE_A: Texture of a moth with mottled brown and yellow wings, resting in the foreground.\nTEXTURE_B: Texture of a rough, grayish-white paper surface, serving as the background.",
+    "parsed": {
+      "desc_a": "Texture of a moth with mottled brown and yellow wings, resting in the foreground.",
+      "desc_b": "Texture of a rough, grayish-white paper surface, serving as the background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "311",
+    "raw_output": "TEXTURE_A: Texture of a gray moth with mottled wings, resting in the foreground.\nTEXTURE_B: Texture of a smooth, warm-toned wooden surface, forming the background.",
+    "parsed": {
+      "desc_a": "Texture of a gray moth with mottled wings, resting in the foreground.",
+      "desc_b": "Texture of a smooth, warm-toned wooden surface, forming the background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "315",
+    "raw_output": "TEXTURE_A: Texture of a small, dark brown beetle with ridged, matte exoskeleton in foreground\nTEXTURE_B: Texture of a light beige, woven fabric with uniform grid pattern in background",
+    "parsed": {
+      "desc_a": "Texture of a small, dark brown beetle with ridged, matte exoskeleton in foreground",
+      "desc_b": "Texture of a light beige, woven fabric with uniform grid pattern in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "318",
+    "raw_output": "TEXTURE_A: Texture of a moth with mottled gray, black, and yellow wings resting in foreground\nTEXTURE_B: Texture of rough, porous, light-brown cork surface forming the background",
+    "parsed": {
+      "desc_a": "Texture of a moth with mottled gray, black, and yellow wings resting in foreground",
+      "desc_b": "Texture of rough, porous, light-brown cork surface forming the background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "319",
+    "raw_output": "TEXTURE_A: Texture of a moth with mottled brown and orange wings resting on fabric\nTEXTURE_B: Texture of a coarse white woven fabric beneath the moth's body",
+    "parsed": {
+      "desc_a": "Texture of a moth with mottled brown and orange wings resting on fabric",
+      "desc_b": "Texture of a coarse white woven fabric beneath the moth's body"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "321",
+    "raw_output": "TEXTURE_A: Texture of cracked white paint forming a broken line across the road surface.\nTEXTURE_B: Texture of rough, dark asphalt with visible wear and small embedded stones.",
+    "parsed": {
+      "desc_a": "Texture of cracked white paint forming a broken line across the road surface.",
+      "desc_b": "Texture of rough, dark asphalt with visible wear and small embedded stones."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "322",
+    "raw_output": "TEXTURE_A: Texture of a spiraled seashell with striped ridges and warm orange interior, positioned in foreground.\nTEXTURE_B: Texture of smooth, solid black background, contrasting sharply with the shell's detailed surface.",
+    "parsed": {
+      "desc_a": "Texture of a spiraled seashell with striped ridges and warm orange interior, positioned in foreground.",
+      "desc_b": "Texture of smooth, solid black background, contrasting sharply with the shell's detailed surface."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "323",
+    "raw_output": "TEXTURE_A: Texture of rough, fibrous wood grain with concentric rings, foreground\nTEXTURE_B: Texture of blurred, indistinct background with muted tones, behind",
+    "parsed": {
+      "desc_a": "Texture of rough, fibrous wood grain with concentric rings, foreground",
+      "desc_b": "Texture of blurred, indistinct background with muted tones, behind"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "324",
+    "raw_output": "TEXTURE_A: Texture of colorful hexagonal patchwork quilt with vibrant patterns in top-left\nTEXTURE_B: Texture of woven beige fabric with diagonal grid pattern in bottom-right",
+    "parsed": {
+      "desc_a": "Texture of colorful hexagonal patchwork quilt with vibrant patterns in top-left",
+      "desc_b": "Texture of woven beige fabric with diagonal grid pattern in bottom-right"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "325",
+    "raw_output": "TEXTURE_A: Texture of chocolate-coated bunny-shaped cookies arranged in a triangular pattern\nTEXTURE_B: Texture of plain white paper surface with subtle embossed pattern underneath",
+    "parsed": {
+      "desc_a": "Texture of chocolate-coated bunny-shaped cookies arranged in a triangular pattern",
+      "desc_b": "Texture of plain white paper surface with subtle embossed pattern underneath"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "327",
+    "raw_output": "TEXTURE_A: Texture of a spotted flatfish with mottled brown and white patterns, foreground\nTEXTURE_B: Texture of rough gray sand with scattered small pebbles, background",
+    "parsed": {
+      "desc_a": "Texture of a spotted flatfish with mottled brown and white patterns, foreground",
+      "desc_b": "Texture of rough gray sand with scattered small pebbles, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "328",
+    "raw_output": "TEXTURE_A: Texture of two spherical sea urchin shells with ribbed, spiky, black-and-white patterns in foreground.\nTEXTURE_B: Texture of smooth, uniform, light gray background surface behind the shells.",
+    "parsed": {
+      "desc_a": "Texture of two spherical sea urchin shells with ribbed, spiky, black-and-white patterns in foreground.",
+      "desc_b": "Texture of smooth, uniform, light gray background surface behind the shells."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "329",
+    "raw_output": "TEXTURE_A: Texture of intricately carved tree-of-life pattern with swirling branches and spiral roots on dark wood surface.\nTEXTURE_B: Texture of smooth, rich brown wood grain with natural linear patterns and subtle color variations.",
+    "parsed": {
+      "desc_a": "Texture of intricately carved tree-of-life pattern with swirling branches and spiral roots on dark wood surface.",
+      "desc_b": "Texture of smooth, rich brown wood grain with natural linear patterns and subtle color variations."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "33",
+    "raw_output": "TEXTURE_A: Texture of weathered brick wall with varied red-brown tones and mortar lines, occupying background.\nTEXTURE_B: Texture of rusted metal grille with vertical bars and corroded surface, centered in foreground.",
+    "parsed": {
+      "desc_a": "Texture of weathered brick wall with varied red-brown tones and mortar lines, occupying background.",
+      "desc_b": "Texture of rusted metal grille with vertical bars and corroded surface, centered in foreground."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "330",
+    "raw_output": "TEXTURE_A: Texture of vibrant, multicolored hexagonal quilt pattern in foreground\nTEXTURE_B: Texture of muted green grass and distant trees in background",
+    "parsed": {
+      "desc_a": "Texture of vibrant, multicolored hexagonal quilt pattern in foreground",
+      "desc_b": "Texture of muted green grass and distant trees in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "331",
+    "raw_output": "TEXTURE_A: Texture of star anise pods with rough, dark brown, spiky surfaces clustered in foreground\nTEXTURE_B: Texture of smooth, vivid red, uniform background surface spanning entire frame",
+    "parsed": {
+      "desc_a": "Texture of star anise pods with rough, dark brown, spiky surfaces clustered in foreground",
+      "desc_b": "Texture of smooth, vivid red, uniform background surface spanning entire frame"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "332",
+    "raw_output": "TEXTURE_A: Texture of spotted seashell surface with brown dots on cream, foreground\nTEXTURE_B: Texture of plain light gray background surface, behind seashells",
+    "parsed": {
+      "desc_a": "Texture of spotted seashell surface with brown dots on cream, foreground",
+      "desc_b": "Texture of plain light gray background surface, behind seashells"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "334",
+    "raw_output": "TEXTURE_A: Texture of quilted fabric with colorful floral pattern on dark background, centered in frame.\nTEXTURE_B: Texture of solid red fabric border surrounding the quilted center, framing the entire piece.",
+    "parsed": {
+      "desc_a": "Texture of quilted fabric with colorful floral pattern on dark background, centered in frame.",
+      "desc_b": "Texture of solid red fabric border surrounding the quilted center, framing the entire piece."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "337",
+    "raw_output": "TEXTURE_A: Texture of a smooth, orange shell with intricate brown zigzag patterns, positioned centrally in the foreground.\nTEXTURE_B: Texture of a flat, dark gray surface with subtle grain, forming the background behind the shell.",
+    "parsed": {
+      "desc_a": "Texture of a smooth, orange shell with intricate brown zigzag patterns, positioned centrally in the foreground.",
+      "desc_b": "Texture of a flat, dark gray surface with subtle grain, forming the background behind the shell."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "34",
+    "raw_output": "TEXTURE_A: Texture of weathered red brick wall with rough, aged surface and mortar lines, occupying the right and bottom areas.\nTEXTURE_B: Texture of tangled green ivy with dried brown leaves, clinging to the top-left section.",
+    "parsed": {
+      "desc_a": "Texture of weathered red brick wall with rough, aged surface and mortar lines, occupying the right and bottom areas.",
+      "desc_b": "Texture of tangled green ivy with dried brown leaves, clinging to the top-left section."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "342",
+    "raw_output": "TEXTURE_A: Texture of a large, vibrant green leaf with intricate veining in the foreground\nTEXTURE_B: Texture of a dark, earthy, mossy ground cover in the background",
+    "parsed": {
+      "desc_a": "Texture of a large, vibrant green leaf with intricate veining in the foreground",
+      "desc_b": "Texture of a dark, earthy, mossy ground cover in the background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "343",
+    "raw_output": "TEXTURE_A: Texture of a vibrant, spiky fern frond with yellow-green ridges and deep magenta stem, centered in foreground.\nTEXTURE_B: Texture of soft, blurred green foliage forming a diffused, out-of-focus background behind the frond.",
+    "parsed": {
+      "desc_a": "Texture of a vibrant, spiky fern frond with yellow-green ridges and deep magenta stem, centered in foreground.",
+      "desc_b": "Texture of soft, blurred green foliage forming a diffused, out-of-focus background behind the frond."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "344",
+    "raw_output": "TEXTURE_A: Texture of blue and orange patterned fabric forming a curved arc in the upper left\nTEXTURE_B: Texture of plain white woven fabric covering the lower right area",
+    "parsed": {
+      "desc_a": "Texture of blue and orange patterned fabric forming a curved arc in the upper left",
+      "desc_b": "Texture of plain white woven fabric covering the lower right area"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "345",
+    "raw_output": "TEXTURE_A: Texture of fluffy brown owl feathers with mottled patterns, foreground\nTEXTURE_B: Texture of smooth green blurred foliage, background",
+    "parsed": {
+      "desc_a": "Texture of fluffy brown owl feathers with mottled patterns, foreground",
+      "desc_b": "Texture of smooth green blurred foliage, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "346",
+    "raw_output": "TEXTURE_A: Texture of ornate ceramic tile with blue floral pattern and white center, foreground\nTEXTURE_B: Texture of weathered brick wall with moss growth, background",
+    "parsed": {
+      "desc_a": "Texture of ornate ceramic tile with blue floral pattern and white center, foreground",
+      "desc_b": "Texture of weathered brick wall with moss growth, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "347",
+    "raw_output": "TEXTURE_A: Texture of a shell-covered bowl with purple and white patterns, foreground\nTEXTURE_B: Texture of a woven mat with multicolored stripes, background",
+    "parsed": {
+      "desc_a": "Texture of a shell-covered bowl with purple and white patterns, foreground",
+      "desc_b": "Texture of a woven mat with multicolored stripes, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "348",
+    "raw_output": "TEXTURE_A: Texture of mosaic bird made from varied seeds forming detailed feather patterns\nTEXTURE_B: Texture of smooth teal-painted wall surface providing uniform background contrast",
+    "parsed": {
+      "desc_a": "Texture of mosaic bird made from varied seeds forming detailed feather patterns",
+      "desc_b": "Texture of smooth teal-painted wall surface providing uniform background contrast"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "349",
+    "raw_output": "TEXTURE_A: Texture of blue and orange cross-stitched fabric forming a patterned square shape\nTEXTURE_B: Texture of plain white woven fabric serving as the background canvas",
+    "parsed": {
+      "desc_a": "Texture of blue and orange cross-stitched fabric forming a patterned square shape",
+      "desc_b": "Texture of plain white woven fabric serving as the background canvas"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "350",
+    "raw_output": "TEXTURE_A: Texture of rough, vertically fissured bark with green moss patches, dominating the right foreground.\nTEXTURE_B: Texture of soft, grayish-brown fur with a bushy tail, clinging to the left side.",
+    "parsed": {
+      "desc_a": "Texture of rough, vertically fissured bark with green moss patches, dominating the right foreground.",
+      "desc_b": "Texture of soft, grayish-brown fur with a bushy tail, clinging to the left side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "351",
+    "raw_output": "TEXTURE_A: Texture of brick wall with repeating triangular pattern, reddish-brown, right side\nTEXTURE_B: Texture of overcast sky, gray and soft, left side",
+    "parsed": {
+      "desc_a": "Texture of brick wall with repeating triangular pattern, reddish-brown, right side",
+      "desc_b": "Texture of overcast sky, gray and soft, left side"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "352",
+    "raw_output": "TEXTURE_A: Texture of intricately woven fabric with repeating red and blue geometric patterns across the entire surface.\nTEXTURE_B: Texture of frayed, uneven dark blue border framing the patterned fabric on all sides.",
+    "parsed": {
+      "desc_a": "Texture of intricately woven fabric with repeating red and blue geometric patterns across the entire surface.",
+      "desc_b": "Texture of frayed, uneven dark blue border framing the patterned fabric on all sides."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "357",
+    "raw_output": "TEXTURE_A: Texture of dark woven fabric with fine grid pattern, occupying top-left area\nTEXTURE_B: Texture of light beige mesh fabric with open weave, positioned bottom-right",
+    "parsed": {
+      "desc_a": "Texture of dark woven fabric with fine grid pattern, occupying top-left area",
+      "desc_b": "Texture of light beige mesh fabric with open weave, positioned bottom-right"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "358",
+    "raw_output": "TEXTURE_A: Texture of dark gray woven fabric with fine grid pattern, occupying top-right quadrant.\nTEXTURE_B: Texture of light beige woven fabric with subtle diagonal weave, positioned bottom-left.",
+    "parsed": {
+      "desc_a": "Texture of dark gray woven fabric with fine grid pattern, occupying top-right quadrant.",
+      "desc_b": "Texture of light beige woven fabric with subtle diagonal weave, positioned bottom-left."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "359",
+    "raw_output": "TEXTURE_A: Texture of vibrant, multicolored geometric quilt pattern hanging in foreground\nTEXTURE_B: Texture of blurred green foliage and earthy ground in background",
+    "parsed": {
+      "desc_a": "Texture of vibrant, multicolored geometric quilt pattern hanging in foreground",
+      "desc_b": "Texture of blurred green foliage and earthy ground in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "36",
+    "raw_output": "TEXTURE_A: Texture of blue knitted fish-shaped objects with striped patterns, arranged in a row on a wooden surface.\nTEXTURE_B: Texture of light brown wood grain with natural lines and knots, serving as the background surface.",
+    "parsed": {
+      "desc_a": "Texture of blue knitted fish-shaped objects with striped patterns, arranged in a row on a wooden surface.",
+      "desc_b": "Texture of light brown wood grain with natural lines and knots, serving as the background surface."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "362",
+    "raw_output": "TEXTURE_A: Texture of vibrant red fabric with smooth, solid color forming the star's outer points and background.\nTEXTURE_B: Texture of intricate patchwork quilt with varied patterns and pastel hues forming the star's inner core.",
+    "parsed": {
+      "desc_a": "Texture of vibrant red fabric with smooth, solid color forming the star's outer points and background.",
+      "desc_b": "Texture of intricate patchwork quilt with varied patterns and pastel hues forming the star's inner core."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "363",
+    "raw_output": "TEXTURE_A: Texture of intricate metallic beadwork forming a symmetrical floral pattern in foreground\nTEXTURE_B: Texture of plain white background surface providing high contrast behind the floral design",
+    "parsed": {
+      "desc_a": "Texture of intricate metallic beadwork forming a symmetrical floral pattern in foreground",
+      "desc_b": "Texture of plain white background surface providing high contrast behind the floral design"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "364",
+    "raw_output": "TEXTURE_A: Texture of cheetah's spotted coat with golden-yellow fur and black rosettes in foreground\nTEXTURE_B: Texture of dry grassy savanna with muted brown and green tones in background",
+    "parsed": {
+      "desc_a": "Texture of cheetah's spotted coat with golden-yellow fur and black rosettes in foreground",
+      "desc_b": "Texture of dry grassy savanna with muted brown and green tones in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "365",
+    "raw_output": "TEXTURE_A: Texture of crocheted doilies in lavender and cream, arranged in a patterned runner on a wooden surface.\nTEXTURE_B: Texture of smooth, dark brown wood grain forming the background surface beneath the doilies.",
+    "parsed": {
+      "desc_a": "Texture of crocheted doilies in lavender and cream, arranged in a patterned runner on a wooden surface.",
+      "desc_b": "Texture of smooth, dark brown wood grain forming the background surface beneath the doilies."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "366",
+    "raw_output": "TEXTURE_A: Texture of snow-covered pine branches with white powder and green needles in foreground\nTEXTURE_B: Texture of blurred forest background with muted browns and greens out of focus",
+    "parsed": {
+      "desc_a": "Texture of snow-covered pine branches with white powder and green needles in foreground",
+      "desc_b": "Texture of blurred forest background with muted browns and greens out of focus"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "367",
+    "raw_output": "TEXTURE_A: Texture of intricate lace doily with layered floral patterns in purple, white, and green, centered and foreground.\nTEXTURE_B: Texture of smooth, solid dark green fabric background, uniform and unadorned, surrounding the doily.",
+    "parsed": {
+      "desc_a": "Texture of intricate lace doily with layered floral patterns in purple, white, and green, centered and foreground.",
+      "desc_b": "Texture of smooth, solid dark green fabric background, uniform and unadorned, surrounding the doily."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "371",
+    "raw_output": "TEXTURE_A: Texture of delicate crocheted doily with intricate lace patterns and soft pink hue, centered in foreground.\nTEXTURE_B: Texture of smooth, deep red fabric surface providing contrasting backdrop behind the doily.",
+    "parsed": {
+      "desc_a": "Texture of delicate crocheted doily with intricate lace patterns and soft pink hue, centered in foreground.",
+      "desc_b": "Texture of smooth, deep red fabric surface providing contrasting backdrop behind the doily."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "373",
+    "raw_output": "TEXTURE_A: Texture of a conical coral reef mound with rough, white, jagged, and porous surface in foreground.\nTEXTURE_B: Texture of calm, clear turquoise water with smooth, glassy, and reflective surface in background.",
+    "parsed": {
+      "desc_a": "Texture of a conical coral reef mound with rough, white, jagged, and porous surface in foreground.",
+      "desc_b": "Texture of calm, clear turquoise water with smooth, glassy, and reflective surface in background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "374",
+    "raw_output": "TEXTURE_A: Texture of four identical silver-toned metallic coasters with concentric engraved patterns arranged in a square formation.\nTEXTURE_B: Texture of plain, uniform, light gray background surface with no discernible pattern or texture.",
+    "parsed": {
+      "desc_a": "Texture of four identical silver-toned metallic coasters with concentric engraved patterns arranged in a square formation.",
+      "desc_b": "Texture of plain, uniform, light gray background surface with no discernible pattern or texture."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "376",
+    "raw_output": "TEXTURE_A: Texture of a colorful, woven rag rug with concentric spiral patterns in foreground\nTEXTURE_B: Texture of smooth, light wood cabinetry with vertical grain in background",
+    "parsed": {
+      "desc_a": "Texture of a colorful, woven rag rug with concentric spiral patterns in foreground",
+      "desc_b": "Texture of smooth, light wood cabinetry with vertical grain in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "377",
+    "raw_output": "TEXTURE_A: Texture of red and blue woven circular mats arranged in two rows\nTEXTURE_B: Texture of plain white background surface beneath the mats",
+    "parsed": {
+      "desc_a": "Texture of red and blue woven circular mats arranged in two rows",
+      "desc_b": "Texture of plain white background surface beneath the mats"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "378",
+    "raw_output": "TEXTURE_A: Texture of coiled snake with brown scales and patterned skin in foreground\nTEXTURE_B: Texture of speckled beige carpet with uniform fibrous surface in background",
+    "parsed": {
+      "desc_a": "Texture of coiled snake with brown scales and patterned skin in foreground",
+      "desc_b": "Texture of speckled beige carpet with uniform fibrous surface in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "380",
+    "raw_output": "TEXTURE_A: Texture of intricate quilted fabric with blue and beige geometric patterns forming a radial design.\nTEXTURE_B: Texture of solid, smooth, deep blue surface serving as the background behind the quilted pattern.",
+    "parsed": {
+      "desc_a": "Texture of intricate quilted fabric with blue and beige geometric patterns forming a radial design.",
+      "desc_b": "Texture of solid, smooth, deep blue surface serving as the background behind the quilted pattern."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "382",
+    "raw_output": "TEXTURE_A: Texture of intricate white crocheted doily with floral pattern, centered foreground.\nTEXTURE_B: Texture of smooth deep red fabric surface, surrounding background.",
+    "parsed": {
+      "desc_a": "Texture of intricate white crocheted doily with floral pattern, centered foreground.",
+      "desc_b": "Texture of smooth deep red fabric surface, surrounding background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "383",
+    "raw_output": "TEXTURE_A: Texture of dark abstract print with bold lines and dots, centered in the composition.\nTEXTURE_B: Texture of vibrant lime-green background with subtle brushstroke patterns, surrounding the central print.",
+    "parsed": {
+      "desc_a": "Texture of dark abstract print with bold lines and dots, centered in the composition.",
+      "desc_b": "Texture of vibrant lime-green background with subtle brushstroke patterns, surrounding the central print."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "387",
+    "raw_output": "TEXTURE_A: Texture of rough, deeply furrowed tree bark with gray and brown tones, foreground\nTEXTURE_B: Texture of soft, blurred green foliage, background",
+    "parsed": {
+      "desc_a": "Texture of rough, deeply furrowed tree bark with gray and brown tones, foreground",
+      "desc_b": "Texture of soft, blurred green foliage, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "388",
+    "raw_output": "TEXTURE_A: Texture of rough, deeply grooved tree bark with vertical ridges and warm golden-brown tones, occupying the right foreground.\nTEXTURE_B: Texture of smooth, silhouetted human figure against a glowing orange sunset sky, positioned left and mid-ground.",
+    "parsed": {
+      "desc_a": "Texture of rough, deeply grooved tree bark with vertical ridges and warm golden-brown tones, occupying the right foreground.",
+      "desc_b": "Texture of smooth, silhouetted human figure against a glowing orange sunset sky, positioned left and mid-ground."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "389",
+    "raw_output": "TEXTURE_A: Texture of intricate white crocheted doily with pink floral accents, centered foreground\nTEXTURE_B: Texture of smooth dark green fabric surface, uniform background",
+    "parsed": {
+      "desc_a": "Texture of intricate white crocheted doily with pink floral accents, centered foreground",
+      "desc_b": "Texture of smooth dark green fabric surface, uniform background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "39",
+    "raw_output": "TEXTURE_A: Texture of golden coral branches with intricate, branching patterns in foreground\nTEXTURE_B: Texture of shimmering blue water with scattered light particles in background",
+    "parsed": {
+      "desc_a": "Texture of golden coral branches with intricate, branching patterns in foreground",
+      "desc_b": "Texture of shimmering blue water with scattered light particles in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "391",
+    "raw_output": "TEXTURE_A: Texture of spotted cheetah fur with golden-yellow base and black rosettes, foreground\nTEXTURE_B: Texture of green grass with scattered brown patches, background",
+    "parsed": {
+      "desc_a": "Texture of spotted cheetah fur with golden-yellow base and black rosettes, foreground",
+      "desc_b": "Texture of green grass with scattered brown patches, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "392",
+    "raw_output": "TEXTURE_A: Texture of golden beaded heart with intricate woven pattern, foreground\nTEXTURE_B: Texture of plain white background, uniform and featureless, behind heart",
+    "parsed": {
+      "desc_a": "Texture of golden beaded heart with intricate woven pattern, foreground",
+      "desc_b": "Texture of plain white background, uniform and featureless, behind heart"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "393",
+    "raw_output": "TEXTURE_A: Texture of intricately woven red and cream geometric patterned textile centered in frame\nTEXTURE_B: Texture of smooth, solid dark gray background surrounding the textile",
+    "parsed": {
+      "desc_a": "Texture of intricately woven red and cream geometric patterned textile centered in frame",
+      "desc_b": "Texture of smooth, solid dark gray background surrounding the textile"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "394",
+    "raw_output": "TEXTURE_A: Texture of intricately woven textile with geometric patterns in earthy browns and creams, centered on a dark gray background.\nTEXTURE_B: Texture of smooth, uniform dark gray surface, providing stark contrast to the detailed textile above.",
+    "parsed": {
+      "desc_a": "Texture of intricately woven textile with geometric patterns in earthy browns and creams, centered on a dark gray background.",
+      "desc_b": "Texture of smooth, uniform dark gray surface, providing stark contrast to the detailed textile above."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "395",
+    "raw_output": "TEXTURE_A: Texture of woven textile with orange-brown diamond patterns and fringed edges, centered in frame.\nTEXTURE_B: Texture of dark teal background surface, smooth and uniform, surrounding the textile.",
+    "parsed": {
+      "desc_a": "Texture of woven textile with orange-brown diamond patterns and fringed edges, centered in frame.",
+      "desc_b": "Texture of dark teal background surface, smooth and uniform, surrounding the textile."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "398",
+    "raw_output": "TEXTURE_A: Texture of autumn maple leaves with yellow, red, and brown hues scattered across the frame.\nTEXTURE_B: Texture of dark, textured fabric surface with stitched patterns and subtle sheen.",
+    "parsed": {
+      "desc_a": "Texture of autumn maple leaves with yellow, red, and brown hues scattered across the frame.",
+      "desc_b": "Texture of dark, textured fabric surface with stitched patterns and subtle sheen."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "399",
+    "raw_output": "TEXTURE_A: Texture of green patterned fabric forming a star-shaped quilted design in the foreground.\nTEXTURE_B: Texture of white fabric forming a star-shaped quilted design in the background.",
+    "parsed": {
+      "desc_a": "Texture of green patterned fabric forming a star-shaped quilted design in the foreground.",
+      "desc_b": "Texture of white fabric forming a star-shaped quilted design in the background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "4",
+    "raw_output": "TEXTURE_A: Texture of layered, striated rock with dark and white bands, partially submerged in water.\nTEXTURE_B: Texture of calm, smooth water surface reflecting muted sky tones, surrounding the rock.",
+    "parsed": {
+      "desc_a": "Texture of layered, striated rock with dark and white bands, partially submerged in water.",
+      "desc_b": "Texture of calm, smooth water surface reflecting muted sky tones, surrounding the rock."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "40",
+    "raw_output": "TEXTURE_A: Texture of dense, brown, papery bee hive clusters hanging from tree branches\nTEXTURE_B: Texture of vibrant green, leafy tree canopy forming the surrounding background",
+    "parsed": {
+      "desc_a": "Texture of dense, brown, papery bee hive clusters hanging from tree branches",
+      "desc_b": "Texture of vibrant green, leafy tree canopy forming the surrounding background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "400",
+    "raw_output": "TEXTURE_A: Texture of a vibrant angelfish with blue, yellow, and black patterns, positioned centrally.\nTEXTURE_B: Texture of sandy substrate with fine grains, located beneath the fish.",
+    "parsed": {
+      "desc_a": "Texture of a vibrant angelfish with blue, yellow, and black patterns, positioned centrally.",
+      "desc_b": "Texture of sandy substrate with fine grains, located beneath the fish."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "403",
+    "raw_output": "TEXTURE_A: Texture of vibrant, multicolored striped fabric forming a wavy foreground surface.\nTEXTURE_B: Texture of plain, light-colored wall forming a smooth, unadorned background surface.",
+    "parsed": {
+      "desc_a": "Texture of vibrant, multicolored striped fabric forming a wavy foreground surface.",
+      "desc_b": "Texture of plain, light-colored wall forming a smooth, unadorned background surface."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "408",
+    "raw_output": "TEXTURE_A: Texture of clustered seashells with varied ridges and speckled patterns, foreground\nTEXTURE_B: Texture of vibrant orange fabric with subtle woven grain, background",
+    "parsed": {
+      "desc_a": "Texture of clustered seashells with varied ridges and speckled patterns, foreground",
+      "desc_b": "Texture of vibrant orange fabric with subtle woven grain, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "41",
+    "raw_output": "TEXTURE_A: Texture of dense swarm of wasps with yellow-black stripes covering most surface\nTEXTURE_B: Texture of weathered wooden surface with grain and scratches visible in upper portion",
+    "parsed": {
+      "desc_a": "Texture of dense swarm of wasps with yellow-black stripes covering most surface",
+      "desc_b": "Texture of weathered wooden surface with grain and scratches visible in upper portion"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "410",
+    "raw_output": "TEXTURE_A: Texture of vibrant red and gold geometric stained glass pattern in foreground\nTEXTURE_B: Texture of dark black void background surrounding the stained glass design",
+    "parsed": {
+      "desc_a": "Texture of vibrant red and gold geometric stained glass pattern in foreground",
+      "desc_b": "Texture of dark black void background surrounding the stained glass design"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "411",
+    "raw_output": "TEXTURE_A: Texture of cheetah's spotted coat with tan base, black rosettes, and sleek fur in foreground\nTEXTURE_B: Texture of green grass with scattered yellow flowers and soft, blurred blades in background",
+    "parsed": {
+      "desc_a": "Texture of cheetah's spotted coat with tan base, black rosettes, and sleek fur in foreground",
+      "desc_b": "Texture of green grass with scattered yellow flowers and soft, blurred blades in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "412",
+    "raw_output": "TEXTURE_A: Texture of a yellow maple leaf with speckled brown spots, lying in foreground.\nTEXTURE_B: Texture of rough gray concrete surface, appearing dull and uniform in background.",
+    "parsed": {
+      "desc_a": "Texture of a yellow maple leaf with speckled brown spots, lying in foreground.",
+      "desc_b": "Texture of rough gray concrete surface, appearing dull and uniform in background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "413",
+    "raw_output": "TEXTURE_A: Texture of concentric wood rings in dark brown, centered and detailed, foreground\nTEXTURE_B: Texture of mottled green background with subtle grain, surrounding the wood, background",
+    "parsed": {
+      "desc_a": "Texture of concentric wood rings in dark brown, centered and detailed, foreground",
+      "desc_b": "Texture of mottled green background with subtle grain, surrounding the wood, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "414",
+    "raw_output": "TEXTURE_A: Texture of folded, ribbed knit fabric in muted terracotta, resting atop a darker brown counterpart.\nTEXTURE_B: Texture of smooth, light-colored surface beneath the folded fabric, casting soft shadows.",
+    "parsed": {
+      "desc_a": "Texture of folded, ribbed knit fabric in muted terracotta, resting atop a darker brown counterpart.",
+      "desc_b": "Texture of smooth, light-colored surface beneath the folded fabric, casting soft shadows."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "416",
+    "raw_output": "TEXTURE_A: Texture of vibrant, swirling abstract pattern with purple, yellow, and black in foreground\nTEXTURE_B: Texture of smooth, reflective metallic surface with subtle gray gradient in background",
+    "parsed": {
+      "desc_a": "Texture of vibrant, swirling abstract pattern with purple, yellow, and black in foreground",
+      "desc_b": "Texture of smooth, reflective metallic surface with subtle gray gradient in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "417",
+    "raw_output": "TEXTURE_A: Texture of a vibrant autumn maple leaf with intricate vein patterns and warm orange-yellow hues, positioned centrally in the foreground.\nTEXTURE_B: Texture of a weathered blue-gray wooden surface with vertical grain lines and subtle wear, forming the background behind the leaf.",
+    "parsed": {
+      "desc_a": "Texture of a vibrant autumn maple leaf with intricate vein patterns and warm orange-yellow hues, positioned centrally in the foreground.",
+      "desc_b": "Texture of a weathered blue-gray wooden surface with vertical grain lines and subtle wear, forming the background behind the leaf."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "418",
+    "raw_output": "TEXTURE_A: Texture of mosaic gecko with vibrant, fragmented glass tiles forming a stylized lizard shape.\nTEXTURE_B: Texture of smooth, deep blue wooden planks forming a vertical fence background.",
+    "parsed": {
+      "desc_a": "Texture of mosaic gecko with vibrant, fragmented glass tiles forming a stylized lizard shape.",
+      "desc_b": "Texture of smooth, deep blue wooden planks forming a vertical fence background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "422",
+    "raw_output": "TEXTURE_A: Texture of smooth blue microfiber fabric occupying the left side\nTEXTURE_B: Texture of dense orange chenille loops covering the right side",
+    "parsed": {
+      "desc_a": "Texture of smooth blue microfiber fabric occupying the left side",
+      "desc_b": "Texture of dense orange chenille loops covering the right side"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "423",
+    "raw_output": "TEXTURE_A: Texture of smooth, reddish-brown, slightly speckled sea slug in foreground\nTEXTURE_B: Texture of coarse, gray, granular sand surrounding the sea slug",
+    "parsed": {
+      "desc_a": "Texture of smooth, reddish-brown, slightly speckled sea slug in foreground",
+      "desc_b": "Texture of coarse, gray, granular sand surrounding the sea slug"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "424",
+    "raw_output": "TEXTURE_A: Texture of weathered tree bark with deep grooves and knots in foreground\nTEXTURE_B: Texture of dark, blurred foliage forming a soft, out-of-focus background",
+    "parsed": {
+      "desc_a": "Texture of weathered tree bark with deep grooves and knots in foreground",
+      "desc_b": "Texture of dark, blurred foliage forming a soft, out-of-focus background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "425",
+    "raw_output": "TEXTURE_A: Texture of a flower with white petals edged in pink, center dark and speckled, foreground\nTEXTURE_B: Texture of blurred green foliage, soft and out of focus, background",
+    "parsed": {
+      "desc_a": "Texture of a flower with white petals edged in pink, center dark and speckled, foreground",
+      "desc_b": "Texture of blurred green foliage, soft and out of focus, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "426",
+    "raw_output": "TEXTURE_A: Texture of a moth with mottled brown and white wings, resting in foreground.\nTEXTURE_B: Texture of a smooth, warm-toned wooden surface, serving as background.",
+    "parsed": {
+      "desc_a": "Texture of a moth with mottled brown and white wings, resting in foreground.",
+      "desc_b": "Texture of a smooth, warm-toned wooden surface, serving as background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "428",
+    "raw_output": "TEXTURE_A: Texture of intricate blue ceramic plate with radial mandala pattern, centered and foreground.\nTEXTURE_B: Texture of plain off-white wall surface, smooth and unadorned, serving as background.",
+    "parsed": {
+      "desc_a": "Texture of intricate blue ceramic plate with radial mandala pattern, centered and foreground.",
+      "desc_b": "Texture of plain off-white wall surface, smooth and unadorned, serving as background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "429",
+    "raw_output": "TEXTURE_A: Texture of a white fabric with yellow floral pattern hanging in foreground\nTEXTURE_B: Texture of green foliage and wooden fence in background",
+    "parsed": {
+      "desc_a": "Texture of a white fabric with yellow floral pattern hanging in foreground",
+      "desc_b": "Texture of green foliage and wooden fence in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "431",
+    "raw_output": "TEXTURE_A: Texture of vibrant floral fabric with bold pink, purple, and yellow patterns dominating the foreground.\nTEXTURE_B: Texture of plain white background surface providing stark contrast beneath the colorful fabric.",
+    "parsed": {
+      "desc_a": "Texture of vibrant floral fabric with bold pink, purple, and yellow patterns dominating the foreground.",
+      "desc_b": "Texture of plain white background surface providing stark contrast beneath the colorful fabric."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "432",
+    "raw_output": "TEXTURE_A: Texture of colorful floral fabric pouches arranged in a row on a wooden surface.\nTEXTURE_B: Texture of smooth, warm-toned wooden table surface beneath the fabric pouches.",
+    "parsed": {
+      "desc_a": "Texture of colorful floral fabric pouches arranged in a row on a wooden surface.",
+      "desc_b": "Texture of smooth, warm-toned wooden table surface beneath the fabric pouches."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "434",
+    "raw_output": "TEXTURE_A: Texture of spotted cheetah fur with golden-yellow base and black rosettes, foreground\nTEXTURE_B: Texture of soft, pale-brown grassland under muted sky, background",
+    "parsed": {
+      "desc_a": "Texture of spotted cheetah fur with golden-yellow base and black rosettes, foreground",
+      "desc_b": "Texture of soft, pale-brown grassland under muted sky, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "436",
+    "raw_output": "TEXTURE_A: Texture of a glossy, ribbed seashell with yellow and black stripes in the foreground\nTEXTURE_B: Texture of wet, granular sand with scattered pebbles in the background",
+    "parsed": {
+      "desc_a": "Texture of a glossy, ribbed seashell with yellow and black stripes in the foreground",
+      "desc_b": "Texture of wet, granular sand with scattered pebbles in the background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "437",
+    "raw_output": "TEXTURE_A: Texture of weathered wooden stump with rough grain and dark bark, standing upright in foreground.\nTEXTURE_B: Texture of dense golden-yellow fallen leaves carpeting the ground, forming a soft, uniform blanket in background.",
+    "parsed": {
+      "desc_a": "Texture of weathered wooden stump with rough grain and dark bark, standing upright in foreground.",
+      "desc_b": "Texture of dense golden-yellow fallen leaves carpeting the ground, forming a soft, uniform blanket in background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "44",
+    "raw_output": "TEXTURE_A: Texture of vibrant multicolored corn kernels with glossy ridges, foreground\nTEXTURE_B: Texture of dry, papery corn husks with faded beige tones, background",
+    "parsed": {
+      "desc_a": "Texture of vibrant multicolored corn kernels with glossy ridges, foreground",
+      "desc_b": "Texture of dry, papery corn husks with faded beige tones, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "440",
+    "raw_output": "TEXTURE_A: Texture of a fish with mottled blue and yellow scales, positioned centrally in the foreground.\nTEXTURE_B: Texture of blurred green aquatic plants and sandy substrate, forming the out-of-focus background.",
+    "parsed": {
+      "desc_a": "Texture of a fish with mottled blue and yellow scales, positioned centrally in the foreground.",
+      "desc_b": "Texture of blurred green aquatic plants and sandy substrate, forming the out-of-focus background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "441",
+    "raw_output": "TEXTURE_A: Texture of origami crane with blue floral pattern, folded paper, foreground\nTEXTURE_B: Texture of plain beige wall, smooth and uniform, background",
+    "parsed": {
+      "desc_a": "Texture of origami crane with blue floral pattern, folded paper, foreground",
+      "desc_b": "Texture of plain beige wall, smooth and uniform, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "442",
+    "raw_output": "TEXTURE_A: Texture of a butterfly with black wings accented by red stripes and white spots, positioned in the foreground.\nTEXTURE_B: Texture of a soft, out-of-focus green foliage background, occupying the entire surrounding area.",
+    "parsed": {
+      "desc_a": "Texture of a butterfly with black wings accented by red stripes and white spots, positioned in the foreground.",
+      "desc_b": "Texture of a soft, out-of-focus green foliage background, occupying the entire surrounding area."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "443",
+    "raw_output": "TEXTURE_A: Texture of silvery-blue pine needles in foreground, feathery and sharply detailed.\nTEXTURE_B: Texture of soft green foliage in background, blurred and uniformly muted.",
+    "parsed": {
+      "desc_a": "Texture of silvery-blue pine needles in foreground, feathery and sharply detailed.",
+      "desc_b": "Texture of soft green foliage in background, blurred and uniformly muted."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "444",
+    "raw_output": "TEXTURE_A: Texture of a moth with mottled brown and gray wings, resting in the foreground.\nTEXTURE_B: Texture of a rough, rust-colored metallic surface, forming the background.",
+    "parsed": {
+      "desc_a": "Texture of a moth with mottled brown and gray wings, resting in the foreground.",
+      "desc_b": "Texture of a rough, rust-colored metallic surface, forming the background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "447",
+    "raw_output": "TEXTURE_A: Texture of orange fabric with white floral pattern, folded in foreground\nTEXTURE_B: Texture of orange fabric with white polka dots, horizontally placed across center",
+    "parsed": {
+      "desc_a": "Texture of orange fabric with white floral pattern, folded in foreground",
+      "desc_b": "Texture of orange fabric with white polka dots, horizontally placed across center"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "448",
+    "raw_output": "TEXTURE_A: Texture of intricately patterned woven mat with repeating leaf motifs in earthy tones, centered in foreground.\nTEXTURE_B: Texture of smooth, pale beige wall surface with subtle grain, forming the background behind the mat.",
+    "parsed": {
+      "desc_a": "Texture of intricately patterned woven mat with repeating leaf motifs in earthy tones, centered in foreground.",
+      "desc_b": "Texture of smooth, pale beige wall surface with subtle grain, forming the background behind the mat."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "449",
+    "raw_output": "TEXTURE_A: Texture of intricately carved wooden disc with reddish-brown hue and detailed patterns\nTEXTURE_B: Texture of plain beige wall surface with smooth, uniform, and unadorned appearance",
+    "parsed": {
+      "desc_a": "Texture of intricately carved wooden disc with reddish-brown hue and detailed patterns",
+      "desc_b": "Texture of plain beige wall surface with smooth, uniform, and unadorned appearance"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "45",
+    "raw_output": "TEXTURE_A: Texture of dense green grass with scattered white and yellow wildflowers in foreground\nTEXTURE_B: Texture of tall dark green coniferous trees forming a dense forest background",
+    "parsed": {
+      "desc_a": "Texture of dense green grass with scattered white and yellow wildflowers in foreground",
+      "desc_b": "Texture of tall dark green coniferous trees forming a dense forest background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "450",
+    "raw_output": "TEXTURE_A: Texture of vibrant patchwork quilt with multicolored squares and red border on tiled floor\nTEXTURE_B: Texture of smooth beige ceramic tiles forming uniform grid pattern under quilt",
+    "parsed": {
+      "desc_a": "Texture of vibrant patchwork quilt with multicolored squares and red border on tiled floor",
+      "desc_b": "Texture of smooth beige ceramic tiles forming uniform grid pattern under quilt"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "451",
+    "raw_output": "TEXTURE_A: Texture of a vibrant yellow ginkgo leaf with intricate vein patterns in foreground\nTEXTURE_B: Texture of a soft, blurred green background with smooth gradient and no distinct features",
+    "parsed": {
+      "desc_a": "Texture of a vibrant yellow ginkgo leaf with intricate vein patterns in foreground",
+      "desc_b": "Texture of a soft, blurred green background with smooth gradient and no distinct features"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "452",
+    "raw_output": "TEXTURE_A: Texture of spotted fish skin with orange-brown base and pale yellow spots, foreground\nTEXTURE_B: Texture of dark gravelly seabed with varied grain sizes, background",
+    "parsed": {
+      "desc_a": "Texture of spotted fish skin with orange-brown base and pale yellow spots, foreground",
+      "desc_b": "Texture of dark gravelly seabed with varied grain sizes, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "453",
+    "raw_output": "TEXTURE_A: Texture of four crocheted dishcloths with yellow, blue, and white patterns arranged on a dark surface.\nTEXTURE_B: Texture of a smooth, dark, non-textured background surface beneath the dishcloths.",
+    "parsed": {
+      "desc_a": "Texture of four crocheted dishcloths with yellow, blue, and white patterns arranged on a dark surface.",
+      "desc_b": "Texture of a smooth, dark, non-textured background surface beneath the dishcloths."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "455",
+    "raw_output": "TEXTURE_A: Texture of fluffy dandelion seed head with white feathery filaments in foreground\nTEXTURE_B: Texture of vibrant green grass blades with varied lengths and serrated edges in background",
+    "parsed": {
+      "desc_a": "Texture of fluffy dandelion seed head with white feathery filaments in foreground",
+      "desc_b": "Texture of vibrant green grass blades with varied lengths and serrated edges in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "456",
+    "raw_output": "TEXTURE_A: Texture of coiled snake with black and cream patterned scales, foreground\nTEXTURE_B: Texture of smooth plain white surface, background",
+    "parsed": {
+      "desc_a": "Texture of coiled snake with black and cream patterned scales, foreground",
+      "desc_b": "Texture of smooth plain white surface, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "457",
+    "raw_output": "TEXTURE_A: Texture of white, irregularly shaped, overlapping petal-like segments forming a spherical pattern in the center.\nTEXTURE_B: Texture of deep purple, mottled, unevenly stained fabric serving as the background.",
+    "parsed": {
+      "desc_a": "Texture of white, irregularly shaped, overlapping petal-like segments forming a spherical pattern in the center.",
+      "desc_b": "Texture of deep purple, mottled, unevenly stained fabric serving as the background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "461",
+    "raw_output": "TEXTURE_A: Texture of weathered metal manhole cover with grid pattern and engraved text\nTEXTURE_B: Texture of rough concrete ground with scattered leaves and speckled surface",
+    "parsed": {
+      "desc_a": "Texture of weathered metal manhole cover with grid pattern and engraved text",
+      "desc_b": "Texture of rough concrete ground with scattered leaves and speckled surface"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "463",
+    "raw_output": "TEXTURE_A: Texture of rusted metal pipe with rough, dark brown and orange corroded surface, foreground\nTEXTURE_B: Texture of smooth, light gray concrete surface, background",
+    "parsed": {
+      "desc_a": "Texture of rusted metal pipe with rough, dark brown and orange corroded surface, foreground",
+      "desc_b": "Texture of smooth, light gray concrete surface, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "464",
+    "raw_output": "TEXTURE_A: Texture of colorful circular dot pattern on fabric surface, foreground\nTEXTURE_B: Texture of textured white fabric background, background",
+    "parsed": {
+      "desc_a": "Texture of colorful circular dot pattern on fabric surface, foreground",
+      "desc_b": "Texture of textured white fabric background, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "465",
+    "raw_output": "TEXTURE_A: Texture of vibrant blue and black patterned discus fish in mid-water\nTEXTURE_B: Texture of rough, dark, mossy aquarium rock forming the background",
+    "parsed": {
+      "desc_a": "Texture of vibrant blue and black patterned discus fish in mid-water",
+      "desc_b": "Texture of rough, dark, mossy aquarium rock forming the background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "466",
+    "raw_output": "TEXTURE_A: Texture of carved deer silhouette with smooth, light-gray surface against corrugated background.\nTEXTURE_B: Texture of weathered corrugated metal with vertical ridges, grayish-brown, textured surface.",
+    "parsed": {
+      "desc_a": "Texture of carved deer silhouette with smooth, light-gray surface against corrugated background.",
+      "desc_b": "Texture of weathered corrugated metal with vertical ridges, grayish-brown, textured surface."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "467",
+    "raw_output": "TEXTURE_A: Texture of rough, gray tree roots with deep grooves and branching patterns, foreground\nTEXTURE_B: Texture of vibrant yellow fallen leaves forming a soft, scattered carpet, background",
+    "parsed": {
+      "desc_a": "Texture of rough, gray tree roots with deep grooves and branching patterns, foreground",
+      "desc_b": "Texture of vibrant yellow fallen leaves forming a soft, scattered carpet, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "468",
+    "raw_output": "TEXTURE_A: Texture of a vibrant orange leaf with intricate vein patterns and frosty white edges in the foreground.\nTEXTURE_B: Texture of blurred green grass with fine strands and muted tones in the background.",
+    "parsed": {
+      "desc_a": "Texture of a vibrant orange leaf with intricate vein patterns and frosty white edges in the foreground.",
+      "desc_b": "Texture of blurred green grass with fine strands and muted tones in the background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "469",
+    "raw_output": "TEXTURE_A: Texture of four colorful scallop shells with ridged, glossy surfaces arranged in a loose cluster.\nTEXTURE_B: Texture of a smooth, dark gray surface providing a matte, uniform backdrop for the shells.",
+    "parsed": {
+      "desc_a": "Texture of four colorful scallop shells with ridged, glossy surfaces arranged in a loose cluster.",
+      "desc_b": "Texture of a smooth, dark gray surface providing a matte, uniform backdrop for the shells."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "47",
+    "raw_output": "TEXTURE_A: Texture of knitted mittens with brown swirl patterns on light gray wool, foreground\nTEXTURE_B: Texture of rough, dark brown wooden logs with natural grain, background",
+    "parsed": {
+      "desc_a": "Texture of knitted mittens with brown swirl patterns on light gray wool, foreground",
+      "desc_b": "Texture of rough, dark brown wooden logs with natural grain, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "471",
+    "raw_output": "TEXTURE_A: Texture of a butterfly with intricate orange, black, and white patterned wings in foreground\nTEXTURE_B: Texture of a vibrant orange spiky flower head with blurred green background",
+    "parsed": {
+      "desc_a": "Texture of a butterfly with intricate orange, black, and white patterned wings in foreground",
+      "desc_b": "Texture of a vibrant orange spiky flower head with blurred green background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "472",
+    "raw_output": "TEXTURE_A: Texture of intricate white frost crystals forming feathery, branching patterns in the foreground.\nTEXTURE_B: Texture of smooth, deep black void occupying the background space behind the frost.",
+    "parsed": {
+      "desc_a": "Texture of intricate white frost crystals forming feathery, branching patterns in the foreground.",
+      "desc_b": "Texture of smooth, deep black void occupying the background space behind the frost."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "473",
+    "raw_output": "TEXTURE_A: Texture of snow-dusted thistle heads with spiky brown bracts in foreground\nTEXTURE_B: Texture of soft white snow covering ground in background",
+    "parsed": {
+      "desc_a": "Texture of snow-dusted thistle heads with spiky brown bracts in foreground",
+      "desc_b": "Texture of soft white snow covering ground in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "474",
+    "raw_output": "TEXTURE_A: Texture of rough, weathered wooden fence post with grayish-brown grain and splintered edges in foreground\nTEXTURE_B: Texture of soft, blurred green foliage with smooth, out-of-focus gradient in background",
+    "parsed": {
+      "desc_a": "Texture of rough, weathered wooden fence post with grayish-brown grain and splintered edges in foreground",
+      "desc_b": "Texture of soft, blurred green foliage with smooth, out-of-focus gradient in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "476",
+    "raw_output": "TEXTURE_A: Texture of dense, multicolored dot pattern forming a central figure\nTEXTURE_B: Texture of uniform, pale beige background surface surrounding the dots",
+    "parsed": {
+      "desc_a": "Texture of dense, multicolored dot pattern forming a central figure",
+      "desc_b": "Texture of uniform, pale beige background surface surrounding the dots"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "478",
+    "raw_output": "TEXTURE_A: Texture of a coiled snake with mottled black and tan scales, positioned centrally.\nTEXTURE_B: Texture of coarse, reddish-brown sandy ground, forming the surrounding background.",
+    "parsed": {
+      "desc_a": "Texture of a coiled snake with mottled black and tan scales, positioned centrally.",
+      "desc_b": "Texture of coarse, reddish-brown sandy ground, forming the surrounding background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "479",
+    "raw_output": "TEXTURE_A: Texture of a single seashell with ridged, beige surface, centered in the foreground.\nTEXTURE_B: Texture of vibrant blue and green pebbles forming a dense, granular background.",
+    "parsed": {
+      "desc_a": "Texture of a single seashell with ridged, beige surface, centered in the foreground.",
+      "desc_b": "Texture of vibrant blue and green pebbles forming a dense, granular background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "48",
+    "raw_output": "TEXTURE_A: Texture of woolly sheep with thick, curly, beige fleece clustered in foreground\nTEXTURE_B: Texture of vibrant green grass with dense, uniform blades covering the background",
+    "parsed": {
+      "desc_a": "Texture of woolly sheep with thick, curly, beige fleece clustered in foreground",
+      "desc_b": "Texture of vibrant green grass with dense, uniform blades covering the background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "485",
+    "raw_output": "TEXTURE_A: Texture of white lace fabric with floral pattern, top region\nTEXTURE_B: Texture of dark wooden surface with grain pattern, bottom region",
+    "parsed": {
+      "desc_a": "Texture of white lace fabric with floral pattern, top region",
+      "desc_b": "Texture of dark wooden surface with grain pattern, bottom region"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "492",
+    "raw_output": "TEXTURE_A: Texture of geometrically patterned metallic spikes in foreground\nTEXTURE_B: Texture of smooth gradient gray sky in background",
+    "parsed": {
+      "desc_a": "Texture of geometrically patterned metallic spikes in foreground",
+      "desc_b": "Texture of smooth gradient gray sky in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "5",
+    "raw_output": "TEXTURE_A: Texture of dense, varied seashells in foreground, displaying earthy tones and rough, ridged surfaces.\nTEXTURE_B: Texture of foamy, churning ocean water in background, showing white crests and dynamic, fluid motion.",
+    "parsed": {
+      "desc_a": "Texture of dense, varied seashells in foreground, displaying earthy tones and rough, ridged surfaces.",
+      "desc_b": "Texture of foamy, churning ocean water in background, showing white crests and dynamic, fluid motion."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "51",
+    "raw_output": "TEXTURE_A: Texture of vibrant pink and white patterned fabric draped in foreground\nTEXTURE_B: Texture of rough, dark brown tree bark surface in background",
+    "parsed": {
+      "desc_a": "Texture of vibrant pink and white patterned fabric draped in foreground",
+      "desc_b": "Texture of rough, dark brown tree bark surface in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "54",
+    "raw_output": "TEXTURE_A: Texture of leopard-printed fur coat with spotted pattern, hanging in foreground\nTEXTURE_B: Texture of plain light-colored curtain fabric, smooth and uniform, in background",
+    "parsed": {
+      "desc_a": "Texture of leopard-printed fur coat with spotted pattern, hanging in foreground",
+      "desc_b": "Texture of plain light-colored curtain fabric, smooth and uniform, in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "56",
+    "raw_output": "TEXTURE_A: Texture of fluffy multi-colored cat fur with mottled brown and gray patterns, occupying the foreground.\nTEXTURE_B: Texture of woven beige carpet with uniform tight loops, forming the background surface.",
+    "parsed": {
+      "desc_a": "Texture of fluffy multi-colored cat fur with mottled brown and gray patterns, occupying the foreground.",
+      "desc_b": "Texture of woven beige carpet with uniform tight loops, forming the background surface."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "58",
+    "raw_output": "TEXTURE_A: Texture of ornate fabric with intricate leaf and diamond patterns in gold, teal, and orange, positioned top-left.\nTEXTURE_B: Texture of smooth wooden surface with warm brown grain, positioned bottom-right.",
+    "parsed": {
+      "desc_a": "Texture of ornate fabric with intricate leaf and diamond patterns in gold, teal, and orange, positioned top-left.",
+      "desc_b": "Texture of smooth wooden surface with warm brown grain, positioned bottom-right."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "59",
+    "raw_output": "TEXTURE_A: Texture of smooth, rounded gray stones clustered in foreground\nTEXTURE_B: Texture of coarse, light gray gravel scattered in background",
+    "parsed": {
+      "desc_a": "Texture of smooth, rounded gray stones clustered in foreground",
+      "desc_b": "Texture of coarse, light gray gravel scattered in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "60",
+    "raw_output": "TEXTURE_A: Texture of shimmering teal sequined rug in top-left foreground\nTEXTURE_B: Texture of weathered wooden planks with grain patterns in bottom-right background",
+    "parsed": {
+      "desc_a": "Texture of shimmering teal sequined rug in top-left foreground",
+      "desc_b": "Texture of weathered wooden planks with grain patterns in bottom-right background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "63",
+    "raw_output": "TEXTURE_A: Texture of ornate blue and white ceramic tile with intricate floral patterns centered.\nTEXTURE_B: Texture of golden filigree metalwork with swirling motifs framing the tile.",
+    "parsed": {
+      "desc_a": "Texture of ornate blue and white ceramic tile with intricate floral patterns centered.",
+      "desc_b": "Texture of golden filigree metalwork with swirling motifs framing the tile."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "67",
+    "raw_output": "TEXTURE_A: Texture of intricate blue geometric patterns on a light speckled background\nTEXTURE_B: Texture of dense small dark dots forming a uniform textured field",
+    "parsed": {
+      "desc_a": "Texture of intricate blue geometric patterns on a light speckled background",
+      "desc_b": "Texture of dense small dark dots forming a uniform textured field"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "69",
+    "raw_output": "TEXTURE_A: Texture of weathered wooden log with deep grooves and darkened grain, foreground left\nTEXTURE_B: Texture of grayish wooden planks with smooth surface and subtle grain, background right",
+    "parsed": {
+      "desc_a": "Texture of weathered wooden log with deep grooves and darkened grain, foreground left",
+      "desc_b": "Texture of grayish wooden planks with smooth surface and subtle grain, background right"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "70",
+    "raw_output": "TEXTURE_A: Texture of rigid concrete grid with repeating square balconies, starkly geometric, occupying left side.\nTEXTURE_B: Texture of reflective glass curtain wall with diagonal ribbing, smooth and shiny, dominating right side.",
+    "parsed": {
+      "desc_a": "Texture of rigid concrete grid with repeating square balconies, starkly geometric, occupying left side.",
+      "desc_b": "Texture of reflective glass curtain wall with diagonal ribbing, smooth and shiny, dominating right side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "71",
+    "raw_output": "TEXTURE_A: Texture of intricately carved stone with radial petal patterns, centered and detailed, occupying the middle.\nTEXTURE_B: Texture of rough, weathered gray stone surface, plain and unadorned, surrounding the central carving.",
+    "parsed": {
+      "desc_a": "Texture of intricately carved stone with radial petal patterns, centered and detailed, occupying the middle.",
+      "desc_b": "Texture of rough, weathered gray stone surface, plain and unadorned, surrounding the central carving."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "73",
+    "raw_output": "TEXTURE_A: Texture of curved white ribbed surface in foreground\nTEXTURE_B: Texture of vertical striped background wall in mid-ground",
+    "parsed": {
+      "desc_a": "Texture of curved white ribbed surface in foreground",
+      "desc_b": "Texture of vertical striped background wall in mid-ground"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "74",
+    "raw_output": "TEXTURE_A: Texture of dark gray marble with wavy veins, central in the image.\nTEXTURE_B: Texture of light gray marble with white veining, framing the central area.",
+    "parsed": {
+      "desc_a": "Texture of dark gray marble with wavy veins, central in the image.",
+      "desc_b": "Texture of light gray marble with white veining, framing the central area."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "76",
+    "raw_output": "TEXTURE_A: Texture of blue glass panels with vertical stripes, occupying the left side.\nTEXTURE_B: Texture of yellow glass panels with vertical stripes, occupying the right side.",
+    "parsed": {
+      "desc_a": "Texture of blue glass panels with vertical stripes, occupying the left side.",
+      "desc_b": "Texture of yellow glass panels with vertical stripes, occupying the right side."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "77",
+    "raw_output": "TEXTURE_A: Texture of weathered dark gray curved roof tiles arranged in dense overlapping rows.\nTEXTURE_B: Texture of worn light gray flat rectangular tiles forming a contrasting vertical strip.",
+    "parsed": {
+      "desc_a": "Texture of weathered dark gray curved roof tiles arranged in dense overlapping rows.",
+      "desc_b": "Texture of worn light gray flat rectangular tiles forming a contrasting vertical strip."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "78",
+    "raw_output": "TEXTURE_A: Texture of ornate golden filigree with intricate floral patterns centered in foreground\nTEXTURE_B: Texture of glossy teal hexagonal tiles forming a repeating background pattern",
+    "parsed": {
+      "desc_a": "Texture of ornate golden filigree with intricate floral patterns centered in foreground",
+      "desc_b": "Texture of glossy teal hexagonal tiles forming a repeating background pattern"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "79",
+    "raw_output": "TEXTURE_A: Texture of a lizard with green and yellow segmented scales, positioned centrally.\nTEXTURE_B: Texture of weathered gray wood with grain and rough surface, forming the background.",
+    "parsed": {
+      "desc_a": "Texture of a lizard with green and yellow segmented scales, positioned centrally.",
+      "desc_b": "Texture of weathered gray wood with grain and rough surface, forming the background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "8",
+    "raw_output": "TEXTURE_A: Texture of a fluffy dandelion seed head with fine, golden filaments in foreground\nTEXTURE_B: Texture of blurred green grass blades forming a soft, out-of-focus background",
+    "parsed": {
+      "desc_a": "Texture of a fluffy dandelion seed head with fine, golden filaments in foreground",
+      "desc_b": "Texture of blurred green grass blades forming a soft, out-of-focus background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "84",
+    "raw_output": "TEXTURE_A: Texture of translucent, speckled octopus with curled tentacles in foreground\nTEXTURE_B: Texture of dark, grainy ocean floor surface in background",
+    "parsed": {
+      "desc_a": "Texture of translucent, speckled octopus with curled tentacles in foreground",
+      "desc_b": "Texture of dark, grainy ocean floor surface in background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "85",
+    "raw_output": "TEXTURE_A: Texture of vibrant paisley-patterned fabric with red, pink, and blue hues on top surface\nTEXTURE_B: Texture of bright green perforated plastic with uniform dot pattern on lower body",
+    "parsed": {
+      "desc_a": "Texture of vibrant paisley-patterned fabric with red, pink, and blue hues on top surface",
+      "desc_b": "Texture of bright green perforated plastic with uniform dot pattern on lower body"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "86",
+    "raw_output": "TEXTURE_A: Texture of coiled snake with dark and light patterned scales, foreground\nTEXTURE_B: Texture of rough, gray concrete surface, background",
+    "parsed": {
+      "desc_a": "Texture of coiled snake with dark and light patterned scales, foreground",
+      "desc_b": "Texture of rough, gray concrete surface, background"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "88",
+    "raw_output": "TEXTURE_A: Texture of a lizard's scaly skin with intricate spotted pattern, occupying the foreground.\nTEXTURE_B: Texture of sandy ground with uniform granular surface, forming the background.",
+    "parsed": {
+      "desc_a": "Texture of a lizard's scaly skin with intricate spotted pattern, occupying the foreground.",
+      "desc_b": "Texture of sandy ground with uniform granular surface, forming the background."
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "91",
+    "raw_output": "TEXTURE_A: Texture of herringbone-patterned red brickwork in foreground left\nTEXTURE_B: Texture of plain red brick wall with white mortar in right side",
+    "parsed": {
+      "desc_a": "Texture of herringbone-patterned red brickwork in foreground left",
+      "desc_b": "Texture of plain red brick wall with white mortar in right side"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "93",
+    "raw_output": "TEXTURE_A: Texture of patterned fabric with blue and red logos on white background, left side\nTEXTURE_B: Texture of peach-colored woven fabric with diagonal stripes, right side",
+    "parsed": {
+      "desc_a": "Texture of patterned fabric with blue and red logos on white background, left side",
+      "desc_b": "Texture of peach-colored woven fabric with diagonal stripes, right side"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "95",
+    "raw_output": "TEXTURE_A: Texture of red fabric with white geometric pattern, top-left region\nTEXTURE_B: Texture of purple fabric with yellow floral pattern, right region",
+    "parsed": {
+      "desc_a": "Texture of red fabric with white geometric pattern, top-left region",
+      "desc_b": "Texture of purple fabric with yellow floral pattern, right region"
+    },
+    "parse_ok": true
+  },
+  {
+    "crop_name": "96",
+    "raw_output": "TEXTURE_A: Texture of rough, gray-brown tree bark with deep vertical grooves, occupying the left side.\nTEXTURE_B: Texture of vibrant, repeating yellow and red floral pattern on dark fabric, occupying the right side.",
+    "parsed": {
+      "desc_a": "Texture of rough, gray-brown tree bark with deep vertical grooves, occupying the left side.",
+      "desc_b": "Texture of vibrant, repeating yellow and red floral pattern on dark fabric, occupying the right side."
+    },
+    "parse_ok": true
+  }
+]

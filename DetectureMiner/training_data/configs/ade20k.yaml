@@ -1,0 +1,9 @@
+dataset: "ade20k"
+
+source:
+  name: "ADE20K (raw)"
+  # Raw ADE20K dataset
+  ade_root: "DetectureMiner/data/raw/ade20k/ADEChallengeData2016"
+
+score:
+  cli_command: "ade20k_full"

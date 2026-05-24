@@ -1,0 +1,412 @@
+[
+  {
+    "sample": "RWTD #0",
+    "baseline_cos": 0.1092102974653244,
+    "mean_rm_cos": 0.13984830677509308,
+    "pc_results": [
+      {
+        "pc": 1,
+        "cos": 0.13055412471294403,
+        "var_explained": 2486132.75,
+        "t1_norm": 190.4241180419922,
+        "t2_norm": 143.0672149658203
+      },
+      {
+        "pc": 2,
+        "cos": 0.07192698121070862,
+        "var_explained": 1211215.5,
+        "t1_norm": 180.25314331054688,
+        "t2_norm": 140.23733520507812
+      },
+      {
+        "pc": 3,
+        "cos": 0.08313603699207306,
+        "var_explained": 632706.4375,
+        "t1_norm": 178.89352416992188,
+        "t2_norm": 139.7423858642578
+      },
+      {
+        "pc": 4,
+        "cos": 0.031655699014663696,
+        "var_explained": 591234.0,
+        "t1_norm": 168.4216766357422,
+        "t2_norm": 137.95713806152344
+      },
+      {
+        "pc": 5,
+        "cos": 0.03617972880601883,
+        "var_explained": 369805.78125,
+        "t1_norm": 166.18185424804688,
+        "t2_norm": 137.9146728515625
+      },
+      {
+        "pc": 6,
+        "cos": 0.0384703166782856,
+        "var_explained": 343366.25,
+        "t1_norm": 166.17666625976562,
+        "t2_norm": 135.2506561279297
+      },
+      {
+        "pc": 7,
+        "cos": 0.03240880370140076,
+        "var_explained": 304356.125,
+        "t1_norm": 166.0753631591797,
+        "t2_norm": 132.75180053710938
+      },
+      {
+        "pc": 8,
+        "cos": 0.04026322066783905,
+        "var_explained": 267379.75,
+        "t1_norm": 165.64199829101562,
+        "t2_norm": 132.02767944335938
+      },
+      {
+        "pc": 9,
+        "cos": 0.028875941410660744,
+        "var_explained": 217429.8125,
+        "t1_norm": 165.1715850830078,
+        "t2_norm": 130.38967895507812
+      },
+      {
+        "pc": 10,
+        "cos": 0.039703816175460815,
+        "var_explained": 207777.9375,
+        "t1_norm": 164.28433227539062,
+        "t2_norm": 129.7280731201172
+      }
+    ],
+    "n_img_tokens": 1024,
+    "tex_lines": [
+      "TEXTURE_1: Texture of sandy seabed with fine grains, muted beige tones, and scattered red specks, occupying the entire background.",
+      "TEXTURE_2: Texture of conical shell with intricate brown and white mosaic pattern, resting centrally on the sand.<|im_end|>"
+    ]
+  },
+  {
+    "sample": "RWTD #50",
+    "baseline_cos": 0.11503737419843674,
+    "mean_rm_cos": 0.12488780170679092,
+    "pc_results": [
+      {
+        "pc": 1,
+        "cos": 0.14345300197601318,
+        "var_explained": 1505515.25,
+        "t1_norm": 204.3402099609375,
+        "t2_norm": 139.12451171875
+      },
+      {
+        "pc": 2,
+        "cos": 0.10174593329429626,
+        "var_explained": 1046324.5625,
+        "t1_norm": 167.29074096679688,
+        "t2_norm": 138.34710693359375
+      },
+      {
+        "pc": 3,
+        "cos": 0.10077434033155441,
+        "var_explained": 517180.4375,
+        "t1_norm": 167.27223205566406,
+        "t2_norm": 135.77633666992188
+      },
+      {
+        "pc": 4,
+        "cos": 0.11330880969762802,
+        "var_explained": 378721.6875,
+        "t1_norm": 164.8458251953125,
+        "t2_norm": 135.50772094726562
+      },
+      {
+        "pc": 5,
+        "cos": 0.10443408042192459,
+        "var_explained": 335583.25,
+        "t1_norm": 160.6361083984375,
+        "t2_norm": 135.32431030273438
+      },
+      {
+        "pc": 6,
+        "cos": 0.07984000444412231,
+        "var_explained": 313638.96875,
+        "t1_norm": 158.77967834472656,
+        "t2_norm": 133.19984436035156
+      },
+      {
+        "pc": 7,
+        "cos": 0.07998381555080414,
+        "var_explained": 274423.09375,
+        "t1_norm": 158.19581604003906,
+        "t2_norm": 133.1996307373047
+      },
+      {
+        "pc": 8,
+        "cos": 0.08533541858196259,
+        "var_explained": 249048.703125,
+        "t1_norm": 157.9811553955078,
+        "t2_norm": 132.6175079345703
+      },
+      {
+        "pc": 9,
+        "cos": 0.09140395373106003,
+        "var_explained": 228456.171875,
+        "t1_norm": 157.44003295898438,
+        "t2_norm": 132.31851196289062
+      },
+      {
+        "pc": 10,
+        "cos": 0.10124856233596802,
+        "var_explained": 219615.046875,
+        "t1_norm": 156.88803100585938,
+        "t2_norm": 131.56515502929688
+      }
+    ],
+    "n_img_tokens": 1024,
+    "tex_lines": [
+      "TEXTURE_1: Texture of gray woven fabric with fine grid pattern, occupying left side.",
+      "TEXTURE_2: Texture of golden-brown plush material with soft, uneven fibers, occupying right side.<|im_end|>"
+    ]
+  },
+  {
+    "sample": "RWTD #100",
+    "baseline_cos": 0.265522837638855,
+    "mean_rm_cos": 0.26770535111427307,
+    "pc_results": [
+      {
+        "pc": 1,
+        "cos": 0.25630369782447815,
+        "var_explained": 2724621.75,
+        "t1_norm": 166.3074951171875,
+        "t2_norm": 158.9001922607422
+      },
+      {
+        "pc": 2,
+        "cos": 0.2490253746509552,
+        "var_explained": 1132412.125,
+        "t1_norm": 165.89273071289062,
+        "t2_norm": 146.4007568359375
+      },
+      {
+        "pc": 3,
+        "cos": 0.2547401189804077,
+        "var_explained": 532526.125,
+        "t1_norm": 163.4062042236328,
+        "t2_norm": 146.3920440673828
+      },
+      {
+        "pc": 4,
+        "cos": 0.2576097249984741,
+        "var_explained": 437009.75,
+        "t1_norm": 162.47364807128906,
+        "t2_norm": 146.3798370361328
+      },
+      {
+        "pc": 5,
+        "cos": 0.23624028265476227,
+        "var_explained": 325454.9375,
+        "t1_norm": 161.38018798828125,
+        "t2_norm": 140.60052490234375
+      },
+      {
+        "pc": 6,
+        "cos": 0.232503280043602,
+        "var_explained": 301496.25,
+        "t1_norm": 161.10398864746094,
+        "t2_norm": 140.09039306640625
+      },
+      {
+        "pc": 7,
+        "cos": 0.22086483240127563,
+        "var_explained": 266024.0625,
+        "t1_norm": 160.4870147705078,
+        "t2_norm": 137.61019897460938
+      },
+      {
+        "pc": 8,
+        "cos": 0.23269715905189514,
+        "var_explained": 201915.484375,
+        "t1_norm": 159.572021484375,
+        "t2_norm": 137.0546875
+      },
+      {
+        "pc": 9,
+        "cos": 0.21385756134986877,
+        "var_explained": 198808.78125,
+        "t1_norm": 157.81744384765625,
+        "t2_norm": 135.2388458251953
+      },
+      {
+        "pc": 10,
+        "cos": 0.19533976912498474,
+        "var_explained": 182887.984375,
+        "t1_norm": 154.2296905517578,
+        "t2_norm": 134.35446166992188
+      }
+    ],
+    "n_img_tokens": 1024,
+    "tex_lines": [
+      "TEXTURE_1: Texture of rough, reddish-brown rock with jagged edges in top-left",
+      "TEXTURE_2: Texture of dense, green grass with fine blades covering bottom-right<|im_end|>"
+    ]
+  },
+  {
+    "sample": "RWTD #150",
+    "baseline_cos": 0.17649348080158234,
+    "mean_rm_cos": 0.20033709704875946,
+    "pc_results": [
+      {
+        "pc": 1,
+        "cos": 0.20947356522083282,
+        "var_explained": 2699064.25,
+        "t1_norm": 206.43624877929688,
+        "t2_norm": 141.1610870361328
+      },
+      {
+        "pc": 2,
+        "cos": 0.16219516098499298,
+        "var_explained": 1224194.75,
+        "t1_norm": 171.15065002441406,
+        "t2_norm": 139.84205627441406
+      },
+      {
+        "pc": 3,
+        "cos": 0.15513893961906433,
+        "var_explained": 568552.4375,
+        "t1_norm": 170.74664306640625,
+        "t2_norm": 138.72628784179688
+      },
+      {
+        "pc": 4,
+        "cos": 0.15098321437835693,
+        "var_explained": 417272.9375,
+        "t1_norm": 170.56106567382812,
+        "t2_norm": 137.82757568359375
+      },
+      {
+        "pc": 5,
+        "cos": 0.1482287496328354,
+        "var_explained": 356334.875,
+        "t1_norm": 170.4730224609375,
+        "t2_norm": 136.7756805419922
+      },
+      {
+        "pc": 6,
+        "cos": 0.14815089106559753,
+        "var_explained": 335177.1875,
+        "t1_norm": 169.40127563476562,
+        "t2_norm": 136.77005004882812
+      },
+      {
+        "pc": 7,
+        "cos": 0.15146991610527039,
+        "var_explained": 263533.40625,
+        "t1_norm": 166.91445922851562,
+        "t2_norm": 136.7672576904297
+      },
+      {
+        "pc": 8,
+        "cos": 0.14253130555152893,
+        "var_explained": 210489.171875,
+        "t1_norm": 166.64163208007812,
+        "t2_norm": 133.3110809326172
+      },
+      {
+        "pc": 9,
+        "cos": 0.14349034428596497,
+        "var_explained": 201659.515625,
+        "t1_norm": 164.0830535888672,
+        "t2_norm": 133.30767822265625
+      },
+      {
+        "pc": 10,
+        "cos": 0.14178887009620667,
+        "var_explained": 193486.84375,
+        "t1_norm": 163.92359924316406,
+        "t2_norm": 133.1727294921875
+      }
+    ],
+    "n_img_tokens": 1024,
+    "tex_lines": [
+      "TEXTURE_1: Texture of circular quilted fabric with black, light blue, and beige geometric patterns radiating from center.",
+      "TEXTURE_2: Texture of solid blue background surface providing contrast to the central quilted design.<|im_end|>"
+    ]
+  },
+  {
+    "sample": "RWTD #200",
+    "baseline_cos": 0.14795729517936707,
+    "mean_rm_cos": 0.15617598593235016,
+    "pc_results": [
+      {
+        "pc": 1,
+        "cos": 0.16346630454063416,
+        "var_explained": 2514883.0,
+        "t1_norm": 206.97857666015625,
+        "t2_norm": 141.51710510253906
+      },
+      {
+        "pc": 2,
+        "cos": 0.05739918351173401,
+        "var_explained": 1057977.5,
+        "t1_norm": 156.51930236816406,
+        "t2_norm": 139.08424377441406
+      },
+      {
+        "pc": 3,
+        "cos": 0.06753235310316086,
+        "var_explained": 531975.6875,
+        "t1_norm": 156.13906860351562,
+        "t2_norm": 137.82347106933594
+      },
+      {
+        "pc": 4,
+        "cos": 0.07087180018424988,
+        "var_explained": 443002.53125,
+        "t1_norm": 155.92459106445312,
+        "t2_norm": 137.5794219970703
+      },
+      {
+        "pc": 5,
+        "cos": 0.06451766192913055,
+        "var_explained": 311194.40625,
+        "t1_norm": 154.4637451171875,
+        "t2_norm": 137.39630126953125
+      },
+      {
+        "pc": 6,
+        "cos": 0.06463608890771866,
+        "var_explained": 293918.4375,
+        "t1_norm": 154.46072387695312,
+        "t2_norm": 134.35987854003906
+      },
+      {
+        "pc": 7,
+        "cos": 0.06511827558279037,
+        "var_explained": 269719.4375,
+        "t1_norm": 154.4079132080078,
+        "t2_norm": 134.33995056152344
+      },
+      {
+        "pc": 8,
+        "cos": 0.0761776939034462,
+        "var_explained": 226660.34375,
+        "t1_norm": 153.23095703125,
+        "t2_norm": 133.8773193359375
+      },
+      {
+        "pc": 9,
+        "cos": 0.07756964862346649,
+        "var_explained": 217076.453125,
+        "t1_norm": 153.1899871826172,
+        "t2_norm": 133.67947387695312
+      },
+      {
+        "pc": 10,
+        "cos": 0.07402119040489197,
+        "var_explained": 213962.09375,
+        "t1_norm": 153.07476806640625,
+        "t2_norm": 132.9668731689453
+      }
+    ],
+    "n_img_tokens": 1024,
+    "tex_lines": [
+      "TEXTURE_1: Texture of quilted fabric with vibrant red border and patterned center patchwork.",
+      "TEXTURE_2: Texture of smooth beige tiled floor with subtle grout lines and uniform surface.<|im_end|>"
+    ]
+  }
+]

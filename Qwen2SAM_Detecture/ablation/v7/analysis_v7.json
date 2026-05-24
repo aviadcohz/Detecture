@@ -1,0 +1,128 @@
+{
+  "title": "V7 Analysis: Discarding the Bottleneck, Bridging to SAM's Native Text Space, and the Exponential LM Cliff",
+  "date": "2026-04-18",
+
+  "what_we_tried": {
+    "bridge_to_sam_text_space": "V1-V6 all used a square-bottleneck projector ending at 256-D (SAM's decoder query space), forcing Qwen's 4096-D [SEG] representations through an increasingly aggressive compression ratio. V4's 10.5M-param projector memorised ADE20K directions (Directional Drift). V4-Slim's 2.2M bottleneck (4096->512->256) fixed the drift but capped RWTD at ~0.73. V6 inherited that cap. V7 abandons the bottleneck entirely: Linear(4096, 1024) + LayerNorm + GELU + Dropout(0.4) projects into SAM3's NATIVE text-encoder width, then SAM3's own pretrained resizer (Linear 1024->256, kept FROZEN) maps to decoder space. We train the Bridge (4.2M params); the resizer brings SAM3's pretrained 1024->256 semantic mapping for free.",
+    "exponential_lm_cliff": "V6 cosine-decayed LM weights within each texture block (lambda_min=0.05 at [SEG], lambda_max=1.0 at block start) effectively kept LM pressure ~0.5 everywhere in the middle, producing a gentle tug-of-war between DICE (which wants raw geometric gradient on [SEG]) and LM (which wants linguistic fidelity on EVERY text token). Empirically V6 DICE plateaued at 0.43. V7 replaces the cosine with an exponential cliff: Weight(d) = 1 - exp(-2*d) where d = token-wise distance to the nearest ASSISTANT-region [SEG]. Weight at d=0 (SEG itself) is strictly 0.0; at d=1 it is 0.865; at d=2 it is 0.982. This isolates [SEG] geometrically while applying near-full LM pressure everywhere else, eliminating the tug-of-war.",
+    "permanent_sam_freeze": "V5 unfroze SAM cross-attn LoRA at Stage 3 and produced language collapse. V6b's double-decay curriculum stabilised language but still saw a -0.046 RWTD regression in Stage 3. A parallel ZS SAM 3 experiment (no VLM, object-aware prompt hand-fed) achieved 0.928 RWTD mIoU -- proving SAM natively handles our target distribution. Conclusion: the SAM LoRA was not helping; it was an OOD-regression mechanism. V7 freezes SAM permanently and drops the orthogonal LoRA entirely.",
+    "universal_object_aware_prompt": "V6's training prompt said 'NOT individual objects within it. Think of each region as a surface/area, not as a single object.' This made sense for pure-texture ADE20K training but worked against RWTD's object-rich scenes. V7's prompt adds an object-aware clause to the example ('a prominent foreground object and its background, or contrasting materials') while keeping the same IMPORTANT: surface/area directive. The format template also explicitly shows '<|seg|>' per TEXTURE line, giving Qwen instruction-output alignment. This last change breaks implicit assumptions: the literal '<|seg|>' in the prompt tokenises as the special SEG token, so four downstream extraction sites (create_labels, create_independent_texture_mask, extract_seg_hidden_states, inference_forward regex fallback) require filtering by the assistant-region boundary to avoid treating prompt-template SEGs as real model outputs.",
+    "two_stage_curriculum": "V5 and V6 used three stages. V6b's Stage 3 was the regression locus. V7 collapses the curriculum to two: Stage 1 (12 epochs) Bridge warmup with Qwen frozen at base LR 1e-4; Stage 2 (8 epochs) Qwen LoRA unfrozen at 1e-6 with Bridge decayed 10x to 1e-5. The extended Stage 1 (12 vs V6b's 10) reflects the larger Bridge's slower convergence."
+  },
+
+  "what_motivated_the_rewrite": {
+    "the_zs_sam_breakthrough": {
+      "finding": "ZS SAM 3 with a highly descriptive, object-aware text prompt achieved 0.928 mIoU on RWTD",
+      "mechanism": "The prompt was hand-crafted to treat objects-with-textures as natural regions, e.g. 'a conch shell shell with brown-and-white mosaic pattern' rather than 'smooth shell surface'. SAM's native text encoder (VETextEncoder with width=1024, output resizer 1024->256) fully understood and localised these descriptions without any fine-tuning.",
+      "implication": "The geometric ceiling is 0.928, not V5-Oracle's 0.81. V1-V6 were all constrained by the projector, not by SAM. The correct move is to reduce the projector's surgery on the semantic signal, not train SAM harder."
+    },
+    "the_v6_final_postmortem": {
+      "finding": "V6-Extended training completed 20 epochs, monotonic on val (0.62 -> 0.68) but regressed on RWTD (0.738 at ep10 -> 0.692 at ep15 live-inference-1-to-6)",
+      "mechanism": "Stage 3 SAM LoRA adaptation concentrated representations onto the training-prompt distribution. Under structured-prompt ablations, ep18 dropped 0.111 mIoU below ep10. Classic domain memorisation.",
+      "implication": "Val mIoU on ADE20K_Detecture is a misleading proxy once Stage 3 fires. Honest OOD metric (exactly-2 live on RWTD) peaks at Stage 1 end."
+    },
+    "the_bottleneck_smoking_gun": {
+      "finding": "V6 best-honest live RWTD mIoU = 0.694 (ep7, training prompt exactly-2). ZS SAM with object-aware prompt = 0.928. Delta = 0.234.",
+      "mechanism": "The only component between Qwen's rich 4096-D [SEG] hidden state and SAM's decoder is the projector. V1-V6 projectors all ended at 256-D (square bottleneck, 16x compression from 4096). Qwen's semantic richness -- open-vocabulary, multi-word descriptions -- gets smashed into 256 dimensions, losing the very richness that made ZS SAM work.",
+      "solution": "Widen the projection to 1024-D (matching SAM's native text-encoder width), use SAM's OWN pretrained 1024->256 projection for the final step. This lets Qwen produce semantically rich 1024-D vectors that flow through a pretrained channel SAM knows how to read."
+    }
+  },
+
+  "what_this_predicts_but_has_not_yet_proven": {
+    "h1_bridge_closes_the_zs_gap": "If the bottleneck was the block, then V7 Bridge should push RWTD live exactly-2 mIoU from V6's 0.694 toward the ZS ceiling of 0.928. Success criterion: >= 0.80 by end of Stage 2. Strong success: >= 0.85.",
+    "h2_dice_finally_drops": "V6's DICE loss plateaued at 0.43 because LM pressure was fighting it everywhere. With the exponential cliff, DICE should drop into the 0.2-0.3 range during Stage 1. Observable within the first 5 epochs.",
+    "h3_no_more_stage3_regression": "With SAM permanently frozen, the OOD regression mechanism is gone. RWTD live mIoU should be monotonic across all 20 epochs (subject to Stage 2 transition noise at epoch 13).",
+    "h4_dropout_prevents_drift": "The Bridge is 4.20M params (close to V4's Directional-Drift 10.5M in order of magnitude). Dropout(0.4) is the only regulariser. If H4 fails, we would see RWTD dropping 2+ epochs before plateau. Canary: RWTD live at ep8 should be >= RWTD live at ep4."
+  },
+
+  "scientific_method_plan": {
+    "hypothesis_bridge_outperforms_bottleneck": {
+      "claim": "At the same Stage-1 checkpoint count, V7 Bridge has strictly higher RWTD honest mIoU than V6 bottleneck",
+      "test": "Compare V7 ep12 (Stage 1 end) live-exactly-2 to V6b ep10 live-exactly-2 (0.676) and V6-final ep10 live-standard (0.738 inflated).",
+      "predicted_outcome": "V7 ep12 live-exactly-2 > 0.75; if true, Bridge hypothesis CONFIRMED."
+    },
+    "hypothesis_exponential_unlocks_dice": {
+      "claim": "The exponential cliff lets mask_dice drop where V6's cosine kept it at 0.43",
+      "test": "Training log: monitor train_mask_dice every 100 steps. Compare trajectory to V6-Final run.",
+      "predicted_outcome": "V7 Stage 1 end mask_dice < 0.35 (vs V6 Stage 1 end ~0.47)."
+    },
+    "hypothesis_frozen_sam_no_regression": {
+      "claim": "Permanent SAM freeze eliminates v6_completed's 0.713 -> 0.678 and V6-Final's 0.738 -> 0.692 Stage 3 RWTD regressions",
+      "test": "RWTD live-standard mIoU at ep16, ep20. No negative delta between them.",
+      "predicted_outcome": "Monotonic or plateau."
+    }
+  },
+
+  "progression_across_versions": {
+    "v1": {"best_test": 0.678, "failure": "Qwen LoRA overfitting"},
+    "v2": {"best_test": 0.695, "failure": "SAM Slot 1 Addiction"},
+    "v3": {"best_test": 0.703, "failure": "LLM co-training: count collapse, projector drift, SAM regression"},
+    "v4": {"best_test": 0.692, "failure": "Directional Drift (10.5M projector memorises ADE20K directions)"},
+    "v4_slim": {"best_test": 0.732, "breakthrough": "Information Bottleneck fixes drift. First to beat ZS."},
+    "v5_oracle": {"best_test": 0.810, "breakthrough": "Block-diagonal mask + bottleneck + SAM LoRA. Geometric ceiling on the bottleneck architecture."},
+    "v5_live": {"best_test": 0.136, "failure": "LoRA language collapse from zero-weight text loss"},
+    "v6_completed": {"best_test_oracle": 0.713, "oracle_ep15": 0.678, "breakthrough": "Proximity-Decayed LM Loss -- language preserved", "failure": "Latent Co-Adaptation Churn in Stage 3"},
+    "v6_extended": {"best_live_standard": 0.738, "best_live_exactly_2": 0.694, "ep15_regression": -0.046, "breakthrough": "Double-decay stabilises val; live inference > Oracle (Hungarian inflation + Qwen health)", "failure": "Projector still bottlenecking 234 mIoU points below ZS ceiling"},
+    "zs_sam3_object_aware_prompt": {"best_rwtd": 0.928, "evidence": "SAM natively understands object-aware descriptions; fine-tuning hurts OOD"},
+    "v7_finalised": {"status": "Training from scratch. Bridge (4096->1024) + frozen SAM resizer (1024->256) + exponential LM + SAM permanently frozen. Predicted ceiling: 0.85+."}
+  },
+
+  "critical_insight": "V1 through V6 all asked the wrong question: 'how do we train a better projector to get Qwen's semantics into SAM?' The ZS SAM 0.928 result on RWTD reframes the question: SAM already understands object-aware semantic descriptions. The projector's job is not to LEARN a mapping but to NOT DESTROY the one SAM already knows. The V7 Bridge + frozen resizer design is the minimal intervention: widen Qwen's output to match SAM's native text-encoder width, then hand the last 1024->256 projection back to SAM's own pretrained weights. Everything that used to be 'our learnable projector' is now just shape-matching; the semantic translation happens inside SAM's frozen infrastructure.",
+
+  "lessons_learned": [
+    "Square bottlenecks compress Qwen's rich vocabulary before SAM can see it. Use the target model's native width instead and borrow its pretrained projection for the final step. Cross-model alignment is a shape problem, not a learning problem, when both endpoints are pretrained.",
+    "LM loss schedules that don't isolate the grounding token produce a constant tug-of-war between DICE and LM. An exponential cliff with weight(d=0)=0 is mathematically clean: the SEG is geometrically free, everything else is linguistically anchored.",
+    "The 'verify stability in-domain, then stress-test OOD' strategy from V4 paid off again. V6-Extended looked fine on val but regressed on RWTD. ADE20K_Detecture + RWTD stays the right dual-evaluation regime.",
+    "Freezing is a first-class design choice. V5 and V6b all tried to cleverly unfreeze SAM; all backfired on OOD. 'Freeze forever' removes an entire class of failure modes.",
+    "Prompt format and training target must align. V6 trained with <|seg|> in labels but not in the user-visible prompt template. V7 makes this explicit. The downstream cost (prompt-side SEG filtering) is small and localised.",
+    "The true baseline is not 'zero-shot SAM with the generic texture prompt' (0.706) but 'zero-shot SAM with a well-crafted object-aware prompt' (0.928). Always verify the upper bound before deciding where to train."
+  ],
+
+  "proofs_by_experiment": {
+    "proof_1_bridge_shapes_verified": {
+      "claim": "V7 Bridge + frozen resizer produces the expected (B, 7, 256) output from (B, 7, 4096) Qwen hidden states",
+      "experiment": "Build V7 model, run random bf16 input through model._sam_resizer(model.bridge(x))",
+      "data": {"input_shape": [2, 7, 4096], "bridge_output_shape": [2, 7, 1024], "resizer_output_shape": [2, 7, 256], "resizer_frozen": true},
+      "conclusion": "Architecture wires correctly. Resizer is frozen in place."
+    },
+    "proof_2_exponential_weights_correct": {
+      "claim": "Exponential LM weighting (alpha=2.0, SEG forced to 0) matches expected values",
+      "experiment": "Build a synthetic chat with 2 SEG tokens in the assistant region and 2 in the user prompt (V7 template side-effect). Run create_labels. Inspect per-position weights.",
+      "data": {"d_0_seg_itself": 0.0, "d_1": 0.8647, "d_2": 0.9817, "d_3": 0.9975, "prompt_side_segs_filtered": true},
+      "conclusion": "All weight values match closed-form 1 - exp(-2*d); prompt-template SEGs correctly filtered from weight construction."
+    },
+    "proof_3_param_counts_match_blueprint": {
+      "claim": "V7 trainable parameter counts match the intended design",
+      "experiment": "Instantiate Qwen2SAMDetecture(cfg) with V7 config and call num_trainable_params()",
+      "data": {"qwen_lora": 3833856, "bridge": 4197376, "mask_head": 197376, "dustbin": 4096, "total": 8232704},
+      "conclusion": "Bridge is 4.20M (dominant), total 8.23M trainable, matches expected +1.97M over V6."
+    }
+  },
+
+  "paper_outline_implications": {
+    "must_add_section": "The Bridge-to-Native-Space section should replace the 'Information Bottleneck' section as the core projector contribution. The bottleneck is now a retired design choice, kept in the ablation table as a baseline.",
+    "must_revise_figure_1": "Projector block changes from '4096 -> 512 -> 256' to '4096 -> 1024 -> [frozen SAM resizer] -> 256'. Add the pale/dashed-border indicator for the frozen resizer.",
+    "must_update_ablation_table": "Add row: '+ Bridge to SAM native width (V7)'. Add row: 'Exponential LM cliff replaces cosine decay'. Remove the Stage-3 SAM-LoRA rows once V7 results are in.",
+    "must_add_zs_breakthrough_narrative": "The ZS SAM 3 object-aware prompt result (0.928) is the new motivating datapoint. It belongs in the introduction as the 'empirical ceiling' and reframes the entire projector discussion.",
+    "honest_disclosure": "Report ZS (0.928) as an upper bound; report training-prompt live-inference (Hungarian-inflated) AND exactly-K honest; explain the methodology clearly so the reader can judge the real gap."
+  },
+
+  "next_steps": {
+    "immediate": "Launch V7 training from scratch. python -m training.train --config configs/detecture.yaml.",
+    "during_training_canaries": [
+      "train_mask_dice drops below 0.35 by end of Stage 1 (H2 success)",
+      "Epoch 8 RWTD live mIoU >= Epoch 4 (H4 success: no drift)",
+      "Epoch 12 (Stage 1 end) live-exactly-2 RWTD >= 0.75 (H1 partial)",
+      "Epoch 20 (Stage 2 end) live-exactly-2 RWTD >= 0.80 (H1 full)",
+      "No RWTD drop between ep16 and ep20 (H3 success)"
+    ],
+    "post_training_ablations_planned": [
+      "Exactly-2 vs standard 1-to-6 vs object-friendly live inference at ep12, ep16, ep20",
+      "Bridge Dropout sweep: 0.2, 0.4 (baseline), 0.6 -- does heavier dropout buy more OOD?",
+      "Exponential alpha sweep: 1.0, 2.0 (baseline), 4.0 -- sharper cliff helps or hurts?",
+      "Skip-Stage-2 ablation: train with Qwen frozen forever and see how close we get without language adaptation"
+    ],
+    "if_v7_reaches_0_85": "Declare architecture converged. Write paper around this lineage.",
+    "if_v7_plateaus_below_0_80": "Hypothesis 1 partially failed -- projector wasn't the only bottleneck. Next candidates: LoRA rank, Qwen prompt reformulation, or revisit SAM's frozen resizer weights."
+  }
+}

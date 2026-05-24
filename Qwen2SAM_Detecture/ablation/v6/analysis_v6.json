@@ -1,0 +1,188 @@
+{
+  "title": "V6 Analysis: Proximity-Decayed LM Loss, Double-Decay Co-Adaptation, and the Oracle<->Live Inversion",
+  "date": "2026-04-16",
+
+  "what_we_tried": {
+    "proximity_decayed_lm_loss": "V5 masked ALL text tokens to -100, which eliminated LM supervision entirely and allowed Qwen LoRA to drift into garbage generation under the spatial gradient from SAM. V6 replaces this with weighted_lm_loss(logits, labels, lm_weights): every text token contributes to CE, but its weight decays by cosine proximity to the nearest <|seg|> position. Tokens right next to [SEG] get full weight (linguistic anchoring); distant filler tokens get near-zero weight (no pressure to count-collapse like V3 did).",
+    "double_decay_curriculum": "V5's curriculum unfroze Qwen LoRA at epoch 3 (very early) and SAM LoRA at epoch 6, both with a projector still running at 1e-4. The projector's high LR continuously shifted the feature distribution, forcing SAM LoRA to chase a moving target — we called this 'Latent Co-Adaptation Churn' in the v6_completed postmortem. V6 introduces TWO projector LR decays: 10x at Stage 2 (1e-4 -> 1e-5) when Qwen unfreezes, and ANOTHER 10x at Stage 3 (1e-5 -> 1e-6) when SAM unfreezes. Cumulatively 100x slower — the projector effectively freezes during SAM fine-tuning.",
+    "extended_stage_1": "v6_completed used a 7-epoch Stage 1; ablation results (ep5 vs ep7) showed prompt robustness still improving at ep7. V6-Extended pushes projector_warmup_epochs to 10 to let the geometric mapping reach its potential before any LoRA gradient enters the system.",
+    "live_inference_test_eval": "V5's TestEvaluator used model.forward() with teacher-forced GT text — the 'Oracle' path. This hides language generation failures. V6 switches to model.inference_forward() (two-pass Qwen generation + block-diagonal mask reconstruction on generated tokens), measuring true end-to-end pipeline performance on OOD RWTD during training.",
+    "orthogonal_clamp_stage3": "When SAM LoRA unfreezes at Stage 3, combined_loss picks up orthogonal_weight_override=0.1 (10x the default 0.01), adding heavy pressure to keep SAM's orthogonal-parametrised LoRA weights close to zero. Prevents SAM from memorising ADE20K-specific training artifacts."
+  },
+
+  "what_worked_spectacularly": {
+    "language_collapse_fully_prevented": {
+      "title": "V6 live inference yields 0.7356 mIoU at ep5 — a +0.60 swing from V5's 0.1364 collapse",
+      "detail": "Same RWTD test set, same 253 samples, same architecture downstream of Qwen. The ONLY change from V5 to V6 is the LM loss formulation. V5's zero-LM-weight regime caused Qwen's LoRA to drift into producing Chinese characters, emojis, and garbage tokens after 5 epochs of SAM-gradient-only training. V6's proximity-decayed LM loss keeps Qwen's language capabilities intact: every generated sample has coherent TEXTURE_N: lines, k_pred is distributed sensibly (no collapse to 0), and semantic content aligns with GT descriptions.",
+      "significance": "This single change closes the 0.67 mIoU gap between V5 Oracle (0.81) and V5 Live (0.14). V6 Live at ep7 (0.7394 standard prompt) is within striking distance of V5's Oracle peak without any teacher forcing."
+    },
+    "lm_loss_trajectory_stays_bounded": {
+      "title": "LM loss scale is ~100x smaller than V5 and grows gradually",
+      "detail": "V5 LM loss: 21.77 at ep1 (base Qwen doesn't know <|seg|>) -> 10.1 at ep3 (LoRA rapidly adapts — but this rapid drop was the SIGNATURE of LoRA drift) -> 7.66 at ep7 (converged to a broken-language optimum). V6 LM loss during Stage 1 (Qwen frozen): 3.67 flat across 7 epochs — the weighted sum of CE on anchored tokens with near-zero-weight fillers gives a stable baseline. v6_completed showed 3.67 -> 1.32 across 16 epochs once Qwen unfroze — gradual, controlled adaptation, no sudden drops indicating pretrained-distribution abandonment.",
+      "mechanism": "The weighting function cos(token_distance_to_seg) concentrates learning signal on tokens that matter for [SEG] grounding (adjacent context) while tolerating generation style drift on distant tokens. Qwen can adapt its [SEG] token production without being forced to rewrite its general-purpose language model."
+    },
+    "oracle_live_inversion_as_health_signal": {
+      "title": "V6 Live > Oracle is the new positive-health signature",
+      "detail": "V5 diagnosis was simple: Oracle >> Live means language is broken. V6 inverts this: at ep5 Live = 0.7356 exceeds Oracle = 0.6022. Explained mostly by Hungarian-matching inflation under unconstrained k (model predicts k=6 on 195/253 samples; Hungarian picks best 2 of 6 against 2 GT, ignoring 4 'free' channels). Partial 'exactly 2' control test confirms: forcing k=2 drops Live to 0.6617, within 0.06 of Oracle's 0.6022 — most of the gap is Hungarian slack, not methodology.",
+      "significance": "Oracle is no longer the upper bound; Live with Hungarian is the upper bound, 'exactly K' live is the honest baseline, Oracle is a conservative lower bound that hides inference-path gains. The paper must report all three."
+    },
+    "identical_k_distribution_proves_stable_language": {
+      "title": "ep5 and ep7 produce the SAME k_pred distribution under standard prompt",
+      "detail": "{6:195, 2:46, 3:10, 4:1, 1:1} at ep5, identical at ep7. Same 253 RWTD samples. This is only possible if Qwen's generation behaviour is unchanged — meaning all improvements during Stage 1 come from the projector + mask head downstream of the [SEG] token. This is the expected behaviour when Qwen LoRA is frozen and validates the curriculum design: no hidden language drift is happening via gradient leakage.",
+      "implication": "Future V7+ experiments can use k_pred distribution change across epochs as a canary metric for unauthorised Qwen drift."
+    }
+  },
+
+  "what_we_discovered": {
+    "hungarian_inflation_is_a_real_metric_artefact": {
+      "finding": "Aggregate mIoU with unconstrained k is systematically inflated by 5-10 points when the model over-segments",
+      "mechanism": "Hungarian matching between k_pred predicted classes and k_gt GT classes minimises total cost. With k_pred=6 and k_gt=2, only 2 of the 6 predicted channels are scored; the other 4 are free mistakes outside the mean. With k_pred=2 and k_gt=2, all predictions count.",
+      "measured_magnitude": "ep7 standard (k_pred up to 6): 0.7394. Same checkpoint with forced k=2: 0.6943. Delta = -0.045 = pure Hungarian slack.",
+      "paper_implication": "Any direct comparison to prior work (V4, V5, baselines) must normalise on prompt constraint. 'exactly K' is the metric for model ranking; 'up to N' is useful only for reporting generation-time behaviour."
+    },
+    "latent_co_adaptation_churn_fingerprint": {
+      "finding": "v6_completed RWTD Oracle trajectory: ep10=0.713 -> ep15=0.678 during Stage 3",
+      "mechanism": "At Stage 3 entry (v6_completed's design), projector LR was still ~1e-5 (post-single-decay) while SAM LoRA came in at 1e-5. Both at similar rate = mutual chasing. Projector shifts the feature distribution; SAM tries to track; projector responds to SAM's output; feedback loop.",
+      "evidence": "Val mIoU kept climbing on ADE20K (0.719 at ep16) while RWTD Oracle regressed. Classic signature of the model memorising training-set geometry rather than learning a general representation.",
+      "V6_extended_fix": "Second projector decay 1e-5 -> 1e-6 at Stage 3 entry. Projector is effectively frozen; SAM fine-tunes against a stable target. Orth clamp at 0.1 (10x stronger) further pins SAM near pretrained."
+    },
+    "prompt_robustness_as_early_overfitting_detector": {
+      "finding": "The gap between standard-prompt mIoU and exactly-K mIoU shrinks as training progresses (in healthy training)",
+      "evidence": "ep5 gap: -0.074 (standard 0.7356 vs exactly-2 0.6617). ep7 gap: -0.045 (standard 0.7394 vs exactly-2 0.6943). ep7 is more robust to the constraint.",
+      "interpretation": "A healthy projector should produce useful [SEG] embeddings regardless of how many textures Qwen over-predicts. When the gap narrows, representations are becoming prompt-invariant. If the gap REVERSES (standard drops below exactly-K), the model is memorising the over-segmentation pattern of the training prompt specifically — a domain-overfitting signature to watch for in Stage 3.",
+      "actionable": "Track this gap every 5 epochs during Stage 2-3 as a secondary canary metric alongside k_pred distribution."
+    }
+  },
+
+  "scientific_method_applied": {
+    "hypothesis_1_proximity_decay_fixes_language": {
+      "claim": "Weighted LM loss with proximity-decayed token weights prevents the V5 catastrophic forgetting without causing V3 count-collapse",
+      "test": "Run V6 with identical architecture to V5 except the LM loss. Measure live inference mIoU + k_pred distribution on RWTD.",
+      "result": "V5 live ep7 = 0.1364 (collapsed, k_pred mostly 0). V6 live ep7 = 0.7394 standard / 0.6943 exactly-2, k_pred distribution healthy. Language generation coherent.",
+      "verdict": "CONFIRMED — the language-collapse / count-collapse dilemma is resolved by weighted partial masking."
+    },
+    "hypothesis_2_hungarian_inflation_is_real": {
+      "claim": "The gap between training-time TestEvaluator Oracle numbers (0.60) and ablation script live numbers (0.74) is mostly Hungarian matching slack under over-segmentation, not methodology bug",
+      "test": "Run both Conditions A ('1 to 6', k_pred up to 6) and B ('exactly 2', k_pred=2) on the SAME ep5 checkpoint. Compare delta to the Oracle<->Live gap.",
+      "result": "ep5 Oracle = 0.6022. ep5 Live-standard = 0.7356 (delta = +0.134). ep5 Live-exactly-2 = 0.6617 (delta from Oracle = +0.06). Hungarian slack accounts for (0.7356 - 0.6617) / (0.7356 - 0.6022) = 55% of the Oracle<->Live gap; mask-reconstruction / generation-path effects account for the remaining 45%.",
+      "verdict": "CONFIRMED — Hungarian inflation is a dominant factor. Live-exactly-K is the honest metric for cross-method comparison."
+    },
+    "hypothesis_3_qwen_stable_during_stage_1": {
+      "claim": "With Qwen LoRA frozen, no gradient should reach Qwen weights; generation behaviour should be identical across Stage 1 epochs",
+      "test": "Compare k_pred distributions and generated_text content between ep5 and ep7 on same RWTD test set with same prompt.",
+      "result": "k_pred distributions EXACTLY identical: {6:195, 2:46, 3:10, 4:1, 1:1}. Per-sample generated text also identical on spot-checked samples.",
+      "verdict": "CONFIRMED — no accidental gradient leakage to Qwen weights. Stage 1 training is pure projector / mask-head refinement."
+    },
+    "hypothesis_4_longer_stage_1_improves_robustness": {
+      "claim": "More projector-only training epochs = more prompt-robust representations",
+      "test": "Compare the 'exactly-2 minus standard' gap between ep5 and ep7",
+      "result": "ep5 gap: -0.0739. ep7 gap: -0.0451. Gap decreased 39% across 2 additional Stage 1 epochs.",
+      "verdict": "SUPPORTED (not yet CONFIRMED — needs ep10 data to extrapolate). Motivates projector_warmup_epochs: 10 in V6-Extended."
+    },
+    "hypothesis_5_double_decay_eliminates_stage3_regression": {
+      "claim": "Dropping projector to 1e-6 at Stage 3 prevents the v6_completed RWTD regression",
+      "test": "Run V6-Extended through epoch 18 and compare ep15 vs ep18 RWTD live metrics. Regression-free trajectory = confirmed.",
+      "status": "IN PROGRESS — training paused at ep7 for ablation; resume from best.pt planned."
+    }
+  },
+
+  "progression_across_versions": {
+    "v1": {"best_test": 0.678, "failure": "Qwen LoRA overfitting"},
+    "v2": {"best_test": 0.695, "failure": "SAM Slot 1 Addiction"},
+    "v3": {"best_test": 0.703, "failure": "LLM co-training: count collapse + projector drift + SAM regression"},
+    "v4": {"best_test": 0.692, "failure": "Directional Drift (10.5M projector memorises ADE20K directions)"},
+    "v4_slim": {"best_test": 0.732, "breakthrough": "Information Bottleneck eliminates drift. First to beat ZS (0.706)"},
+    "v5_oracle": {"best_test": 0.810, "breakthrough": "Block-diagonal mask + bottleneck + SAM LoRA. New SOTA for the geometric architecture."},
+    "v5_live": {"best_test": 0.136, "failure": "LoRA catastrophic forgetting from zero LM weight"},
+    "v6_completed": {"best_test_live": null, "best_oracle_ep10": 0.713, "oracle_ep15": 0.678, "breakthrough": "Proximity-Decayed LM Loss — language fully preserved", "failure": "Latent Co-Adaptation Churn caused RWTD regression in Stage 3"},
+    "v6_extended_current": {"status": "Stage 1 complete through ep7. Live ep7 standard=0.7394, exactly_2=0.6943. Resume pending.", "design_changes": "projector_warmup_epochs 7->10, e2e_epoch 9->14, double projector decay, live inference test eval"}
+  },
+
+  "critical_insight": "V6 is the first version where the Oracle<->Live relationship INVERTS — Live exceeds Oracle. This is a signal that the geometric architecture is healthy AND language generation is healthy simultaneously. V5 had healthy geometry with broken language (Oracle >> Live). V3-V4 had working language with unstable geometry (Live close to Oracle, but both low). V6 is the first time both are working; the remaining uncertainty is whether the Double-Decay curriculum can take V6 through Stages 2-3 without re-introducing v6_completed's Stage 3 regression. The ablation evidence (ep7 prompt robustness still improving, k_pred stable) is consistent with continued gains.",
+
+  "lessons_learned": [
+    "Loss masking is a spectrum, not a switch. V3's 0% masking collapsed. V5's 100% masking destroyed language. V6's weighted partial masking (high weight near [SEG], low weight elsewhere) threads the needle — and proximity-decay is a principled way to compute the weights rather than hand-tuning per-token masks.",
+    "The Hungarian-matching inflation artefact must be disclosed when reporting mIoU. 'k_pred up to 6' numbers are NOT comparable to 'k_pred fixed at 2' numbers even on the same checkpoint. Papers should report both (or the 'exactly K' version only if constrained to a single metric).",
+    "Oracle eval with teacher forcing is a USEFUL monitoring signal during Stage 1 but MISLEADING during Stages 2-3. Live inference with Hungarian matching is over-optimistic. 'exactly K' live inference is the honest middle. Track all three during training.",
+    "The correct frame for multi-component fine-tuning is differential RATES, not differential ordering. You can't just 'unfreeze X later'; you need to unfreeze X AND decay Y simultaneously. v6_completed unfroze SAM but kept projector at post-single-decay rate; the churn arose because their rates were similar. V6-Extended pushes projector to 1e-6 = effectively frozen during SAM training.",
+    "Test-set k_pred distribution is a free canary metric. It's deterministic (same prompt + same checkpoint always gives same distribution), cheap to compute, and changes in it across epochs indicate Qwen weight drift. Should be logged every epoch, not just at periodic test evals.",
+    "When the Stage 1 val mIoU curve flattens (diminishing returns), that's the signal to transition to Stage 2 — NOT a fixed epoch count. The 7-vs-10 debate should eventually become a convergence-criterion trigger rather than a config number."
+  ],
+
+  "proofs_by_experiment": {
+    "proof_1_language_health": {
+      "claim": "V6's LM loss formulation prevents LoRA catastrophic forgetting",
+      "experiment": "RWTD live inference, ep7 of V6 vs ep7 of V5, same architecture downstream",
+      "data": {
+        "v5_ep7_live_miou": 0.1364,
+        "v6_ep7_live_miou_standard": 0.7394,
+        "v6_ep7_live_miou_exactly_2": 0.6943,
+        "v5_generation_samples": ["sandy ocean floor... ENCED ENCED EN", "beaded bracelets... 前景", "vine wreath... 🍌"],
+        "v6_generation_samples": ["Texture of sandy seabed with fine grains, light beige color...", "Texture of conical shell with mosaic brown and white pattern, smooth surface..."]
+      },
+      "conclusion": "V6 generations are clean, coherent English TEXTURE_N lines that match GT semantically. V5 generations at the same epoch are garbled. 5-6x absolute mIoU improvement; the proximity-decayed LM loss is the causal change."
+    },
+    "proof_2_hungarian_inflation": {
+      "claim": "Aggregate mIoU with unconstrained k over-counts by ~5 points relative to the semantic-quality baseline",
+      "experiment": "Same ep7 checkpoint evaluated with Condition A (standard prompt, k_pred flexible) and Condition B (forced k=2)",
+      "data": {
+        "standard_k_dist": {"6": 195, "2": 46, "3": 10, "4": 1, "1": 1},
+        "standard_miou": 0.7394,
+        "exactly_2_k_dist": {"2": 253},
+        "exactly_2_miou": 0.6943,
+        "delta": -0.0451
+      },
+      "conclusion": "4.5 mIoU points of apparent quality are pure Hungarian slack from extra predicted channels not contributing to the matched-mean. The 'exactly 2' number is the honest one."
+    },
+    "proof_3_stage_1_qwen_is_frozen": {
+      "claim": "Qwen LoRA is genuinely frozen during Stage 1 — no gradient leakage",
+      "experiment": "Compare ep5 vs ep7 generations on the same 253 RWTD samples",
+      "data": {
+        "ep5_k_dist": {"6": 195, "2": 46, "3": 10, "4": 1, "1": 1},
+        "ep7_k_dist": {"6": 195, "2": 46, "3": 10, "4": 1, "1": 1},
+        "observation": "Exact match at individual-sample granularity (k_pred per idx matches)"
+      },
+      "conclusion": "Qwen produces bit-identical outputs at ep5 and ep7 for RWTD. All mIoU improvement during Stage 1 (0.7356 -> 0.7394) is attributable to the projector + mask head."
+    }
+  },
+
+  "paper_outline_implications": {
+    "title_candidates": [
+      "V6: Proximity-Decayed Language Model Loss for Catastrophic-Forgetting-Free Multimodal Fine-Tuning",
+      "Decoupling [SEG] Grounding from Language Drift: A Staged Curriculum for Qwen-SAM Co-Training"
+    ],
+    "must_include_figures": [
+      "LM loss trajectory V5 vs V6 (shows the stability difference)",
+      "Standard vs exactly-K mIoU per epoch (Hungarian inflation, prompt robustness)",
+      "k_pred distribution over epochs (generation stability)",
+      "Curriculum diagram with the three stages and the two decays"
+    ],
+    "must_include_tables": [
+      "4-way ablation: ep5 vs ep7 x standard vs exactly_2",
+      "V6 vs baselines on RWTD (ZS, V4-Slim, V5-Oracle, V5-Live)",
+      "Oracle/Live/Exactly-K triplet for the final V6 checkpoint"
+    ],
+    "honest_disclosure_requirements": [
+      "Report mIoU under BOTH 'up to 6' and 'exactly 2' prompts to avoid Hungarian inflation",
+      "Report live inference AND Oracle — explain the inversion vs V5",
+      "Acknowledge that Stage 3 design was iterated (v6_completed regression -> v6_extended double decay)"
+    ]
+  },
+
+  "next_steps": {
+    "immediate": "Resume from checkpoints/best.pt (ep7). Complete Stages 1-3 under V6-Extended curriculum (projector_warmup=10, e2e=14, double decay, live test eval).",
+    "during_training_monitoring": [
+      "Track k_pred distribution at every test eval (ep10, ep15) — expected to remain stable under standard prompt",
+      "Track standard / exactly-2 gap — expected to narrow or stay stable; reversal = overfitting canary",
+      "Track live test mIoU trajectory — expected to be monotonic or plateau, NOT regress (v6_completed failure mode)"
+    ],
+    "post_training_ablations_planned": [
+      "Full live-inference RWTD eval on ep10, ep14, ep18 for the trajectory curve",
+      "Oracle eval at ep18 for the final Oracle<->Live delta measurement",
+      "Cross-dataset eval on ADE20K-test to check whether the double decay hurts in-domain performance",
+      "LM-weight sweep ablation: try lm_weight 0.05, 0.1 (current), 0.2 to find the sweet spot"
+    ],
+    "if_v6_extended_succeeds": "Lock this as the final architecture. Write up paper with the four proofs_by_experiment as core evidence.",
+    "if_stage_3_still_regresses": "Backup plan: freeze SAM LoRA entirely (skip Stage 3). v6_completed hit 0.719 val at ep16 with SAM active; we may already be at the geometric ceiling and SAM fine-tuning is net-negative for OOD generalisation."
+  }
+}

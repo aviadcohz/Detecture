@@ -1,0 +1,7 @@
+dataset: "ade20k_texturesam"
+
+source:
+  name: "ADE20K TextureSAM (all eta degrees)"
+  ade_root: "DetectureMiner/data/raw/ade20k/ADEChallengeData2016"
+  textured_images_dir: "~/ade20k_texturesam/images_flat"
+  image_mapping: "~/ade20k_texturesam/image_mapping.json"

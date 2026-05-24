@@ -1,0 +1,154 @@
+seed: 42
+runtime:
+  log_level: INFO
+  cpu_workers: 10
+  device_preference: cuda
+  cleanup_batch_cache: true
+io:
+  parquet_engine: pyarrow
+  write_csv_also: true
+  symlink_selected: true
+index:
+  image_extensions:
+  - .jpg
+  - .jpeg
+  - .png
+  - .webp
+  read_image_dimensions: true
+  min_short_side: 256
+  annotation_scan_shards: true
+  shard_scan_max_files: 500
+batching:
+  batch_budget_gb: 5.0
+  max_batches: null
+stage_a:
+  enabled: true
+  n_masks_min: 80
+  largest_mask_ratio_max: 0.6
+  median_mask_ratio_max: 0.02
+  small_threshold: 0.001
+  small_mask_fraction_min: 0.3
+  use_entropy: true
+  entropy_min: 2.0
+  allow_clip_fallback_if_unknown: true
+stage_b:
+  enabled: true
+  alpha: 0.7
+  clip_score_threshold: 0.2
+  top_k_per_positive_query: 3000
+  image_batch_size: 128
+  model:
+    open_clip_model_name: ViT-B-32
+    open_clip_pretrained: laion2b_s34b_b79k
+    hf_clip_model_name: openai/clip-vit-base-patch32
+  positive_queries:
+  - a close-up photo of a textured surface
+  - a photograph of two different textures meeting with a clear boundary
+  - grass next to pavement texture boundary
+  - sand meeting water at the shoreline
+  - stone wall texture surface
+  - concrete ground texture
+  - fabric textile texture close-up
+  - wood grain texture surface
+  - foliage texture background
+  negative_queries:
+  - a person
+  - a face portrait
+  - a product on a table
+  - a car
+  - a dog
+  - food on a plate
+  - a poster with text
+  - a logo
+  - a screenshot user interface
+  - cartoon illustration graphic design
+stage_c:
+  enabled: false
+  shortlist_cap: 10000
+  model_name: Salesforce/blip-image-captioning-base
+  caption_batch_size: 8
+  keep_keywords:
+  - texture
+  - surface
+  - pattern
+  - wall
+  - floor
+  - ground
+  - grass
+  - sand
+  - concrete
+  - fabric
+  - wood
+  - stone
+  - close-up
+  - background
+  - foliage
+  - water
+  reject_keywords:
+  - person
+  - man
+  - woman
+  - face
+  - selfie
+  - car
+  - dog
+  - cat
+  - logo
+  - text
+  - sign
+  - product
+  - bottle
+  - phone
+  - screen
+  - screenshot
+  - menu
+stage_d:
+  enabled: true
+  backend: hf_blip_vqa
+  score_top_n_from_stage_b: 1800
+  external_command: ''
+  hf_blip_vqa_model_name: Salesforce/blip-vqa-base
+  hf_blip_max_new_tokens: 12
+  hf_vlm_model_name: Qwen/Qwen2.5-VL-3B-Instruct
+  hf_vlm_max_new_tokens: 220
+  hf_vlm_temperature: 0.0
+  hf_vlm_load_in_4bit: true
+  device_preference: cuda
+  prompt: "Task:\nScore how well this image matches the \"real-world texture segmentation\"\
+    \ setting similar to RWTD.\n\nRWTD-like image definition:\nA real photograph where\
+    \ most pixels are textured surfaces or materials (grass, stone, fabric, wood,\
+    \ sand, concrete, water ripples, foliage, etc.).\nThe image can be plausibly segmented\
+    \ into 2 to 4 large regions based primarily on texture/material changes (not object\
+    \ identity).\nThere is a clear texture boundary or transition between regions.\n\
+    The image is NOT a mosaic, collage, patchwork, tiled texture sheet, graphic design,\
+    \ or repeated pattern sample.\nThe image is NOT primarily object-centric (not\
+    \ dominated by a single salient object, person, animal, product, or text).\n\n\
+    Output JSON only with these fields:\n- score_0_100: integer\n- decision: one of\
+    \ [\"match\", \"borderline\", \"not_match\"]\n- main_reason: one short sentence\n\
+    - flags: list of any that apply from\n  [\"mosaic_or_collage\", \"synthetic_or_graphic\"\
+    , \"object_centric\", \"too_many_objects\", \"no_clear_texture_boundary\", \"\
+    low_texture_content\", \"text_overlay_or_ui\"]\n\nScoring rubric:\n90-100: almost\
+    \ entirely texture/materials, 2-3 large regions, strong texture boundary, minimal\
+    \ objects\n70-89: mostly texture/materials, boundary present, minor objects acceptable\n\
+    40-69: mixed textures and objects, boundary weak or many regions\n0-39: object-centric,\
+    \ mosaic/collage, synthetic graphic, or no meaningful texture segmentation\n\n\
+    Now evaluate the image.\n"
+selection:
+  match_score_min: 80
+  match_decision_required: match
+  keep_borderline: true
+  borderline_score_min: 70
+  top_n_cap: null
+qa:
+  random_seed: 42
+  random_grid_count: 50
+  top_contact_sheet_count: 100
+  thumbnail_size:
+  - 224
+  - 224
+review:
+  compute_geometry_debug: true
+  max_segments_decode_per_image: 80
+  mask_target_long_side: 960
+  min_large_region_frac: 0.08
+  strong_boundary_min_pixels: 40

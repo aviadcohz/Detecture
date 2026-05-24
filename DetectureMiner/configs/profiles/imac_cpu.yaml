@@ -1,0 +1,28 @@
+runtime:
+  device_preference: cpu
+  cpu_workers: 4
+  cleanup_batch_cache: false
+
+index:
+  min_short_side: 256
+
+stage_b:
+  enabled: true
+  image_batch_size: 8
+  clip_score_threshold: 0.20
+  top_k_per_positive_query: 1200
+
+stage_c:
+  enabled: false
+
+stage_d:
+  enabled: true
+  backend: hf_blip_vqa
+  score_top_n_from_stage_b: 120
+  hf_blip_vqa_model_name: Salesforce/blip-vqa-base
+  hf_blip_max_new_tokens: 12
+  device_preference: cpu
+
+selection:
+  match_score_min: 80
+  borderline_score_min: 70

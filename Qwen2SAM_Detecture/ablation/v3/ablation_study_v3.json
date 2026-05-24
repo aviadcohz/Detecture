@@ -1,0 +1,186 @@
+{
+  "version": "v3",
+  "run_id": "run_6_batch_multiplexing",
+  "date": "2026-04-10",
+  "status": "completed (15 epochs, terminated for V4 pivot)",
+  "motivation": "V2 (Run 5) achieved test mIoU=0.695 (98% of ZS baseline) but plateaued there. The positional bias test on the V2 ep15 checkpoint confirmed SAM3 has extreme 'Slot 1 Addiction': Slot 1 = 90.5% of pixels, Slot 2 = exactly 0.0% across all 253 RWTD samples regardless of content, position swap, or isolated runs. SAM3 was pretrained for single-prompt segmentation and its cross-attention is hard-wired to attend only to position 1 of the prompt sequence. No amount of further training on 7-slot queries could fix this without an architectural change.",
+  "hypothesis": "Batch Multiplexing fixes positional bias surgically: instead of feeding (B, 7, 256) queries into SAM (where slots 2-7 are starved), flatten queries into (B*7, 1, 256) so each query gets its own 'slot 1' position. Image features are indexed (not copied) via image_ids to match. This forces SAM to process each query through the same attention path it was pretrained on. Combined with V2's 3-front attack (crop aug, cycle loss, constrained Qwen LoRA), this should unlock true multi-channel segmentation.",
+  "architecture_changes": {
+    "batch_multiplexing": {
+      "description": "Rewrote run_sam3_semantic to flatten (B, 7, 256) queries into (B*7, 1, 256). Each query is processed through SAM3 in its own 'slot 1' position. image_ids = arange(B).repeat_interleave(7) tells _get_img_feats and _embed_pixels to expand backbone features by indexing (no copy). Output (B*7, 1, H, W) is reshaped back to (B, 7, H, W).",
+      "file": "models/qwen2sam_detecture.py",
+      "method": "run_sam3_semantic",
+      "effect": "Each texture query gets unbiased attention. Architecturally bypasses SAM's pretrained 'first position only' habit. Memory cost: ~+530 MB on H100 (fits comfortably).",
+      "nan_trap_fix": "Critical: with seq_len=1, passing prompt_key_padding_mask produces Softmax([-inf]) = NaN. Solution: pass key_padding_mask=None for both Fusion Encoder and SegHead cross_attend_prompt. PAD slots run unmasked, produce garbage logits that the loss/argmax ignores."
+    },
+    "retained_from_v2": {
+      "crop_augmentation": "Dynamic Macro-to-Micro 35% prob, 300-600px",
+      "cycle_consistency": "InverseProjector 256\u21924096 with gradient firewall, weight 0.05 in Phase 2",
+      "constrained_qwen_lora": "r=4, alpha=8 (4x reduction from V1)",
+      "two_phase_curriculum": "Phase 1 (epochs 0-9): Qwen bypass via override_tex_embeds. Phase 2 (epochs 10+): live Qwen with LM + contrastive losses unfrozen, fresh scheduler warmup."
+    }
+  },
+  "config": {
+    "lora_r": 4,
+    "lora_alpha": 8,
+    "sam3_lora_r": 32,
+    "sam3_lora_targets": ["q", "k", "v", "out_proj"],
+    "mask_weight": 1.0,
+    "ce_weight": 1.0,
+    "dice_weight": 3.0,
+    "lm_weight": 0.05,
+    "text_contrastive_weight": 0.1,
+    "cycle_weight": 0.05,
+    "orthogonal_weight": 0.01,
+    "phase1_epochs": 10,
+    "num_epochs": 80,
+    "batch_size": 2,
+    "gradient_accumulation_steps": 2,
+    "crop_augmentation": true,
+    "crop_probability": 0.35,
+    "crop_size_range": [300, 600],
+    "hungarian_matching": false,
+    "direct_1to1_alignment": true,
+    "qwen_bypass_phase1": true,
+    "self_distillation": true,
+    "batch_multiplexing": true
+  },
+  "results": {
+    "best_val_miou": 0.7002,
+    "best_val_epoch": 15,
+    "best_test_miou_rwtd": 0.7028,
+    "best_test_epoch_rwtd": 5,
+    "epochs_trained": 15,
+    "phase1_best_val_approx": 0.6440,
+    "phase1_best_test_rwtd": 0.7028,
+    "phase2_test_rwtd_ep15": 0.5883,
+    "phase2_degradation": -0.1145
+  },
+  "test_history": [
+    {"epoch": 5, "test_miou": 0.7028, "phase": 1, "note": "Phase 1 best - exceeded V2 ep5 baseline (0.6275)"},
+    {"epoch": 10, "test_miou": 0.6825, "phase": 1, "note": "Phase 1 end, slight regression"},
+    {"epoch": 15, "test_miou": 0.5883, "phase": 2, "note": "Phase 2 degradation -0.0942 from ep10"}
+  ],
+  "diagnosis_experiments": {
+    "experiment_1_gt_bypass": {
+      "description": "Replace live Qwen with pre-computed teacher embeddings (qwen_gt_embeds) on RWTD. Tests pure vision path.",
+      "result_miou": 0.0,
+      "result_dustbin": 1.0,
+      "interpretation": "100% dustbin allocation. The trained projector (Phase 2) learned to depend on the trained Qwen distribution and rejects teacher embeddings as out-of-distribution. The vision path lost its grounding to the original frozen Qwen feature space.",
+      "file": "ablation/v3_diagnosis.json"
+    },
+    "experiment_2_over_generation_check": {
+      "description": "Live Qwen inference on RWTD ep15 checkpoint, log k_pred distribution and sample texts.",
+      "miou_live": 0.5883,
+      "k_pred_distribution": {"1": 216, "2": 17, "3": 9, "4": 2, "5": 2, "6": 7},
+      "k_pred_1_pct": 0.854,
+      "interpretation": "85% of samples collapse to k_pred=1 (single texture). Sample generated descriptions are SEMANTICALLY PERFECT ('sand, fine granular surface...', 'fabric, fine woven grid pattern...'), but Qwen LoRA learned to terminate after a single TEXTURE_1 line. The LM loss optimizer found the shortcut: shorter generations = lower LM loss when teacher token sequences are short.",
+      "file": "ablation/v3_diagnosis.json"
+    },
+    "experiment_3_positional_bias_retest": {
+      "description": "Re-run positional bias test with batch multiplexing architecture using GT embeddings.",
+      "condition_a_T1_T2": {"miou": 0.0, "slot0": 1.0, "slot1": 0.0, "slot2": 0.0},
+      "condition_b_T2_T1": {"miou": 0.0, "slot0": 1.0, "slot1": 0.0, "slot2": 0.0},
+      "interpretation": "All channels collapsed to dustbin (slot 0). The architecture's positional bias is gone (Phase 1 tested clean) but the Phase 2-trained weights regressed completely on GT embeddings. This confirms the projector overfits to live Qwen output distribution.",
+      "file": "ablation/v3_diagnosis.json"
+    },
+    "experiment_4_forced_k2_test": {
+      "description": "Force Qwen to generate exactly 2 textures via aggressive prompt + min_new_tokens. Tests whether SAM can use multi-channel when given 2 valid embeddings.",
+      "result_miou": 0.317,
+      "result_slot1_pct": 0.952,
+      "result_slot2_pct": 0.029,
+      "interpretation": "Even with 2 valid embeddings forced into the input, SAM Phase 2-trained weights allocate 95.2% to slot 1 and 2.9% to slot 2. The batch multiplexing architecture worked initially (Phase 1 ep5 = 0.7028) but Phase 2 SAM LoRA training collapsed back to single-channel behavior because the dominant gradient signal still rewards single-channel solutions on the training set.",
+      "file": "scripts/forced_k2_test.py"
+    }
+  },
+  "key_findings": [
+    {
+      "finding": "Phase 1 with Batch Multiplexing achieved a NEW PEAK on RWTD",
+      "evidence": "Epoch 5 (Phase 1, frozen Qwen) test mIoU = 0.7028, beating V2 epoch 5 (0.6275) by +0.075 and reaching 99.5% of the ZS baseline (0.7063). This is the closest any trained model has come to ZS in pure vision mode.",
+      "impact": "Validates the Batch Multiplexing architecture. The positional bias fix works when SAM weights aren't being co-trained against multi-loss pressure."
+    },
+    {
+      "finding": "Phase 2 LM co-training catastrophically collapsed Qwen to k_pred=1",
+      "evidence": "85% of RWTD samples generate only TEXTURE_1, terminate with <|im_end|>, then SAM has only one valid query. Sample descriptions remain semantically excellent (sand, fabric, rock, etc.) - the language quality is intact but counting is destroyed.",
+      "impact": "The LM loss reward function favors short teacher sequences. Even with constrained r=4 LoRA, Qwen takes the shortcut: minimize cross-entropy by stopping early."
+    },
+    {
+      "finding": "Phase 2 SAM LoRA collapsed back to slot-1 dominance despite batch multiplexing",
+      "evidence": "Forced k=2 test on ep15: Slot 1 = 95.2%, Slot 2 = 2.9%. Architecture is unbiased but trained weights regressed.",
+      "impact": "Even with the architectural fix, the gradient signal in Phase 2 (mostly k=1 samples from collapsed Qwen + dominant single-texture training images) reinforces single-channel behavior. The fix is necessary but not sufficient under hostile co-training."
+    },
+    {
+      "finding": "The projector overfit to live-Qwen distribution and lost teacher grounding",
+      "evidence": "GT bypass test ep15: mIoU = 0.000, 100% dustbin. The projector trained in Phase 2 only accepts the trained-Qwen output manifold. Teacher embeddings (the original frozen Qwen output) are now treated as garbage.",
+      "impact": "Catastrophic drift. There is no way to 'undo' Phase 2 - the projector is irreversibly bound to the trained-Qwen distribution. Any future pivot must restart from a Phase 1 checkpoint."
+    },
+    {
+      "finding": "Val mIoU stayed flat (0.7002) while test mIoU collapsed",
+      "evidence": "Training val mIoU at ep15 = 0.7002 (teacher-forced GT embeddings on ADE20K val). Test mIoU at ep15 = 0.5883 (live Qwen on RWTD). Gap = 0.1119.",
+      "impact": "Teacher forcing during val masks live-inference collapse. The training metric is misleading - need to add a 'live mIoU on val' check to the training loop."
+    },
+    {
+      "finding": "CRITICAL META-LESSON: LLM co-training is fundamentally incompatible with this task",
+      "evidence": "Three independent failure modes converge: (1) Qwen LoRA over-fits ADE20K count distribution (k=1 collapse), (2) Projector loses teacher grounding (GT bypass = 0), (3) SAM LoRA reinforces single-channel solutions. Each mode is a different optimization pathology, but ALL stem from co-training Qwen with the segmentation losses.",
+      "impact": "V4 must abandon LLM co-training entirely. Treat Qwen as a permanently frozen Oracle. Train only the bridge: Projector + InverseProjector + SAM LoRA."
+    }
+  ],
+  "comparison_to_v2": {
+    "phase1_best_test_rwtd": {
+      "v2": 0.6275,
+      "v3": 0.7028,
+      "delta": "+0.0753",
+      "note": "Batch Multiplexing alone unlocked +7.5 mIoU points on Phase 1 inference. PROOF that the architectural fix works."
+    },
+    "phase2_test_rwtd_ep15": {
+      "v2": 0.6950,
+      "v3": 0.5883,
+      "delta": "-0.1067",
+      "note": "Phase 2 destroyed V3's gains because Qwen LoRA collapsed and projector drifted off the teacher manifold."
+    },
+    "k_pred_collapse_pct": {
+      "v2_ep15": "k_pred=6 in 77% (over-generation, Hungarian rescues)",
+      "v3_ep15": "k_pred=1 in 85% (under-generation, no rescue possible)",
+      "note": "V3 trained without Hungarian matching, so over-generation no longer hurts; instead Qwen learned the OPPOSITE shortcut: under-generation."
+    },
+    "positional_bias": {
+      "v2": "Slot1=90.5%, Slot2=0.0% (architecture broken)",
+      "v3_phase1": "Multi-channel working (achieved 0.7028 with multi-texture queries)",
+      "v3_phase2_forced_k2": "Slot1=95.2%, Slot2=2.9% (regressed via training)"
+    }
+  },
+  "next_steps_v4": {
+    "primary": "Pure Vision Projector Alignment + Architectural Plug. Abandon LLM co-training. Qwen is a PERMANENTLY frozen Oracle. The DescriptionProjector is surgically augmented with SAM3's own ln_final and resizer layers (transplanted from backbone.language_backbone), FROZEN, as its final two layers. Replace the V3 InverseProjector + Cycle MSE loss with a Cosine Distillation Loss against the SAM text encoder's own embedding of the GT description.",
+    "architectural_plug": {
+      "description": "Transplant SAM3's native text-encoder head into the projector and freeze it. Forces the trainable trunk to land in SAM's exact pre-projection latent space instead of negotiating its own private 256-dim manifold.",
+      "source_modules": [
+        "backbone.language_backbone.encoder.ln_final  (LayerNorm 1024)",
+        "backbone.language_backbone.resizer           (Linear 1024 -> 256)"
+      ],
+      "state_dict_keys": [
+        "backbone.language_backbone.encoder.ln_final.weight / .bias",
+        "backbone.language_backbone.resizer.weight / .bias"
+      ],
+      "projector_layout": "Linear(4096->2048) -> LayerNorm(2048) -> GELU -> Linear(2048->1024) -> [FROZEN] sam_ln_final (LN 1024) -> [FROZEN] sam_resizer (Linear 1024->256)",
+      "transplant_size": "264,448 frozen params (2*1024 LN + 1024*256+256 Linear)",
+      "verification": "scripts/sanity_plug.py — confirmed weight-identical copy, trunk receives grads, plug does not"
+    },
+    "cosine_distillation_loss": {
+      "formula": "distillation_loss = 1 - F.cosine_similarity(pred_embeds_256, sam_target_embeds_256.detach()).mean()",
+      "pred_source": "projector(query_embeds)[:, 1:, :] — texture-slot projector output",
+      "target_source": "SAM's own VETextEncoder applied to the GT description strings, mean-pooled over valid tokens -> (B, MAX_TEXTURES, 256)",
+      "weight": 1.0,
+      "why_cosine_not_mse": "Cosine is scale-invariant; the frozen resizer fixes the scale, so MSE would fight the plug. Cosine only enforces direction in SAM's native space, which is exactly what we want.",
+      "replaces": "V3 InverseProjector + cycle MSE loss (bulky and indirect)"
+    },
+    "stage_1": "Epochs 0-14: train projector trunk (4096 -> 1024) + mask_head + dustbin. SAM LoRA frozen. Qwen frozen. Transplanted LN + resizer frozen. Cosine Distillation active from ep 0. Mask losses use override_tex_embeds=qwen_gt_embeds (teacher forcing).",
+    "stage_2": "Epochs 15+: unfreeze SAM LoRA. Trunk + mask head continue training. Qwen and transplant STAY frozen.",
+    "rationale": "V3 proved Qwen co-training causes (a) k-collapse via LM loss shortcut, (b) projector drift off teacher manifold, (c) SAM regression to slot-1 dominance. Removing co-training removes all three failure modes. The Architectural Plug goes further: instead of hoping the projector learns to match SAM's prompt distribution, we FORCE it by making the last two layers BE SAM's own text head. Cosine distillation provides the directional alignment signal inside that fixed space. Batch Multiplexing from V3 is retained.",
+    "expected": "Stage 1 should match or exceed V3 ep5 (0.7028 RWTD) faster because the projector output is pre-calibrated to SAM's expected statistics. Stage 2 should push beyond the 0.7063 ZS baseline once SAM LoRA begins adapting to the projector's output distribution."
+  },
+  "baselines": {
+    "generic_zero_shot": {"rwtd_miou": 0.7063, "rwtd_mari": 0.6879},
+    "qwen_semseg_parsed": {"rwtd_miou": 0.9109, "rwtd_mari": 0.8492},
+    "qwen_proposal_parsed": {"rwtd_miou": 0.8191, "rwtd_mari": 0.7785}
+  }
+}

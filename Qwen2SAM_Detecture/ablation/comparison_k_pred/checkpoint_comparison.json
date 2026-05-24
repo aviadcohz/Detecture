@@ -1,0 +1,19 @@
+{
+  "experiment": "Checkpoint comparison on ADE20k_Detecture (inference)",
+  "dataset": "ADE20k_Detecture (212 samples, 92% overlap with training images)",
+  "purpose": "Confirm that Qwen LoRA training degrades inference-time segmentation quality",
+
+  "results": {
+    "epoch_5_phase1":  {"miou": 0.6957, "mari": 0.6870, "phase": "P1 (Qwen frozen)"},
+    "epoch_15_phase1": {"miou": 0.6909, "mari": 0.6832, "phase": "P1 (Qwen frozen)"},
+    "epoch_35_phase2": {"miou": 0.5427, "mari": 0.4905, "phase": "P2 (Qwen LoRA trained)"}
+  },
+
+  "conclusions": [
+    "Phase 1 plateaus by epoch 5 (mIoU=0.696). Additional Phase 1 epochs provide no benefit.",
+    "Phase 2 Qwen LoRA training DEGRADES inference mIoU by -0.153 (0.696 → 0.543).",
+    "Val mIoU=0.813 (teacher forcing) vs inference mIoU=0.543 → the 0.27 gap is the critical bottleneck.",
+    "The vision engine (projector + SAM) is solid. The language engine (Qwen inference) is the weak link.",
+    "Running 50 epochs of Phase 1 only would NOT help — the ceiling is reached at epoch 5."
+  ]
+}

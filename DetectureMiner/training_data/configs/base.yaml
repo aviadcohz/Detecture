@@ -1,0 +1,46 @@
+pipeline:
+  steps: ["score", "extract", "describe", "validate"]
+
+score:
+  # Detecture project location
+  detecture_root: "DetectureMiner"
+  enable_clip: true
+  enable_vlm: true
+  selected_min: 60
+  borderline_min: 50
+
+extract:
+  score_threshold: 65      # review_score >= this (0-100 scale) — gives ~1296 base images, ~14K with all degrees
+  score_field: "review_score"
+  copy_images: true           # copy (true) or symlink (false)
+  copy_masks: true
+
+masks:
+  format: "binary_png"        # 0/255 grayscale
+  threshold: 127              # >127 = texture
+  verify_binary: true
+
+describe:
+  provider: "claude_api"
+  model: "claude-haiku-4-5-20251001"
+  max_tokens: 300
+  batch_size: 10              # samples per batch
+  include_overlay: true       # send overlay for spatial context
+  resume: true                # resume from previous progress
+  prefix: "Texture of "
+  word_range: [10, 15]
+
+validate:
+  check_images: true
+  check_masks: true
+  check_descriptions: true
+  test_dataset_load: true
+  qwen2sam_dataset_path: "Qwen2SAM_Detecture/data/dataset.py"
+
+output:
+  base_dir: "output"
+  image_dir: "images"
+  mask_dir: "masks"
+  textures_mask_dir: "textures_mask"
+  overlay_dir: "overlays"
+  metadata_file: "metadata.json"

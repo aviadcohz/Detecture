@@ -1,0 +1,64 @@
+{
+  "checkpoint": "checkpoints/epoch_15.pt",
+  "experiment_1_gt_bypass": {
+    "miou": 0.0,
+    "n_samples": 253
+  },
+  "experiment_2_over_generation": {
+    "miou_live": 0.5883058368651786,
+    "k_pred_distribution": {
+      "1": 216,
+      "2": 17,
+      "3": 9,
+      "4": 2,
+      "5": 2,
+      "6": 7
+    },
+    "sample_texts": [
+      {
+        "idx": 0,
+        "k_gt": 2,
+        "k_pred": 1,
+        "text": "TEXTURE_1: Texture of sand, fine granular surface with scattered small particles, covering entire background <|im_end|>"
+      },
+      {
+        "idx": 50,
+        "k_gt": 2,
+        "k_pred": 1,
+        "text": "TEXTURE_1: Texture of fabric, fine woven grid pattern, light gray color, left side <|im_end|>"
+      },
+      {
+        "idx": 100,
+        "k_gt": 2,
+        "k_pred": 1,
+        "text": "TEXTURE_1: Texture of rock, rough and weathered surface with reddish-brown and white striations, occupying left foreground <|im_end|>"
+      },
+      {
+        "idx": 150,
+        "k_gt": 2,
+        "k_pred": 1,
+        "text": "TEXTURE_1: Texture of fabric, light blue patterned material with subtle floral design, arranged in radial quilted segments forming a starburst pattern <|im_end|>"
+      },
+      {
+        "idx": 200,
+        "k_gt": 2,
+        "k_pred": 1,
+        "text": "TEXTURE_1: Texture of quilt, vibrant red and black patterned patchwork with geometric designs, center foreground <|im_end|>"
+      }
+    ]
+  },
+  "experiment_3_positional_bias": {
+    "condition_a": {
+      "miou": 0.0,
+      "slot0": 1.0,
+      "slot1": 0.0,
+      "slot2": 0.0
+    },
+    "condition_b": {
+      "miou": 0.0,
+      "slot0": 1.0,
+      "slot1": 0.0,
+      "slot2": 0.0
+    }
+  }
+}

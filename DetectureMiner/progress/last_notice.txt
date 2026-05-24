@@ -1,0 +1,6 @@
+DATASET_COMPLETED_NOTICE
+dataset_id=bsds500
+finished_at_utc=2026-02-27T08:05:58Z
+private_commit=3cf5d3d
+public_commit=7342927
+review_bundle=/path/to/rwtd_miner_github_repo/docs/review/index.html

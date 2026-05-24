@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+
+# Eval outputs
+eval_results/
+*.png
+*.json
+!dataset_registry.json
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store

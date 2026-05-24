@@ -1,0 +1,104 @@
+{
+  "study_title": "Qwen2SAM_Detecture Ablation Study",
+  "date": "2026-04-08",
+  "model": "Qwen3-VL-8B (LoRA) + SAM3 (Orthogonal LoRA) + MLP Projector",
+  "training_data": "ADE20K_textured_images (13,331 train / 1,482 val)",
+  "test_sets": {
+    "RWTD": {"samples": 253, "domain": "256x256 texture crops", "in_sam3_training": false},
+    "ADE20k_Detecture": {"samples": 212, "domain": "full scene images", "overlap_with_train": "92%"}
+  },
+  "baselines": {
+    "generic_zero_shot": {"rwtd_miou": 0.7063, "rwtd_mari": 0.6879},
+    "qwen_semseg_parsed": {"rwtd_miou": 0.9109, "rwtd_mari": 0.8492}
+  },
+
+  "key_findings": [
+    {
+      "finding": "Hungarian matching was toxic to training",
+      "evidence": "Teacher forcing guarantees strict 1-to-1 alignment (slot i = GT mask i). Hungarian matching scrambled this perfect alignment, causing the model to fight the matching noise. Removing it immediately doubled val mIoU (0.30 → 0.59 at epoch 3).",
+      "runs_compared": ["run_3 → run_4"]
+    },
+    {
+      "finding": "Qwen bypass in Phase 1 is critical for clean vision engine training",
+      "evidence": "Feeding pre-computed GT embeddings directly to projector (bypassing Qwen forward) reduced VRAM from 75GB to 30GB and gave the projector+SAM a stable, noise-free training signal. Phase 1 val mIoU reached 0.657 vs 0.296 with live Qwen.",
+      "runs_compared": ["run_3 → run_4"]
+    },
+    {
+      "finding": "SAM3 LoRA capacity was a bottleneck",
+      "evidence": "Upgrading from r=8 targets=[q,v] to r=32 targets=[q,k,v,out_proj] (16x more parameters) enabled SAM to adapt its attention patterns for texture boundaries. This combined with the other fixes pushed val mIoU from 0.30 to 0.81.",
+      "runs_compared": ["run_3 → run_4"]
+    },
+    {
+      "finding": "LM loss dominates gradients when trained from epoch 1",
+      "evidence": "In run_1, LM loss consumed 94% of the gradient budget by epoch 20, starving segmentation. Val mIoU plateaued at 0.316. Reducing lm_weight from 0.5 to 0.1 helped but didn't solve the root cause.",
+      "runs_compared": ["run_1 → run_2"]
+    },
+    {
+      "finding": "CLIP embeddings are a lossy bottleneck",
+      "evidence": "CLIP projects to 512-dim foreign space requiring text_align_head (4096→512). Replacing with native Qwen 4096-dim self-distillation eliminated the information loss. Direct comparison in same embedding space is cleaner.",
+      "runs_compared": ["run_2 → run_3"]
+    },
+    {
+      "finding": "Phase 2 (Qwen LoRA unfreezing) improves val but hurts test generalization",
+      "evidence": "Phase 2 pushed val mIoU from 0.657 to 0.813 (+24%), but RWTD test mIoU dropped from 0.678 (epoch 5) to 0.544 (epoch 30) — a 20% decline. Qwen adapted to ADE20K scene distribution, losing texture crop generalization.",
+      "runs_compared": ["run_4 Phase 1 vs Phase 2"]
+    },
+    {
+      "finding": "Inference gap: val mIoU >> test mIoU on SAME distribution",
+      "evidence": "At epoch 35, val mIoU=0.813 but ADE20k_Detecture test mIoU=0.547 (92% image overlap with training). The gap is entirely in the inference path — teacher forcing gives perfect embeddings, but inference_forward (autoregressive generation) produces weaker/wrong embeddings and incorrect k_pred.",
+      "runs_compared": ["run_4 val vs ADE20k_Detecture test"]
+    },
+    {
+      "finding": "k_pred is unreliable during inference",
+      "evidence": "On ADE20k_Detecture: 25% predict k=1 (under-segmentation), 20% predict k=6 (over-segmentation). Model has no count supervision during training (teacher forcing always provides correct count). Median k_pred=5 vs typical k_gt=3-4.",
+      "runs_compared": ["run_4 test analysis"]
+    }
+  ],
+
+  "progression_summary": {
+    "run_1_baseline": {"val_miou": 0.316, "test_miou": 0.558, "key_change": "baseline"},
+    "run_2_dice_heavy": {"val_miou": 0.241, "test_miou": 0.496, "key_change": "dice_weight=3, lm_weight=0.1 — overcorrected"},
+    "run_3_curriculum": {"val_miou": 0.301, "test_miou": 0.609, "key_change": "self-distillation + 2-phase curriculum"},
+    "run_4_architecture_fix": {"val_miou": 0.813, "test_miou": 0.678, "key_change": "no Hungarian, Qwen bypass, SAM r=32"}
+  },
+
+  "critical_insight": "The projector + SAM3 segmentation path works well when given clean embeddings (Phase 1 val mIoU=0.657, Phase 2 val mIoU=0.813 with teacher forcing). The bottleneck has shifted from the VISION side to the LANGUAGE side — Qwen's autoregressive generation during inference produces embeddings that are weaker than the teacher-forced embeddings. The model learned to segment, but not to independently describe what to segment.",
+
+  "next_steps": [
+    {
+      "priority": 1,
+      "action": "Research the alignment gap between Qwen teacher-forcing and inference",
+      "rationale": "Val mIoU=0.813 proves the segmentation path works. The 0.547 test mIoU on same-distribution data proves the inference path is the bottleneck. Closing this gap is the highest-leverage improvement.",
+      "approaches": [
+        "Scheduled sampling: gradually replace teacher-forced tokens with model-generated tokens during training",
+        "Inference-time refinement: use SAM mask outputs to re-rank/filter Qwen descriptions",
+        "Contrastive training on Qwen outputs: force inference-time embeddings to match teacher-time embeddings",
+        "Separate the description generation from segmentation: use frozen Qwen for descriptions, train only the segmentation path"
+      ]
+    },
+    {
+      "priority": 2,
+      "action": "Run Phase 1 only (50 epochs) to establish vision engine ceiling",
+      "rationale": "Current config: phase1_epochs=50, num_epochs=50. This isolates the projector+SAM training completely. If val mIoU continues climbing past 0.657 with more epochs, the vision engine has room to grow. If it plateaus, the ceiling is architectural.",
+      "status": "configured and ready to run"
+    },
+    {
+      "priority": 3,
+      "action": "Diversify training data to fix RWTD overfitting",
+      "rationale": "RWTD test mIoU dropped 20% during Phase 2 due to ADE20K distribution bias. Adding texture crop data (RWTD subset, BSDS500, DTD) to training would improve generalization.",
+      "datasets_to_add": ["RWTD (or split)", "BSDS500", "DTD"]
+    },
+    {
+      "priority": 4,
+      "action": "Investigate count prediction for inference",
+      "rationale": "25% of test samples predict k=1 (model collapses to single texture). A separate count prediction head trained on image features (not text tokens) could improve inference-time texture count accuracy.",
+      "approach": "Small MLP on SAM backbone features → predicts K, used to mask excess channels during inference"
+    },
+    {
+      "priority": 5,
+      "action": "Test on truly out-of-distribution benchmarks",
+      "rationale": "BSDS500 (boundary detection), DTD (texture classification) are unseen by SAM3 and would measure true generalization beyond ADE20K/RWTD.",
+      "datasets": ["BSDS500 (500 images, public)", "DTD (5640 images, public)", "PASCAL Context (260 scored in Detecture)"]
+    }
+  ]
+}

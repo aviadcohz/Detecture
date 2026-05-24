@@ -1,0 +1,68 @@
+{
+  "title": "V2 Analysis: 3-Front Attack on Domain Overfitting",
+  "date": "2026-04-09",
+
+  "what_we_tried": {
+    "front_1": "Dynamic Macro-to-Micro crop augmentation (35% prob, 300-600px, ≥2 textures)",
+    "front_2": "Semantic Cycle-Consistency via InverseProjector (256→4096) with gradient firewall",
+    "front_3": "Constrained Qwen LoRA (r=4, alpha=8) — 4x less capacity"
+  },
+
+  "what_worked": {
+    "crop_augmentation": "Eliminated val/test divergence. Test mIoU tracked val throughout training. In V1, test peaked at ep5 then collapsed -20%. In V2, test climbed continuously to 0.695 at ep15.",
+    "constrained_lora": "Prevented Qwen from memorizing ADE20K patterns. Phase 2 improved BOTH val and test (V1: Phase 2 improved val but destroyed test).",
+    "cycle_consistency": "InverseProjector converged fast (1.86→0.42). Confirms projector retains semantic information in 256-dim space.",
+    "overall": "Best test mIoU ever: 0.695 = 98% of ZS baseline. Val 0.704. No divergence."
+  },
+
+  "what_we_discovered": {
+    "discovery_1": {
+      "title": "Qwen's descriptions are excellent — the language side is NOT the bottleneck",
+      "detail": "When Qwen generates exactly 2 descriptions, they are semantically perfect (mIoU=0.97). The problem is count control (77% predict k=6) and SAM's inability to use multiple channels."
+    },
+    "discovery_2": {
+      "title": "Prompt count instruction is counterproductive",
+      "detail": "Forcing 'exactly 2' in the prompt REDUCED mIoU (-0.035). More descriptions = more chances for Hungarian matching to find a good match. The '1 to 6' prompt with over-generation is actually optimal."
+    },
+    "discovery_3": {
+      "title": "SAM3 has catastrophic positional bias (Slot 1 Addiction)",
+      "detail": "Slot 1 gets 90.5% of pixels, Slot 2 gets exactly 0.0% — regardless of content, position swap, or isolated runs. SAM was pretrained for single-prompt and its cross-attention weights are hardwired to attend only to position 1. This is the FUNDAMENTAL architectural bottleneck preventing multi-texture segmentation.",
+      "impact": "No amount of training, prompt engineering, or embedding quality improvement can fix this. The architecture must change."
+    },
+    "discovery_4": {
+      "title": "The val mIoU (0.70) is achieved by one channel doing all the work",
+      "detail": "The model learns to put the dominant texture in channel 1 and dustbin for the rest. For images with one large texture, this gives decent IoU. True multi-texture segmentation never happens."
+    }
+  },
+
+  "progression_across_versions": {
+    "v1_run4": {
+      "approach": "Direct 1-to-1, Qwen bypass P1, SAM r=32",
+      "best_val": 0.813,
+      "best_test": 0.678,
+      "weakness": "Qwen LoRA overfitting, test collapsed to 0.544"
+    },
+    "v2_run5": {
+      "approach": "V1 + crop aug + cycle loss + LoRA r=4",
+      "best_val": 0.704,
+      "best_test": 0.695,
+      "weakness": "SAM positional bias — only 1 channel active, multi-texture impossible"
+    },
+    "v3_planned": {
+      "approach": "V2 + Batch Multiplexing (each query in own slot 1)",
+      "expected": "True multi-texture segmentation. Slot 2+ should activate.",
+      "status": "IMPLEMENTED, awaiting training run"
+    }
+  },
+
+  "critical_insight": "The journey revealed a layered bottleneck: V1 found the LM gradient dominance problem (fixed by curriculum). V2 found the Qwen overfitting problem (fixed by crop aug + constrained LoRA). The positional bias experiments then revealed the DEEPEST bottleneck: SAM's architecture itself cannot handle multi-query prompts. V3's Batch Multiplexing is the surgical fix — give each query its own 'slot 1' by expanding into the batch dimension.",
+
+  "lessons_learned": [
+    "Always test inference separately from val — teacher forcing hides architectural bugs",
+    "Extract and analyze the generated descriptions — the language quality was a red herring",
+    "Positional bias in pretrained models is real and devastating — always test with swapped inputs",
+    "Crop augmentation is cheap but powerful for domain generalization",
+    "Constrained LoRA (small r) prevents catastrophic forgetting during fine-tuning",
+    "More descriptions can be better than fewer — let the matching algorithm select the best K"
+  ]
+}

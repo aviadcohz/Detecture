@@ -1,0 +1,10 @@
+dataset: "ADE20K_textured_images"
+
+source:
+  name: "ADE20K TextureSAM Full (all degrees 0.0-1.0)"
+  ade_root: "DetectureMiner/data/raw/ade20k/ADEChallengeData2016"
+  textured_images_dir: "~/ADE20K_textured_images/images_flat"
+  image_mapping: "~/ADE20K_textured_images/image_mapping.json"
+
+score:
+  score_degree: 0.3

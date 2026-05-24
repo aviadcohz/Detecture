@@ -1,0 +1,30 @@
+runtime:
+  device_preference: cuda
+  cpu_workers: 10
+  cleanup_batch_cache: true
+
+index:
+  min_short_side: 256
+
+stage_b:
+  enabled: true
+  image_batch_size: 96
+  clip_score_threshold: 0.18
+  top_k_per_positive_query: 5000
+
+stage_c:
+  enabled: false
+
+stage_d:
+  enabled: true
+  backend: hf_vlm_chat
+  score_top_n_from_stage_b: 1200
+  hf_vlm_model_name: Qwen/Qwen2.5-VL-3B-Instruct
+  hf_vlm_max_new_tokens: 220
+  hf_vlm_temperature: 0.0
+  hf_vlm_load_in_4bit: true
+  device_preference: cuda
+
+selection:
+  match_score_min: 82
+  borderline_score_min: 72

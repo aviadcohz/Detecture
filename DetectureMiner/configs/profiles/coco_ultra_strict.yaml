@@ -1,0 +1,100 @@
+runtime:
+  device_preference: cuda
+  cpu_workers: 10
+  cleanup_batch_cache: true
+
+index:
+  min_short_side: 256
+
+stage_b:
+  enabled: true
+  require_stage_a_pass: false
+  image_batch_size: 96
+  alpha: 1.25
+  clip_score_threshold: 0.24
+  top_k_per_positive_query: 1200
+  positive_queries:
+    - "a real-world photo of natural textures and materials"
+    - "a texture segmentation scene with two or three large material regions"
+    - "close-up textured surfaces with clear boundary transitions"
+    - "ground textures like soil gravel asphalt sand or grass"
+    - "non-object-centric material boundary scene"
+  negative_queries:
+    - "a person"
+    - "a human face portrait selfie"
+    - "a person standing in a room"
+    - "a car truck bus motorcycle vehicle close-up"
+    - "a dog cat bird horse animal"
+    - "an indoor room with furniture"
+    - "a bedroom living room kitchen bathroom interior"
+    - "a chair table sofa bed cabinet furniture product"
+    - "a product shot on clean background"
+    - "an object-centric composition"
+    - "a logo poster text sign screenshot user interface"
+    - "a collage or graphic design illustration"
+
+stage_d:
+  enabled: true
+  backend: hf_blip_vqa
+  score_top_n_from_stage_b: 1000
+  hf_blip_vqa_model_name: Salesforce/blip-vqa-base
+  hf_blip_max_new_tokens: 12
+  device_preference: cuda
+  force_not_match_on_object_centric: true
+  object_centric_score_cap: 55
+  force_not_match_on_salient_semantic_subject: true
+  salient_semantic_subject_score_cap: 45
+
+selection:
+  match_score_min: 85
+  match_decision_required: match
+  keep_borderline: true
+  borderline_score_min: 75
+  require_stage_d_for_selection: true
+  generalized_model:
+    enabled: true
+    weight_geometry: 0.66
+    weight_clip: 0.14
+    weight_vlm: 0.20
+    selected_score_min: 85
+    borderline_score_min: 74
+    require_match_decision_for_selected: false
+    borderline_requires_non_not_match: true
+    hard_veto_enabled: true
+    hard_veto_thing_fraction_max: 0.35
+    hard_veto_largest_thing_fraction_max: 0.15
+    hard_veto_num_large_instances_max: 3
+    hard_veto_pva_fraction_max: 0.08
+    hard_veto_object_centric_flag: true
+    hard_veto_flags:
+      - salient_semantic_subject
+    allow_rare_semantic_override: true
+    rare_semantic_override_flag: salient_semantic_subject
+    rare_semantic_override_min_vlm_score: 96
+    rare_semantic_override_min_geom_score: 97
+    rare_semantic_override_max_geom_object_fraction: 0.01
+    soft_penalty_thing_fraction_weight: 24.0
+    soft_penalty_largest_thing_weight: 30.0
+    soft_penalty_pva_weight: 34.0
+    soft_penalty_geom_object_weight: 14.0
+    soft_penalty_large_instances_weight: 2.5
+    soft_penalty_sky_fraction_weight: 45.0
+    soft_penalty_built_structure_weight: 22.0
+    texture_override_enabled: true
+    texture_override_min_geom_score: 88
+    texture_override_max_thing_fraction: 0.03
+    texture_override_max_largest_thing_fraction: 0.015
+    texture_override_max_pva_fraction: 0.01
+    texture_override_max_geom_object_fraction: 0.08
+    texture_override_bonus: 18.0
+
+semantic_gates:
+  enabled: true
+  panoptic_json: /path/to/data/rwtd_datasets/coco/raw/annotations/panoptic_val2017.json
+  missing_metrics_as_fail: false
+  apply_as_hard_reject: false
+  thing_fraction_max: 0.35
+  largest_thing_fraction_max: 0.15
+  num_large_thing_instances_max: 3
+  large_thing_instance_min_fraction: 0.005
+  person_vehicle_animal_fraction_max: 0.08

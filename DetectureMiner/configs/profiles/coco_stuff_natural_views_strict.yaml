@@ -1,0 +1,101 @@
+runtime:
+  device_preference: cuda
+  cpu_workers: 10
+  cleanup_batch_cache: true
+
+index:
+  min_short_side: 256
+
+stage_b:
+  enabled: true
+  require_stage_a_pass: false
+  image_batch_size: 128
+  alpha: 1.15
+  clip_score_threshold: 0.23
+  top_k_per_positive_query: 2200
+  positive_queries:
+    - "a natural outdoor landscape with texture boundaries"
+    - "mountains forest river or coastline natural view"
+    - "ground textures like grass soil rock sand snow and water"
+    - "wide scenic nature photo with layered materials"
+    - "non-urban real-world texture boundary scene"
+  negative_queries:
+    - "an indoor room or interior with furniture"
+    - "a city street road traffic scene"
+    - "cars buses trucks motorcycles on a road"
+    - "a building facade or urban architecture dominant"
+    - "a person or group portrait"
+    - "a product shot or object-centric close-up"
+    - "a text sign logo poster or screenshot"
+
+stage_d:
+  enabled: true
+  backend: hf_blip_vqa
+  score_top_n_from_stage_b: 900
+  hf_blip_vqa_model_name: Salesforce/blip-vqa-base
+  hf_blip_max_new_tokens: 12
+  device_preference: cuda
+  force_not_match_on_object_centric: true
+  object_centric_score_cap: 55
+
+selection:
+  match_score_min: 72
+  match_decision_required: match
+  keep_borderline: true
+  borderline_score_min: 60
+  require_stage_d_for_selection: true
+  generalized_model:
+    enabled: true
+    weight_geometry: 0.05
+    weight_clip: 0.15
+    weight_vlm: 0.80
+    selected_score_min: 72
+    borderline_score_min: 60
+    require_match_decision_for_selected: true
+    borderline_requires_non_not_match: true
+    hard_veto_enabled: true
+    hard_veto_thing_fraction_max: 0.03
+    hard_veto_largest_thing_fraction_max: 0.02
+    hard_veto_num_large_instances_max: 1
+    hard_veto_pva_fraction_max: 0.01
+    hard_veto_object_centric_flag: true
+    hard_veto_built_structure_fraction_max: 0.08
+    soft_penalty_thing_fraction_weight: 12.0
+    soft_penalty_largest_thing_weight: 16.0
+    soft_penalty_pva_weight: 22.0
+    soft_penalty_geom_object_weight: 5.0
+    soft_penalty_large_instances_weight: 2.0
+    soft_penalty_sky_fraction_weight: 2.0
+    soft_penalty_built_structure_weight: 45.0
+    texture_override_enabled: true
+    texture_override_min_geom_score: 88
+    texture_override_max_thing_fraction: 0.03
+    texture_override_max_largest_thing_fraction: 0.015
+    texture_override_max_pva_fraction: 0.01
+    texture_override_max_geom_object_fraction: 0.08
+    texture_override_bonus: 18.0
+
+semantic_gates:
+  enabled: true
+  missing_metrics_as_fail: false
+  apply_as_hard_reject: true
+  thing_fraction_max: 0.03
+  largest_thing_fraction_max: 0.02
+  num_large_thing_instances_max: 1
+  large_thing_instance_min_fraction: 0.005
+  person_vehicle_animal_fraction_max: 0.01
+  built_structure_names:
+    - "building-other-merged"
+    - "roof"
+    - "wall-other-merged"
+    - "wall-brick"
+    - "wall-concrete"
+    - "bridge"
+    - "road"
+    - "pavement-merged"
+    - "sidewalk"
+    - "floor-other-merged"
+    - "floor-wood"
+
+review:
+  compute_geometry_debug: true

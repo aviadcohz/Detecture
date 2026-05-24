@@ -1,0 +1,231 @@
+seed: 42
+runtime:
+  log_level: INFO
+  cpu_workers: 10
+  device_preference: cuda
+  cleanup_batch_cache: true
+io:
+  parquet_engine: pyarrow
+  write_csv_also: true
+  symlink_selected: true
+index:
+  image_extensions:
+  - .jpg
+  - .jpeg
+  - .png
+  - .webp
+  read_image_dimensions: true
+  min_short_side: 256
+  annotation_scan_shards: true
+  shard_scan_max_files: 500
+batching:
+  batch_budget_gb: 5.0
+  max_batches: null
+stage_a:
+  enabled: true
+  n_masks_min: 80
+  largest_mask_ratio_max: 0.6
+  median_mask_ratio_max: 0.02
+  small_threshold: 0.001
+  small_mask_fraction_min: 0.3
+  use_entropy: true
+  entropy_min: 2.0
+  allow_clip_fallback_if_unknown: true
+stage_b:
+  enabled: true
+  alpha: 1.15
+  clip_score_threshold: 0.23
+  top_k_per_positive_query: 2200
+  image_batch_size: 128
+  model:
+    open_clip_model_name: ViT-B-32
+    open_clip_pretrained: laion2b_s34b_b79k
+    hf_clip_model_name: openai/clip-vit-base-patch32
+  positive_queries:
+  - a natural outdoor landscape with texture boundaries
+  - mountains forest river or coastline natural view
+  - ground textures like grass soil rock sand snow and water
+  - wide scenic nature photo with layered materials
+  - non-urban real-world texture boundary scene
+  negative_queries:
+  - an indoor room or interior with furniture
+  - a city street road traffic scene
+  - cars buses trucks motorcycles on a road
+  - a building facade or urban architecture dominant
+  - a person or group portrait
+  - a product shot or object-centric close-up
+  - a text sign logo poster or screenshot
+  require_stage_a_pass: false
+stage_c:
+  enabled: false
+  shortlist_cap: 10000
+  model_name: Salesforce/blip-image-captioning-base
+  caption_batch_size: 8
+  keep_keywords:
+  - texture
+  - surface
+  - pattern
+  - wall
+  - floor
+  - ground
+  - grass
+  - sand
+  - concrete
+  - fabric
+  - wood
+  - stone
+  - close-up
+  - background
+  - foliage
+  - water
+  reject_keywords:
+  - person
+  - man
+  - woman
+  - face
+  - selfie
+  - car
+  - dog
+  - cat
+  - logo
+  - text
+  - sign
+  - product
+  - bottle
+  - phone
+  - screen
+  - screenshot
+  - menu
+stage_d:
+  enabled: true
+  backend: hf_blip_vqa
+  score_top_n_from_stage_b: 900
+  external_command: ''
+  hf_blip_vqa_model_name: Salesforce/blip-vqa-base
+  hf_blip_max_new_tokens: 12
+  hf_vlm_model_name: Qwen/Qwen2.5-VL-3B-Instruct
+  hf_vlm_max_new_tokens: 220
+  hf_vlm_temperature: 0.0
+  hf_vlm_load_in_4bit: true
+  device_preference: cuda
+  force_not_match_on_salient_semantic_subject: true
+  salient_semantic_subject_score_cap: 45
+  overlay_vlm_validation_enabled: true
+  overlay_vlm_validation_required: true
+  overlay_score_min: 65
+  overlay_fail_score_cap: 55
+  overlay_missing_score_cap: 45
+  overlay_penalty_on_fail: 24
+  overlay_bonus_on_pass: 6
+  prompt: "Task:\nScore how well this image matches the \"real-world texture segmentation\"\
+    \ setting similar to RWTD.\n\nRWTD-like image definition:\nA real photograph where\
+    \ most pixels are textured surfaces or materials (grass, stone, fabric, wood,\
+    \ sand, concrete, water ripples, foliage, etc.).\nThe image can be plausibly segmented\
+    \ into 2 to 4 large regions based primarily on texture/material changes (not object\
+    \ identity).\nThere is a clear texture boundary or transition between regions.\n\
+    The image is NOT a mosaic, collage, patchwork, tiled texture sheet, graphic design,\
+    \ or repeated pattern sample.\nThe image is NOT primarily object-centric (not\
+    \ dominated by a single salient object, person, animal, vehicle, product, or text).\n\
+    If animals or other semantic objects are prominent and clearly recognizable, treat\
+    \ it as not_match except for very rare texture-dominant edge cases.\n\nOutput\
+    \ JSON only with these fields:\n- score_0_100: integer\n- decision: one of [\"\
+    match\", \"borderline\", \"not_match\"]\n- main_reason: one short sentence\n-\
+    \ flags: list of any that apply from\n  [\"mosaic_or_collage\", \"synthetic_or_graphic\"\
+    , \"object_centric\", \"salient_semantic_subject\", \"too_many_objects\", \"no_clear_texture_boundary\"\
+    , \"low_texture_content\", \"text_overlay_or_ui\"]\n\nScoring rubric:\n90-100:\
+    \ almost entirely texture/materials, 2-3 large regions, strong texture boundary,\
+    \ minimal objects\n70-89: mostly texture/materials, boundary present, minor objects\
+    \ acceptable\n40-69: mixed textures and objects, boundary weak or many regions\n\
+    0-39: object-centric, mosaic/collage, synthetic graphic, or no meaningful texture\
+    \ segmentation\n\nNow evaluate the image.\n"
+  overlay_prompt: 'Task:
+
+    Evaluate a texture-boundary overlay visualization.
+
+
+    A good overlay for RWTD should show:
+
+    - 2 to 4 coarse, coherent, region-level boundaries
+
+    - boundaries aligned with large texture/material transitions
+
+    - minimal noisy micro-boundaries and fragmentation
+
+
+    A poor overlay should be marked not_match if:
+
+    - boundaries are too fine/noisy/fragmented
+
+    - there is no clear boundary structure
+
+    - region separation is unclear or mostly object-driven
+
+
+    Output JSON only with:
+
+    - score_0_100
+
+    - decision in ["match","borderline","not_match"]
+
+    - main_reason
+
+    - flags (from allowed set)
+
+    '
+  force_not_match_on_object_centric: true
+  object_centric_score_cap: 55
+selection:
+  match_score_min: 72
+  match_decision_required: match
+  keep_borderline: true
+  borderline_score_min: 60
+  top_n_cap: null
+  require_stage_d_for_selection: true
+  generalized_model:
+    enabled: true
+    weight_geometry: 0.15
+    weight_clip: 0.25
+    weight_vlm: 0.6
+    selected_score_min: 72
+    borderline_score_min: 60
+    require_match_decision_for_selected: true
+    borderline_requires_non_not_match: true
+    hard_veto_enabled: true
+    hard_veto_object_centric_flag: true
+    hard_veto_flags:
+    - salient_semantic_subject
+    allow_rare_semantic_override: true
+    rare_semantic_override_flag: salient_semantic_subject
+    rare_semantic_override_min_vlm_score: 96
+    rare_semantic_override_min_geom_score: 97
+    rare_semantic_override_max_geom_object_fraction: 0.01
+    soft_penalty_geom_object_weight: 18.0
+    soft_penalty_large_instances_weight: 2.0
+    texture_override_enabled: true
+    texture_override_min_geom_score: 88
+    texture_override_max_geom_object_fraction: 0.08
+    texture_override_bonus: 16.0
+qa:
+  random_seed: 42
+  random_grid_count: 50
+  top_contact_sheet_count: 100
+  thumbnail_size:
+  - 224
+  - 224
+review:
+  compute_geometry_debug: true
+  max_segments_decode_per_image: 80
+  mask_target_long_side: 960
+  min_large_region_frac: 0.08
+  strong_boundary_min_pixels: 40
+  boundary_pair_min_perimeter_frac: 0.012
+  dense_label_use_coarse_boundaries_only: true
+  dense_label_coarse_region_min_frac: 0.04
+  dense_label_fallback_region_min_frac: 0.02
+  dense_label_coarse_region_max_regions: 6
+  dense_label_min_large_region_frac: 0.04
+  dense_label_boundary_pair_min_perimeter_frac: 0.03
+semantic_gates:
+  enabled: false
+  missing_metrics_as_fail: false
+  apply_as_hard_reject: false

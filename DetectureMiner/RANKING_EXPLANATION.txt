@@ -1,0 +1,78 @@
+Detecture Ranking Explanation (ADE20K + RWTD)
+
+1) Read image + annotation pair and normalize labels
+For ADE20K, each semantic class is mapped to TEXTURE_SURFACE, OBJECT, AMBIGUOUS, or IGNORE using keyword rules from objectInfo150.txt.
+For RWTD, the provided binary label mask is used directly as texture regions.
+
+2) Compute Stage-A mask-structure score (0-100)
+For each image, we compute:
+- n_masks
+- largest_ratio
+- median_ratio
+- small_frac
+- entropy
+
+Then:
+stageA_rwtd_score = 100 * (0.28*n + 0.24*largest + 0.18*median + 0.18*small + 0.12*entropy)
+(with each term normalized/clipped)
+
+Intuition: many medium/small regions and no single dominant region usually indicate texture-rich scenes.
+
+3) Compute geometry / boundary quality score (0-100)
+We build connected texture components, keep large ones, then measure:
+- number of large texture regions
+- number of strong boundaries
+- normalized boundary length
+- region balance
+- object-fraction penalty
+
+Formula:
+geom_texture_boundary_score = 100*(0.28*region_term + 0.34*strong_term + 0.26*boundary_term + 0.12*balance) * object_penalty
+
+This rewards clear texture transitions and penalizes object-heavy scenes.
+
+4) Baseline final ranking score (main score used)
+The calibrated score is:
+review_score = 0.20*stageA + 0.60*geom + tex_bonus + region_bonus + strong_bonus - obj_penalty - amb_penalty - clutter_penalty
+
+Key effects:
+- strong emphasis on boundary geometry (0.60*geom)
+- strong penalties for object and ambiguous area
+- bonus for high texture coverage
+- bonus for 2-4 large regions
+- penalty for too many regions (fragmentation/clutter)
+
+5) Convert score to status
+Using run-time thresholds:
+- selected if review_score >= selected_min
+- borderline if borderline_min <= review_score < selected_min
+- rejected otherwise
+
+6) Optional CLIP stage (if enabled)
+CLIP computes:
+clip_score = max(similarity to positive prompts) - alpha * max(similarity to negative prompts)
+(alpha default 0.7)
+
+Images pass Stage-B either by threshold or by top-K-per-positive-query union.
+This is primarily a retrieval/filtering stage.
+
+7) Optional VLM stage (if enabled)
+VLM scores a shortlist with a rubric and returns:
+- score_0_100
+- decision (match / borderline / not_match)
+- reason
+- flags
+
+The rubric checks realism, texture dominance, boundary clarity, object-centricity, and region count.
+
+8) Optional multimodal fusion (if CLIP/VLM enabled)
+When multimodal scoring is enabled, final score remains geometry-first:
+- with CLIP: 0.92*base + 0.08*clip100
+- with VLM: 0.90*base + 0.08*clip100 + 0.02*vlm
+
+Then additional penalties/bonuses are applied from VLM flags/decision.
+
+How this appears in the website
+- final_score is taken from review_score (if present), otherwise fallback to stage scores.
+- Gallery is sorted by final_score descending.
+- selection_reason indicates which scoring path produced the final score (e.g., texture_priority_calibration, multimodal_fusion).

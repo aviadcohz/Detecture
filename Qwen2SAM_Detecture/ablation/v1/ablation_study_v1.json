@@ -1,0 +1,440 @@
+[
+  {
+    "run_id": "run_1_baseline",
+    "description": "All losses from epoch 1. CLIP embeddings. Hungarian matching. seg_grad_warmup at epoch 10.",
+    "config": {
+      "mask_weight": 1.0,
+      "ce_weight": 1.0,
+      "dice_weight": 1.0,
+      "lm_weight": 0.5,
+      "text_contrastive_weight": 0.5,
+      "sam3_lora_r": 8,
+      "sam3_lora_targets": [
+        "q",
+        "v"
+      ],
+      "curriculum": "none",
+      "hungarian_matching": true,
+      "qwen_bypass_phase1": false,
+      "clip_embeddings": true
+    },
+    "results": {
+      "best_val_miou": 0.3158,
+      "best_val_epoch": 20,
+      "best_test_miou_rwtd": 0.5576,
+      "best_test_epoch_rwtd": 10,
+      "epochs_trained": 20
+    }
+  },
+  {
+    "run_id": "run_2_dice_heavy",
+    "description": "Increased dice_weight=3, reduced lm_weight=0.1. Attempted to fix LM gradient dominance.",
+    "config": {
+      "mask_weight": 1.0,
+      "ce_weight": 1.0,
+      "dice_weight": 3.0,
+      "lm_weight": 0.1,
+      "text_contrastive_weight": 0.5,
+      "sam3_lora_r": 8,
+      "sam3_lora_targets": [
+        "q",
+        "v"
+      ],
+      "curriculum": "none",
+      "hungarian_matching": true,
+      "qwen_bypass_phase1": false,
+      "clip_embeddings": true
+    },
+    "results": {
+      "best_val_miou": 0.2411,
+      "best_val_epoch": 6,
+      "best_test_miou_rwtd": 0.4963,
+      "best_test_epoch_rwtd": 5,
+      "epochs_trained": 8
+    }
+  },
+  {
+    "run_id": "run_3_self_distillation_curriculum",
+    "description": "Self-distillation with pre-computed Qwen GT embeddings. 2-phase curriculum (P1: Qwen frozen epochs 1-15, P2: Qwen unfrozen 16+). CLIP replaced with 4096-dim Qwen embeds. Still used Hungarian matching.",
+    "config": {
+      "mask_weight": 1.0,
+      "ce_weight": 1.0,
+      "dice_weight": 3.0,
+      "lm_weight": 0.05,
+      "text_contrastive_weight": 0.1,
+      "sam3_lora_r": 8,
+      "sam3_lora_targets": [
+        "q",
+        "v"
+      ],
+      "curriculum": "2-phase (P1: frozen Qwen, P2: unfrozen LoRA)",
+      "phase1_epochs": 15,
+      "hungarian_matching": true,
+      "qwen_bypass_phase1": false,
+      "clip_embeddings": false,
+      "qwen_gt_embeds": true
+    },
+    "results": {
+      "best_val_miou": 0.3011,
+      "best_val_epoch": 17,
+      "best_test_miou_rwtd": 0.6093,
+      "best_test_epoch_rwtd": 15,
+      "epochs_trained": 18
+    }
+  },
+  {
+    "run_id": "run_4_full_architecture_fix",
+    "description": "Breakthrough run. Three critical fixes: (1) Removed Hungarian matching \u2014 direct 1-to-1 slot alignment. (2) Phase 1 Qwen BYPASS \u2014 GT embeddings fed directly to projector, Qwen not loaded in forward pass, saving 45GB VRAM. (3) SAM3 LoRA upgraded r=8\u219232, targets q,v\u2192q,k,v,out_proj. Self-distillation curriculum maintained.",
+    "config": {
+      "mask_weight": 1.0,
+      "ce_weight": 1.0,
+      "dice_weight": 3.0,
+      "lm_weight": 0.05,
+      "text_contrastive_weight": 0.1,
+      "sam3_lora_r": 32,
+      "sam3_lora_targets": [
+        "q",
+        "k",
+        "v",
+        "out_proj"
+      ],
+      "curriculum": "2-phase (P1: Qwen bypassed epochs 1-15, P2: Qwen LoRA unfrozen 16+)",
+      "phase1_epochs": 15,
+      "hungarian_matching": false,
+      "qwen_bypass_phase1": true,
+      "clip_embeddings": false,
+      "qwen_gt_embeds": true,
+      "direct_1to1_alignment": true
+    },
+    "results": {
+      "best_val_miou": 0.8158163955899478,
+      "best_val_epoch": 35,
+      "best_test_miou_rwtd": 0.6778928849578755,
+      "best_test_epoch_rwtd": 5,
+      "epochs_trained": 35,
+      "phase1_best_val": 0.6564962771883462,
+      "phase2_best_val": 0.8158163955899478,
+      "test_ade20k_detecture_miou": 0.5474,
+      "test_ade20k_detecture_epoch": 35
+    },
+    "epoch_history": [
+      {
+        "epoch": 1,
+        "phase": 1,
+        "val_miou": 0.4961582710587106,
+        "train_total": 3.109345602445548,
+        "train_ce": 1.062762273882929,
+        "train_dice": 0.6821929389896458
+      },
+      {
+        "epoch": 2,
+        "phase": 1,
+        "val_miou": 0.5571855936558346,
+        "train_total": 2.3233747139032133,
+        "train_ce": 0.8010972931650248,
+        "train_dice": 0.507409579940129
+      },
+      {
+        "epoch": 3,
+        "phase": 1,
+        "val_miou": 0.59010422567927,
+        "train_total": 2.175858493336607,
+        "train_ce": 0.7564797503753553,
+        "train_dice": 0.47306907413923593
+      },
+      {
+        "epoch": 4,
+        "phase": 1,
+        "val_miou": 0.5878420661818731,
+        "train_total": 2.0769308768805175,
+        "train_ce": 0.7222577307173217,
+        "train_dice": 0.45140702928146226
+      },
+      {
+        "epoch": 5,
+        "phase": 1,
+        "val_miou": 0.6037289710681331,
+        "train_total": 1.9967816211763818,
+        "train_ce": 0.6917547064788915,
+        "train_dice": 0.4347156642025525
+      },
+      {
+        "epoch": 6,
+        "phase": 1,
+        "val_miou": 0.629237895582206,
+        "train_total": 1.9399209413984821,
+        "train_ce": 0.6714611314259472,
+        "train_dice": 0.4223609991917069
+      },
+      {
+        "epoch": 7,
+        "phase": 1,
+        "val_miou": 0.6293149887592366,
+        "train_total": 1.8722971207184225,
+        "train_ce": 0.6443535117703517,
+        "train_dice": 0.4087206934272188
+      },
+      {
+        "epoch": 8,
+        "phase": 1,
+        "val_miou": 0.6424574673415755,
+        "train_total": 1.819594820635547,
+        "train_ce": 0.6244177944408302,
+        "train_dice": 0.397694479053778
+      },
+      {
+        "epoch": 9,
+        "phase": 1,
+        "val_miou": 0.646367786487978,
+        "train_total": 1.778013329426519,
+        "train_ce": 0.6090929415239037,
+        "train_dice": 0.38885818925252236
+      },
+      {
+        "epoch": 10,
+        "phase": 1,
+        "val_miou": 0.6499935695377109,
+        "train_total": 1.7410437781380492,
+        "train_ce": 0.5936547625545013,
+        "train_dice": 0.381633631026659
+      },
+      {
+        "epoch": 11,
+        "phase": 1,
+        "val_miou": 0.648130595443187,
+        "train_total": 1.696786592332515,
+        "train_ce": 0.574321569168497,
+        "train_dice": 0.37327777646636234
+      },
+      {
+        "epoch": 12,
+        "phase": 1,
+        "val_miou": 0.6557915906273335,
+        "train_total": 1.6630819949066893,
+        "train_ce": 0.5613476746505198,
+        "train_dice": 0.36634495974195064
+      },
+      {
+        "epoch": 13,
+        "phase": 1,
+        "val_miou": 0.6524342841055873,
+        "train_total": 1.6358717080667289,
+        "train_ce": 0.5522793824109647,
+        "train_dice": 0.3602867740707429
+      },
+      {
+        "epoch": 14,
+        "phase": 1,
+        "val_miou": 0.6450124629691445,
+        "train_total": 1.6017163165814519,
+        "train_ce": 0.5380010732175475,
+        "train_dice": 0.35365044962343173
+      },
+      {
+        "epoch": 15,
+        "phase": 1,
+        "val_miou": 0.6564962771883462,
+        "train_total": 1.5745758290919247,
+        "train_ce": 0.5276621014244146,
+        "train_dice": 0.34804028961466593
+      },
+      {
+        "epoch": 16,
+        "phase": 2,
+        "val_miou": 0.7000314839126516,
+        "train_total": 1.706694242343007,
+        "train_ce": 0.5290819852828907,
+        "train_dice": 0.34548800198449015
+      },
+      {
+        "epoch": 17,
+        "phase": 2,
+        "val_miou": 0.7110585045439405,
+        "train_total": 1.5752205239369137,
+        "train_ce": 0.4879597625763628,
+        "train_dice": 0.3265800103656959
+      },
+      {
+        "epoch": 18,
+        "phase": 2,
+        "val_miou": 0.7148500902280749,
+        "train_total": 1.5119692142790158,
+        "train_ce": 0.4712620415017031,
+        "train_dice": 0.3153401904764867
+      },
+      {
+        "epoch": 19,
+        "phase": 2,
+        "val_miou": 0.7236452415694831,
+        "train_total": 1.459789665605333,
+        "train_ce": 0.4546895380264068,
+        "train_dice": 0.3051339244571152
+      },
+      {
+        "epoch": 20,
+        "phase": 2,
+        "val_miou": 0.7339498408194131,
+        "train_total": 1.4087831754692317,
+        "train_ce": 0.43701886276256524,
+        "train_dice": 0.2945814464557575
+      },
+      {
+        "epoch": 21,
+        "phase": 2,
+        "val_miou": 0.7453103182271487,
+        "train_total": 1.3434104575674133,
+        "train_ce": 0.41133069282326656,
+        "train_dice": 0.2814907763726694
+      },
+      {
+        "epoch": 22,
+        "phase": 2,
+        "val_miou": 0.7553521626421583,
+        "train_total": 1.261311320456663,
+        "train_ce": 0.3802576327415341,
+        "train_dice": 0.26452215193825873
+      },
+      {
+        "epoch": 23,
+        "phase": 2,
+        "val_miou": 0.7620800130366937,
+        "train_total": 1.1769056307627495,
+        "train_ce": 0.34884895436564095,
+        "train_dice": 0.2469327993207004
+      },
+      {
+        "epoch": 24,
+        "phase": 2,
+        "val_miou": 0.7694052178983966,
+        "train_total": 1.108716332922281,
+        "train_ce": 0.32448258989583056,
+        "train_dice": 0.2324746747638392
+      },
+      {
+        "epoch": 25,
+        "phase": 2,
+        "val_miou": 0.7799350422970499,
+        "train_total": 1.0480886419238609,
+        "train_ce": 0.3020201992543072,
+        "train_dice": 0.21995610442038255
+      },
+      {
+        "epoch": 26,
+        "phase": 2,
+        "val_miou": 0.7848818462755179,
+        "train_total": 1.0000245366105796,
+        "train_ce": 0.286401801949667,
+        "train_dice": 0.20931420785853036
+      },
+      {
+        "epoch": 27,
+        "phase": 2,
+        "val_miou": 0.7920387006865665,
+        "train_total": 0.9572933198559438,
+        "train_ce": 0.27190625153262893,
+        "train_dice": 0.20009907026502183
+      },
+      {
+        "epoch": 28,
+        "phase": 2,
+        "val_miou": 0.7962004189680971,
+        "train_total": 0.9201928673296979,
+        "train_ce": 0.25947982285975374,
+        "train_dice": 0.1921329887345223
+      },
+      {
+        "epoch": 29,
+        "phase": 2,
+        "val_miou": 0.79799997432749,
+        "train_total": 0.891355119951845,
+        "train_ce": 0.25046466358515673,
+        "train_dice": 0.18583402654366776
+      },
+      {
+        "epoch": 30,
+        "phase": 2,
+        "val_miou": 0.8019962754107589,
+        "train_total": 0.8608882674361148,
+        "train_ce": 0.24137628319492452,
+        "train_dice": 0.1789058238489203
+      },
+      {
+        "epoch": 31,
+        "phase": 2,
+        "val_miou": 0.8023485751785473,
+        "train_total": 0.8377579843500803,
+        "train_ce": 0.23399858195262022,
+        "train_dice": 0.1739319353477575
+      },
+      {
+        "epoch": 32,
+        "phase": 2,
+        "val_miou": 0.8080382068592322,
+        "train_total": 0.8165326405226058,
+        "train_ce": 0.22767914425019492,
+        "train_dice": 0.16923342796225305
+      },
+      {
+        "epoch": 33,
+        "phase": 2,
+        "val_miou": 0.8111371771367945,
+        "train_total": 0.7964542150841688,
+        "train_ce": 0.22133735949025474,
+        "train_dice": 0.16489459878236654
+      },
+      {
+        "epoch": 34,
+        "phase": 2,
+        "val_miou": 0.8132478129023486,
+        "train_total": 0.7780208563548897,
+        "train_ce": 0.2161739250064397,
+        "train_dice": 0.1606753482568552
+      },
+      {
+        "epoch": 35,
+        "phase": 2,
+        "val_miou": 0.8158163955899478,
+        "train_total": 0.7627623243586565,
+        "train_ce": 0.21102898076853968,
+        "train_dice": 0.15751526422771808
+      }
+    ],
+    "test_history": [
+      {
+        "epoch": 5,
+        "test_miou": 0.6778928849578755,
+        "test_mari": 0.47870465428347647
+      },
+      {
+        "epoch": 10,
+        "test_miou": 0.6297094455629505,
+        "test_mari": 0.43146023052230037
+      },
+      {
+        "epoch": 15,
+        "test_miou": 0.6569074083885194,
+        "test_mari": 0.45978449555966494
+      },
+      {
+        "epoch": 20,
+        "test_miou": 0.6274557901020024,
+        "test_mari": 0.40668598570588327
+      },
+      {
+        "epoch": 25,
+        "test_miou": 0.537051377250486,
+        "test_mari": 0.289991826052925
+      },
+      {
+        "epoch": 30,
+        "test_miou": 0.5436392897704677,
+        "test_mari": 0.34637741904987807
+      },
+      {
+        "epoch": 35,
+        "test_miou": 0.49567302541012226,
+        "test_mari": 0.32054871143027547
+      }
+    ]
+  }
+]

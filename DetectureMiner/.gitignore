@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+.venv/
+venv/
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+
+# Runtime outputs (keep release docs only)
+_smoke/
+pilot100_run/
+ade20k_eval/
+ade20k_eval_multimodal/
+calibration_rwtd/
+review_ade_rwtd/
+review_ade_rwtd_test/
+.tmp/
+
+# Large caches
+.cache/
+*.mmap
+
+# Logs
+*.log

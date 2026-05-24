@@ -1,0 +1,52 @@
+# ============================================================================
+# Detecture — pinned runtime requirements (Python 3.10)
+#
+# Install:
+#   conda create -n detecture python=3.10 -y
+#   conda activate detecture
+#   pip install -r requirements.txt
+#
+# Additionally (not pip-installable):
+#   1. Clone facebookresearch/sam3 somewhere (e.g. ~/sam3) and set
+#      SAM3_ROOT=~/sam3 — the eval suite resolves it dynamically.
+#   2. For SA2VA: install a stub flash_attn package to satisfy HF's
+#      static import check (the model runs with use_flash_attn=False).
+#      See Qwen2SAM_Detecture_Benchmark/README.md §Install.
+#
+# Pinned from the environment that produced the NeurIPS 2026 numbers.
+# ============================================================================
+
+# --- core numerics ---
+numpy==1.26.4
+scipy==1.15.2
+pandas==2.3.3
+scikit-learn==1.7.2
+matplotlib==3.10.8
+Pillow==12.1.0
+opencv-python==4.13.0
+
+# --- deep learning ---
+torch==2.6.0+cu124  # match the CUDA build on your machine; drop +cu124 on CPU
+accelerate==1.12.0
+transformers==5.1.0
+peft==0.18.1
+timm==1.0.25
+huggingface_hub==1.4.1
+
+# --- Qwen utilities ---
+qwen-vl-utils==0.0.14
+
+# --- VLM API client (only used by DetectureMiner's annotation stage) ---
+anthropic==0.86.0
+
+# --- misc ---
+PyYAML==6.0.3
+tqdm==4.67.3
+fsspec==2026.2.0
+pycocotools==2.0.11
+
+# --- optional extras used by subsets of the pipeline ---
+# Uncomment if you need ADE20K dataset handling via TFDS or the adapters lib:
+# tensorflow-datasets
+# adapters
+# open_clip_torch
