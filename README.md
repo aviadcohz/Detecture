@@ -41,34 +41,81 @@ export SAM3_ROOT=~/sam3                 # optional; default is ~/sam3
 # 4. (for SA2VA only) install a flash_attn stub so the model loads.
 #    The stub has zero real kernels; SA2VA runs with use_flash_attn=False.
 #    Details + minimal stub contents in Qwen2SAM_Detecture_Benchmark/README.md.
+
+# 5. Download the trained checkpoint and the four evaluation datasets
+#    from Hugging Face (see "Model weights & datasets" below for details).
+huggingface-cli download anon-detecture-neurips-2026/Detecture-NeurIPS \
+    --local-dir Qwen2SAM_Detecture/checkpoints
+mkdir -p ~/datasets
+for DS in RWTD STLD ADE20k_Detecture CAID; do
+  huggingface-cli download anon-detecture-neurips-2026/$DS \
+      --repo-type dataset --local-dir ~/datasets/$DS
+done
 ```
+
+After step 5 you have everything needed to reproduce the paper's main
+comparison table — jump straight to
+[Quick-start](#quick-start-reproduce-the-papers-main-comparison-table).
 
 ---
 
 ## Model weights & datasets
 
-The pre-trained checkpoint (`best.pt`, ~7.5 GB) and the dataset bundle
-(RWTD, STLD, ADE20K_Detecture, CAID; ~4.3 GB) are hosted on Hugging Face:
+All artifacts are hosted on Hugging Face under the
+[`anon-detecture-neurips-2026`](https://huggingface.co/anon-detecture-neurips-2026)
+organization (code MIT, weights/data CC-BY-4.0):
 
-**https://huggingface.co/anon-detecture-neurips-2026**
+| Type | Repo | Size |
+| --- | --- | ---: |
+| Model checkpoint (`best.pt`) | [`anon-detecture-neurips-2026/Detecture-NeurIPS`](https://huggingface.co/anon-detecture-neurips-2026/Detecture-NeurIPS) | 7.5 GB |
+| RWTD dataset (253 imgs) | [`anon-detecture-neurips-2026/RWTD`](https://huggingface.co/datasets/anon-detecture-neurips-2026/RWTD) | ~150 MB |
+| STLD dataset (200 imgs) | [`anon-detecture-neurips-2026/STLD`](https://huggingface.co/datasets/anon-detecture-neurips-2026/STLD) | ~120 MB |
+| ADE20k_Detecture (212 imgs) | [`anon-detecture-neurips-2026/ADE20k_Detecture`](https://huggingface.co/datasets/anon-detecture-neurips-2026/ADE20k_Detecture) | ~80 MB |
+| CAID dataset (3091 imgs) | [`anon-detecture-neurips-2026/CAID`](https://huggingface.co/datasets/anon-detecture-neurips-2026/CAID) | ~4 GB |
 
-- The canonical checkpoint is `checkpoints/best.pt`
-  (md5 `1f69377996e487fdc6b70120a42d2b4f`), produced by
-  `training/train.py` with the configuration in
-  [`Qwen2SAM_Detecture/configs/detecture.yaml`](Qwen2SAM_Detecture/configs/detecture.yaml).
-- The four evaluation datasets follow standard splits
-  (RWTD: 253 images, STLD: 200, ADE20K_Detecture: 212, CAID: 3091)
-  under the unified metadata schema described in
-  [`Qwen2SAM_Detecture_Benchmark/README.md`](Qwen2SAM_Detecture_Benchmark/README.md#datasets-layout).
-- Expected mIoU / ARI per (method × dataset) cell are documented in
-  [`Qwen2SAM_Detecture_Benchmark/README.md`](Qwen2SAM_Detecture_Benchmark/README.md#paper-results--what-to-expect).
+### Download with `huggingface-cli`
 
-Download the bundle from Hugging Face and place each dataset under
-`~/datasets/<DATASET>/` (or set `DETECTURE_DATASETS_ROOT` to override),
-following the layout below. Both the code (MIT) and the dataset/checkpoint
-artifacts (CC-BY-4.0) are released under permissive licenses.
+The `huggingface_hub` package is already in [`requirements.txt`](requirements.txt),
+so the CLI is on your `PATH` after `pip install -r requirements.txt`.
+
+```bash
+# 1. Model checkpoint  →  Qwen2SAM_Detecture/checkpoints/best.pt
+huggingface-cli download anon-detecture-neurips-2026/Detecture-NeurIPS \
+    --local-dir Qwen2SAM_Detecture/checkpoints
+
+# 2. Verify checkpoint integrity
+md5sum Qwen2SAM_Detecture/checkpoints/best.pt
+# expected: 1f69377996e487fdc6b70120a42d2b4f
+
+# 3. Evaluation datasets  →  ~/datasets/<NAME>/
+#    (or export DETECTURE_DATASETS_ROOT and use that path instead)
+mkdir -p ~/datasets
+for DS in RWTD STLD ADE20k_Detecture CAID; do
+  huggingface-cli download anon-detecture-neurips-2026/$DS \
+      --repo-type dataset --local-dir ~/datasets/$DS
+done
+```
+
+If any repo prompts for authentication, run `huggingface-cli login`
+once with a token from <https://huggingface.co/settings/tokens>.
+
+### Alternative: clone with `git` + `git-lfs`
+
+If you prefer `git`, install [git-lfs](https://git-lfs.com) first, then:
+
+```bash
+git lfs install
+git clone https://huggingface.co/anon-detecture-neurips-2026/Detecture-NeurIPS \
+    Qwen2SAM_Detecture/checkpoints
+for DS in RWTD STLD ADE20k_Detecture CAID; do
+  git clone https://huggingface.co/datasets/anon-detecture-neurips-2026/$DS \
+      ~/datasets/$DS
+done
+```
 
 ### Expected dataset layout under `~/datasets/`
+
+After the downloads above, the tree should look like this:
 
 ```
 ~/datasets/
